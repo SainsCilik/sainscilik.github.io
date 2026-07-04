@@ -6,6 +6,18 @@
     <title>Sains Cilik Tahun 3</title>
     <style>
         body {
+            /* KOD ANTI-CURI: Halang Highlight Teks */
+        body {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        /* Kecualikan input supaya budak masih boleh taip nama */
+        input {
+            -webkit-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
             font-family: 'Comic Sans MS', sans-serif;
             background-color: #e8f5e9;
             margin: 0;
@@ -98,6 +110,10 @@
         .kuiz-box { background-color: #f5f5f5; padding: 20px; border-radius: 20px; border: 2px solid #e0e0e0; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 15px; }
         .question-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.5; }
         .option-btn { display: block; width: 100%; background-color: white; border: 3px solid #e0e0e0; padding: 14px; margin: 8px 0; border-radius: 15px; font-size: 1rem; cursor: pointer; text-align: left; font-weight: bold; box-shadow: 0 4px 0 #e0e0e0; }
+        
+        /* Highlight huruf A, B, C, D */
+        .opt-letter { display: inline-block; width: 28px; color: #1b5e20; font-weight: 900; }
+        
         #result-message { text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 15px; margin-bottom: 15px; }
         
         .back-btn { text-align: center; display: block; background-color: #757575; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-family: inherit; font-size: 1.1rem; width: 100%; }
@@ -176,6 +192,23 @@
 
     <script>
         // TETAPAN ASAS
+        // ================= KOD ANTI-CURI =================
+        // 1. Halang Klik Kanan (Right Click)
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // 2. Halang Shortcut Keyboard (Ctrl+C, Ctrl+U, Ctrl+S, F12)
+        document.addEventListener('keydown', (e) => {
+            // Halang F12 (Buka Developer Tools)
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+            // Halang Ctrl+C, Ctrl+U, Ctrl+S, Ctrl+A
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a' || 
+                e.key === 'U' || e.key === 'C' || e.key === 'S' || e.key === 'A')) {
+                e.preventDefault();
+            }
+        });
+        // ==================================================
         let lang = 'ms';
         const senaraiAvatar = ['🪐', '👽', '👨‍🚀', '🦷', '🐅', '🌿', '🧪', '🔭'];
         let avatarPilihan = '🪐'; 
@@ -187,7 +220,7 @@
         let jawapanDipilih = null;
         const JUMLAH_SOALAN = 20;
 
-        // KAMUS BAHASA - Fixed to match exact requests!
+        // KAMUS BAHASA
         const teksUI = {
             ms: {
                 toggle: "🇬🇧 English",
@@ -221,8 +254,9 @@
                 mainLagi: "MAIN LAGI",
                 btnKembali: "⬅️ Kembali ke Menu Utama",
                 
+                // TEGURAN BOS DITERIMA: "Dashboard Ibu Bapa" SAHAJA
                 dashTajuk: "Dashboard Ibu Bapa",
-                dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
+                dashDesc: "Semak perkembangan rekod kuiz anak anda.",
                 lblAnak: "Nama Anak:",
                 lblTertinggi: "Markah Tertinggi:",
                 lblGred: "Status Pencapaian:",
@@ -271,58 +305,58 @@
             }
         };
 
-        // BANK 50 SOALAN TAHUN 3 KSSR (BILINGUAL)
+        // BANK 50 SOALAN TAHUN 3 KSSR (4 PILIHAN JAWAPAN A, B, C, D)
         const bankSoalan = [
-            { q: { ms: "Apakah fungsi gigi kacip pada manusia?", en: "What is the function of incisors in humans?" }, options: { ms: ["Mengerat dan memotong makanan", "Mengoyakkan makanan", "Memecah dan melumatkan makanan"], en: ["To cut and slice food", "To tear food", "To crush and grind food"] }, correct: 0 },
-            { q: { ms: "Gigi manakah yang tajam dan berfungsi untuk mengoyakkan makanan keras atau daging?", en: "Which tooth is sharp and functions to tear hard food or meat?" }, options: { ms: ["Gigi geraham", "Gigi taring", "Gigi kacip"], en: ["Molars", "Canines", "Incisors"] }, correct: 1 },
-            { q: { ms: "Apakah nama set gigi pertama yang tumbuh pada kanak-kanak?", en: "What is the name of the first set of teeth that grow in children?" }, options: { ms: ["Gigi susu", "Gigi kekal", "Gigi palsu"], en: ["Milk teeth", "Permanent teeth", "False teeth"] }, correct: 0 },
-            { q: { ms: "Berapakah bilangan gigi kekal yang lengkap pada seorang manusia dewasa?", en: "What is the complete number of permanent teeth in an adult human?" }, options: { ms: ["20 batang", "32 batang", "28 batang"], en: ["20 teeth", "32 teeth", "28 teeth"] }, correct: 1 },
-            { q: { ms: "Bahagian luar gigi yang paling keras dan berwarna putih dipanggil?", en: "The outermost, hardest part of the tooth which is white in colour is called?" }, options: { ms: ["Dentin", "Enamel", "Gusi"], en: ["Dentin", "Enamel", "Gums"] }, correct: 1 },
-            { q: { ms: "Kelas makanan karbohidrat berfungsi untuk apa?", en: "What is the function of the carbohydrate food class?" }, options: { ms: ["Membekalkan tenaga", "Membaiki tisu badan yang rosak", "Melancarkan penghadaman"], en: ["To supply energy", "To repair damaged body tissues", "To smoothen digestion"] }, correct: 0 },
-            { q: { ms: "Antara makanan berikut, yang manakah merupakan sumber protein yang baik?", en: "Which of the following foods is a good source of protein?" }, options: { ms: ["Roti dan mi", "Ikan, telur dan ayam", "Mentega dan keju"], en: ["Bread and noodles", "Fish, eggs and chicken", "Butter and cheese"] }, correct: 1 },
-            { q: { ms: "Vitamin dan mineral amat penting untuk kesihatan. Ia banyak terdapat dalam?", en: "Vitamins and minerals are very important for health. They are mostly found in?" }, options: { ms: ["Coklat dan gula-gula", "Sayur-sayuran dan buah-buahan", "Minyak masak"], en: ["Chocolate and candies", "Vegetables and fruits", "Cooking oil"] }, correct: 1 },
-            { q: { ms: "Proses pencernaan makanan manusia bermula di bahagian mana?", en: "The human food digestion process starts in which part?" }, options: { ms: ["Perut", "Usus", "Mulut"], en: ["Stomach", "Intestine", "Mouth"] }, correct: 2 },
-            { q: { ms: "Apakah urutan aliran makanan yang betul di dalam badan manusia?", en: "What is the correct flow of food in the human body?" }, options: { ms: ["Mulut -> Esofagus -> Perut -> Usus -> Dubur", "Mulut -> Perut -> Esofagus -> Dubur -> Usus", "Esofagus -> Mulut -> Usus -> Perut -> Dubur"], en: ["Mouth -> Oesophagus -> Stomach -> Intestine -> Anus", "Mouth -> Stomach -> Oesophagus -> Anus -> Intestine", "Oesophagus -> Mouth -> Intestine -> Stomach -> Anus"] }, correct: 0 },
-            { q: { ms: "Makanan yang tidak dicerna oleh badan akan dikeluarkan sebagai apa?", en: "Food that is not digested by the body will be excreted as what?" }, options: { ms: ["Peluh", "Tinja (Tahi)", "Air kencing"], en: ["Sweat", "Feces (Stool)", "Urine"] }, correct: 1 },
-            { q: { ms: "Haiwan yang makan tumbuh-tumbuhan SAHAJA dipanggil sebagai?", en: "Animals that eat ONLY plants are called?" }, options: { ms: ["Herbivor", "Karnivor", "Omnivor"], en: ["Herbivore", "Carnivore", "Omnivore"] }, correct: 0 },
-            { q: { ms: "Harimau, buaya dan helang adalah contoh haiwan?", en: "Tigers, crocodiles and eagles are examples of what animals?" }, options: { ms: ["Herbivor", "Karnivor", "Omnivor"], en: ["Herbivore", "Carnivore", "Omnivore"] }, correct: 1 },
-            { q: { ms: "Apakah yang dimaksudkan dengan haiwan OMNIVOR?", en: "What is meant by an OMNIVORE animal?" }, options: { ms: ["Haiwan yang makan tumbuhan sahaja", "Haiwan yang makan haiwan lain sahaja", "Haiwan yang makan tumbuh-tumbuhan dan haiwan lain"], en: ["Animals that eat only plants", "Animals that eat only other animals", "Animals that eat plants and other animals"] }, correct: 2 },
-            { q: { ms: "Monyet, beruang dan ayam dikelaskan dalam kumpulan haiwan?", en: "Monkeys, bears and chickens are classified in which animal group?" }, options: { ms: ["Omnivor", "Herbivor", "Karnivor"], en: ["Omnivore", "Herbivore", "Carnivore"] }, correct: 0 },
-            { q: { ms: "Bagi seekor haiwan karnivor, jenis gigi apakah yang paling tajam dan berkembang dengan baik?", en: "For a carnivore animal, which type of teeth is the sharpest and most well-developed?" }, options: { ms: ["Gigi kacip", "Gigi taring", "Gigi geraham"], en: ["Incisors", "Canines", "Molars"] }, correct: 1 },
-            { q: { ms: "Pokok cili, pokok betik dan pokok tembikai membiak melalui cara?", en: "Chili plants, papaya trees and watermelon plants reproduce through what method?" }, options: { ms: ["Spora", "Keratan batang", "Biji benih"], en: ["Spores", "Stem cuttings", "Seeds"] }, correct: 2 },
-            { q: { ms: "Tumbuhan yang manakah membiak menggunakan ANAK POKOK?", en: "Which plant reproduces using SUCKERS (young plants)?" }, options: { ms: ["Pokok pisang dan nenas", "Pokok bunga ros", "Paku pakis"], en: ["Banana tree and pineapple", "Rose plant", "Ferns"] }, correct: 0 },
-            { q: { ms: "Paku pakis dan cendawan tidak mempunyai biji benih. Jadi ia membiak melalui?", en: "Ferns and mushrooms do not have seeds. So they reproduce through?" }, options: { ms: ["Daun", "Spora", "Batang bawah tanah"], en: ["Leaves", "Spores", "Underground stems"] }, correct: 1 },
-            { q: { ms: "Bawang, kentang dan halia membiak menggunakan cara?", en: "Onions, potatoes and ginger reproduce using what method?" }, options: { ms: ["Batang bawah tanah", "Keratan batang", "Daun"], en: ["Underground stems", "Stem cuttings", "Leaves"] }, correct: 0 },
-            { q: { ms: "Pokok setawar dan lidah jin boleh dibiakkan hanya dengan menanam?", en: "Bryophyllum (Setawar) and snake plants can be reproduced just by planting its?" }, options: { ms: ["Daunnya", "Akar rambutnya", "Bunganya"], en: ["Leaves", "Root hairs", "Flowers"] }, correct: 0 },
-            { q: { ms: "Apakah kepentingan pembiakan tumbuh-tumbuhan kepada benda hidup lain?", en: "What is the importance of plant reproduction to other living things?" }, options: { ms: ["Untuk menjadikan hutan gelap", "Untuk memastikan sumber makanan dan oksigen berterusan", "Untuk menyebabkan banjir"], en: ["To make the forest dark", "To ensure a continuous supply of food and oxygen", "To cause floods"] }, correct: 1 },
-            { q: { ms: "Luas bagi suatu permukaan sekata boleh dikira menggunakan rumus?", en: "The area of a regular surface can be calculated using the formula?" }, options: { ms: ["Panjang + Lebar", "Panjang x Lebar", "Panjang / Lebar"], en: ["Length + Width", "Length x Width", "Length / Width"] }, correct: 1 },
-            { q: { ms: "Apakah unit piawai yang sesuai digunakan untuk mengukur luas sebuah buku tulis?", en: "What is the standard unit suitable for measuring the area of a notebook?" }, options: { ms: ["Kilometer persegi", "Sentimeter persegi (cm²)", "Liter"], en: ["Square kilometers", "Square centimeters (cm²)", "Liters"] }, correct: 1 },
-            { q: { ms: "Alat apakah yang paling sesuai digunakan untuk menyukat ISI PADU cecair dengan tepat di bilik sains?", en: "What tool is best used to accurately measure the VOLUME of liquids in the science room?" }, options: { ms: ["Bikar", "Silinder penyukat", "Cawan plastik"], en: ["Beaker", "Measuring cylinder", "Plastic cup"] }, correct: 1 },
-            { q: { ms: "Jika kita meletakkan paku besi ke dalam air, apakah yang akan berlaku?", en: "If we place an iron nail into water, what will happen?" }, options: { ms: ["Paku akan tenggelam", "Paku akan timbul", "Paku akan melayang di udara"], en: ["The nail will sink", "The nail will float", "The nail will float in the air"] }, correct: 0 },
-            { q: { ms: "Objek akan TIMBUL di permukaan air jika objek tersebut?", en: "An object will FLOAT on the surface of water if the object is?" }, options: { ms: ["Lebih tumpat daripada air", "Kurang tumpat daripada air", "Sama tumpat dengan air"], en: ["More dense than water", "Less dense than water", "Same density as water"] }, correct: 1 },
-            { q: { ms: "Sebiji telur ayam biasanya akan tenggelam di dalam gelas berisi air paip. Bagaimanakah cara untuk membuat telur itu timbul?", en: "A chicken egg usually sinks in a glass of tap water. How to make the egg float?" }, options: { ms: ["Menambah garam ke dalam air (jadikan air lebih tumpat)", "Memanaskan air tersebut", "Menambah ais ke dalam air"], en: ["Add salt into the water (make water denser)", "Heat up the water", "Add ice into the water"] }, correct: 0 },
-            { q: { ms: "Kayu, gabus dan bola pingpong adalah contoh objek yang?", en: "Wood, cork and ping pong balls are examples of objects that?" }, options: { ms: ["Tenggelam di dalam air", "Timbul di permukaan air", "Larut dalam air"], en: ["Sink in water", "Float on water", "Dissolve in water"] }, correct: 1 },
-            { q: { ms: "Kertas litmus mempunyai dua warna iaitu?", en: "Litmus paper has two colors which are?" }, options: { ms: ["Kuning dan Hijau", "Merah dan Biru", "Hitam dan Putih"], en: ["Yellow and Green", "Red and Blue", "Black and White"] }, correct: 1 },
-            { q: { ms: "Cecair cuka menukarkan warna kertas litmus biru kepada merah. Ini bermakna cuka bersifat?", en: "Vinegar turns blue litmus paper to red. This means vinegar is?" }, options: { ms: ["Asid", "Alkali", "Neutral"], en: ["Acidic", "Alkaline", "Neutral"] }, correct: 0 },
-            { q: { ms: "Bahan yang berasid biasanya mempunyai rasa yang?", en: "Acidic substances usually have what kind of taste?" }, options: { ms: ["Pahit", "Manis", "Masam"], en: ["Bitter", "Sweet", "Sour"] }, correct: 2 },
-            { q: { ms: "Kertas litmus merah bertukar menjadi biru apabila diuji dengan air sabun. Sabun bersifat?", en: "Red litmus paper turns blue when tested with soap water. Soap is?" }, options: { ms: ["Asid", "Alkali", "Neutral"], en: ["Acidic", "Alkaline", "Neutral"] }, correct: 1 },
-            { q: { ms: "Bahan beralkali selalunya mempunyai rasa pahit dan terasa ________ jika disentuh.", en: "Alkaline substances usually taste bitter and feel ________ when touched." }, options: { ms: ["Kasar", "Panas", "Licin"], en: ["Rough", "Hot", "Slippery/Soapy"] }, correct: 2 },
-            { q: { ms: "Air masak, gula dan garam TIDAK menukarkan warna kedua-dua kertas litmus. Ini kerana ia bersifat?", en: "Plain water, sugar and salt DO NOT change the color of both litmus papers. This is because they are?" }, options: { ms: ["Asid", "Alkali", "Neutral"], en: ["Acidic", "Alkaline", "Neutral"] }, correct: 2 },
-            { q: { ms: "Apakah yang berada di PUSAT (tengah-tengah) Sistem Suria kita?", en: "What is located at the CENTER of our Solar System?" }, options: { ms: ["Bumi", "Matahari", "Bulan"], en: ["Earth", "The Sun", "The Moon"] }, correct: 1 },
-            { q: { ms: "Berapakah jumlah planet yang beredar mengelilingi Matahari dalam Sistem Suria kita?", en: "How many planets revolve around the Sun in our Solar System?" }, options: { ms: ["7 buah planet", "8 buah planet", "9 buah planet"], en: ["7 planets", "8 planets", "9 planets"] }, correct: 1 },
-            { q: { ms: "Planet yang manakah berkedudukan paling HAMPIR dengan Matahari?", en: "Which planet is located CLOSEST to the Sun?" }, options: { ms: ["Utarid (Mercury)", "Zuhrah (Venus)", "Marikh (Mars)"], en: ["Mercury", "Venus", "Mars"] }, correct: 0 },
-            { q: { ms: "Planet ketiga dari Matahari, dan merupakan satu-satunya planet yang ada hidupan ialah?", en: "The third planet from the Sun, and the only planet with life is?" }, options: { ms: ["Musytari (Jupiter)", "Bumi (Earth)", "Zuhal (Saturn)"], en: ["Jupiter", "Earth", "Saturn"] }, correct: 1 },
-            { q: { ms: "Planet manakah yang dikenali sebagai planet paling besar dalam Sistem Suria?", en: "Which planet is known as the largest planet in the Solar System?" }, options: { ms: ["Bumi", "Uranus", "Musytari (Jupiter)"], en: ["Earth", "Uranus", "Jupiter"] }, correct: 2 },
-            { q: { ms: "Zuhal (Saturn) sangat mudah dikenali kerana ia mempunyai apa?", en: "Saturn is very easily recognized because it has what?" }, options: { ms: ["Gelang yang cantik", "Warna merah menyala", "Banyak gunung berapi"], en: ["Beautiful rings", "Bright red color", "Many volcanoes"] }, correct: 0 },
-            { q: { ms: "Planet yang paling sejuk dan terletak paling jauh dari Matahari ialah?", en: "The coldest planet and located furthest from the Sun is?" }, options: { ms: ["Neptun", "Marikh", "Utarid"], en: ["Neptune", "Mars", "Mercury"] }, correct: 0 },
-            { q: { ms: "Semakin jauh sesebuah planet dari Matahari, masa untuk ia mengelilingi Matahari akan menjadi?", en: "The further a planet is from the Sun, the time it takes to orbit the Sun becomes?" }, options: { ms: ["Lebih cepat (singkat)", "Lebih lama", "Sama sahaja"], en: ["Faster (shorter)", "Longer", "Stays the same"] }, correct: 1 },
-            { q: { ms: "Mesin ringkas yang terdiri daripada satu roda beralur yang membolehkan tali lalu di atasnya dipanggil?", en: "A simple machine consisting of a grooved wheel that allows a rope to pass over it is called a?" }, options: { ms: ["Tuas (Lever)", "Takal (Pulley)", "Roda dan Gandar"], en: ["Lever", "Pulley", "Wheel and Axle"] }, correct: 1 },
-            { q: { ms: "Apakah kegunaan utama mesin takal dalam kehidupan seharian kita?", en: "What is the main use of a pulley machine in our daily lives?" }, options: { ms: ["Memudahkan kerja mengangkat beban berat ke atas", "Memotong kayu dengan cepat", "Membawa barang ke tempat yang rata"], en: ["Makes it easier to lift heavy loads upwards", "To cut wood quickly", "To carry things to flat places"] }, correct: 0 },
-            { q: { ms: "Antara berikut, yang manakah menggunakan prinsip takal?", en: "Which of the following uses the principle of a pulley?" }, options: { ms: ["Gunting kertas", "Tiang bendera", "Pisau potong sayur"], en: ["Paper scissors", "Flagpole", "Vegetable knife"] }, correct: 1 },
-            { q: { ms: "Komponen asas bagi sebuah takal tetap terdiri daripada?", en: "The basic components of a fixed pulley consist of?" }, options: { ms: ["Bateri, wayar dan mentol", "Roda beralur, tali dan gandar", "Roda getah dan stereng"], en: ["Battery, wire and bulb", "Grooved wheel, rope and axle", "Rubber wheel and steering"] }, correct: 1 },
-            { q: { ms: "Menaikkan layar pada kapal layar tradisional juga menggunakan mesin ringkas jenis?", en: "Raising the sail on a traditional sailboat also uses what type of simple machine?" }, options: { ms: ["Takal", "Baji", "Gear"], en: ["Pulley", "Wedge", "Gear"] }, correct: 0 },
-            { q: { ms: "Kemahiran saintifik untuk menyatakan jangkaan atau apa yang akan berlaku berdasarkan pemerhatian dikenali sebagai?", en: "The scientific skill of stating an expectation or what will happen based on observation is known as?" }, options: { ms: ["Mengukur", "Meramal", "Berkomunikasi"], en: ["Measuring", "Predicting", "Communicating"] }, correct: 1 },
-            { q: { ms: "Mengukur panjang meja menggunakan pembaris meter adalah kemahiran saintifik?", en: "Measuring the length of a table using a meter ruler is what scientific skill?" }, options: { ms: ["Mengelas (Classifying)", "Menggunakan ruang dan masa", "Mengukur dan menggunakan nombor"], en: ["Classifying", "Using space and time", "Measuring and using numbers"] }, correct: 2 }
+            { q: { ms: "Apakah fungsi gigi kacip pada manusia?", en: "What is the function of incisors in humans?" }, options: { ms: ["Mengerat dan memotong makanan", "Mengoyakkan makanan", "Memecah dan melumatkan makanan", "Menyerap air"], en: ["To cut and slice food", "To tear food", "To crush and grind food", "To absorb water"] }, correct: 0 },
+            { q: { ms: "Gigi manakah yang tajam dan berfungsi untuk mengoyakkan makanan keras atau daging?", en: "Which tooth is sharp and functions to tear hard food or meat?" }, options: { ms: ["Gigi geraham", "Gigi taring", "Gigi kacip", "Gigi palsu"], en: ["Molars", "Canines", "Incisors", "False teeth"] }, correct: 1 },
+            { q: { ms: "Apakah nama set gigi pertama yang tumbuh pada kanak-kanak?", en: "What is the name of the first set of teeth that grow in children?" }, options: { ms: ["Gigi susu", "Gigi kekal", "Gigi geraham", "Gigi taring"], en: ["Milk teeth", "Permanent teeth", "Molars", "Canines"] }, correct: 0 },
+            { q: { ms: "Berapakah bilangan gigi kekal yang lengkap pada seorang manusia dewasa?", en: "What is the complete number of permanent teeth in an adult human?" }, options: { ms: ["20 batang", "32 batang", "28 batang", "36 batang"], en: ["20 teeth", "32 teeth", "28 teeth", "36 teeth"] }, correct: 1 },
+            { q: { ms: "Bahagian luar gigi yang paling keras dan berwarna putih dipanggil?", en: "The outermost, hardest part of the tooth which is white in colour is called?" }, options: { ms: ["Dentin", "Enamel", "Gusi", "Akar"], en: ["Dentin", "Enamel", "Gums", "Root"] }, correct: 1 },
+            { q: { ms: "Kelas makanan karbohidrat berfungsi untuk apa?", en: "What is the function of the carbohydrate food class?" }, options: { ms: ["Membekalkan tenaga", "Membaiki tisu badan yang rosak", "Melancarkan penghadaman", "Menghalang penyakit"], en: ["To supply energy", "To repair damaged body tissues", "To smoothen digestion", "To prevent diseases"] }, correct: 0 },
+            { q: { ms: "Antara makanan berikut, yang manakah merupakan sumber protein yang baik?", en: "Which of the following foods is a good source of protein?" }, options: { ms: ["Roti dan mi", "Ikan, telur dan ayam", "Mentega dan keju", "Nasi dan kentang"], en: ["Bread and noodles", "Fish, eggs and chicken", "Butter and cheese", "Rice and potatoes"] }, correct: 1 },
+            { q: { ms: "Vitamin dan mineral amat penting untuk kesihatan. Ia banyak terdapat dalam?", en: "Vitamins and minerals are very important for health. They are mostly found in?" }, options: { ms: ["Coklat dan gula-gula", "Sayur-sayuran dan buah-buahan", "Minyak masak", "Air mineral"], en: ["Chocolate and candies", "Vegetables and fruits", "Cooking oil", "Mineral water"] }, correct: 1 },
+            { q: { ms: "Proses pencernaan makanan manusia bermula di bahagian mana?", en: "The human food digestion process starts in which part?" }, options: { ms: ["Perut", "Usus", "Mulut", "Dubur"], en: ["Stomach", "Intestine", "Mouth", "Anus"] }, correct: 2 },
+            { q: { ms: "Apakah urutan aliran makanan yang betul di dalam badan manusia?", en: "What is the correct flow of food in the human body?" }, options: { ms: ["Mulut -> Esofagus -> Perut -> Usus -> Dubur", "Mulut -> Perut -> Esofagus -> Dubur -> Usus", "Esofagus -> Mulut -> Usus -> Perut -> Dubur", "Perut -> Usus -> Esofagus -> Mulut -> Dubur"], en: ["Mouth -> Oesophagus -> Stomach -> Intestine -> Anus", "Mouth -> Stomach -> Oesophagus -> Anus -> Intestine", "Oesophagus -> Mouth -> Intestine -> Stomach -> Anus", "Stomach -> Intestine -> Oesophagus -> Mouth -> Anus"] }, correct: 0 },
+            { q: { ms: "Makanan yang tidak dicerna oleh badan akan dikeluarkan sebagai apa?", en: "Food that is not digested by the body will be excreted as what?" }, options: { ms: ["Peluh", "Tinja (Tahi)", "Air kencing", "Darah"], en: ["Sweat", "Feces (Stool)", "Urine", "Blood"] }, correct: 1 },
+            { q: { ms: "Haiwan yang makan tumbuh-tumbuhan SAHAJA dipanggil sebagai?", en: "Animals that eat ONLY plants are called?" }, options: { ms: ["Herbivor", "Karnivor", "Omnivor", "Insektivor"], en: ["Herbivore", "Carnivore", "Omnivore", "Insectivore"] }, correct: 0 },
+            { q: { ms: "Harimau, buaya dan helang adalah contoh haiwan?", en: "Tigers, crocodiles and eagles are examples of what animals?" }, options: { ms: ["Herbivor", "Karnivor", "Omnivor", "Insektivor"], en: ["Herbivore", "Carnivore", "Omnivore", "Insectivore"] }, correct: 1 },
+            { q: { ms: "Apakah yang dimaksudkan dengan haiwan OMNIVOR?", en: "What is meant by an OMNIVORE animal?" }, options: { ms: ["Haiwan yang makan tumbuhan sahaja", "Haiwan yang makan haiwan lain sahaja", "Haiwan yang makan tumbuh-tumbuhan dan haiwan lain", "Haiwan yang hanya minum air"], en: ["Animals that eat only plants", "Animals that eat only other animals", "Animals that eat plants and other animals", "Animals that only drink water"] }, correct: 2 },
+            { q: { ms: "Monyet, beruang dan ayam dikelaskan dalam kumpulan haiwan?", en: "Monkeys, bears and chickens are classified in which animal group?" }, options: { ms: ["Omnivor", "Herbivor", "Karnivor", "Insektivor"], en: ["Omnivore", "Herbivore", "Carnivore", "Insectivore"] }, correct: 0 },
+            { q: { ms: "Bagi seekor haiwan karnivor, jenis gigi apakah yang paling tajam dan berkembang dengan baik?", en: "For a carnivore animal, which type of teeth is the sharpest and most well-developed?" }, options: { ms: ["Gigi kacip", "Gigi taring", "Gigi geraham", "Gigi susu"], en: ["Incisors", "Canines", "Molars", "Milk teeth"] }, correct: 1 },
+            { q: { ms: "Pokok cili, pokok betik dan pokok tembikai membiak melalui cara?", en: "Chili plants, papaya trees and watermelon plants reproduce through what method?" }, options: { ms: ["Spora", "Keratan batang", "Biji benih", "Daun"], en: ["Spores", "Stem cuttings", "Seeds", "Leaves"] }, correct: 2 },
+            { q: { ms: "Tumbuhan yang manakah membiak menggunakan ANAK POKOK?", en: "Which plant reproduces using SUCKERS (young plants)?" }, options: { ms: ["Pokok pisang dan nenas", "Pokok bunga ros", "Paku pakis", "Cendawan"], en: ["Banana tree and pineapple", "Rose plant", "Ferns", "Mushrooms"] }, correct: 0 },
+            { q: { ms: "Paku pakis dan cendawan tidak mempunyai biji benih. Jadi ia membiak melalui?", en: "Ferns and mushrooms do not have seeds. So they reproduce through?" }, options: { ms: ["Daun", "Spora", "Batang bawah tanah", "Keratan batang"], en: ["Leaves", "Spores", "Underground stems", "Stem cuttings"] }, correct: 1 },
+            { q: { ms: "Bawang, kentang dan halia membiak menggunakan cara?", en: "Onions, potatoes and ginger reproduce using what method?" }, options: { ms: ["Batang bawah tanah", "Keratan batang", "Daun", "Spora"], en: ["Underground stems", "Stem cuttings", "Leaves", "Spores"] }, correct: 0 },
+            { q: { ms: "Pokok setawar dan lidah jin boleh dibiakkan hanya dengan menanam?", en: "Bryophyllum (Setawar) and snake plants can be reproduced just by planting its?" }, options: { ms: ["Daunnya", "Akar rambutnya", "Bunganya", "Batangnya"], en: ["Leaves", "Root hairs", "Flowers", "Stems"] }, correct: 0 },
+            { q: { ms: "Apakah kepentingan pembiakan tumbuh-tumbuhan kepada benda hidup lain?", en: "What is the importance of plant reproduction to other living things?" }, options: { ms: ["Untuk menjadikan hutan gelap", "Untuk memastikan sumber makanan dan oksigen berterusan", "Untuk menyebabkan banjir", "Untuk mencantikkan bumi"], en: ["To make the forest dark", "To ensure a continuous supply of food and oxygen", "To cause floods", "To beautify the earth"] }, correct: 1 },
+            { q: { ms: "Luas bagi suatu permukaan sekata boleh dikira menggunakan rumus?", en: "The area of a regular surface can be calculated using the formula?" }, options: { ms: ["Panjang + Lebar", "Panjang x Lebar", "Panjang / Lebar", "Panjang - Lebar"], en: ["Length + Width", "Length x Width", "Length / Width", "Length - Width"] }, correct: 1 },
+            { q: { ms: "Apakah unit piawai yang sesuai digunakan untuk mengukur luas sebuah buku tulis?", en: "What is the standard unit suitable for measuring the area of a notebook?" }, options: { ms: ["Kilometer persegi", "Sentimeter persegi (cm²)", "Liter", "Mililiter (ml)"], en: ["Square kilometers", "Square centimeters (cm²)", "Liters", "Milliliters (ml)"] }, correct: 1 },
+            { q: { ms: "Alat apakah yang paling sesuai digunakan untuk menyukat ISI PADU cecair dengan tepat di bilik sains?", en: "What tool is best used to accurately measure the VOLUME of liquids in the science room?" }, options: { ms: ["Bikar", "Silinder penyukat", "Cawan plastik", "Sudu"], en: ["Beaker", "Measuring cylinder", "Plastic cup", "Spoon"] }, correct: 1 },
+            { q: { ms: "Jika kita meletakkan paku besi ke dalam air, apakah yang akan berlaku?", en: "If we place an iron nail into water, what will happen?" }, options: { ms: ["Paku akan tenggelam", "Paku akan timbul", "Paku akan melayang di udara", "Paku akan hancur"], en: ["The nail will sink", "The nail will float", "The nail will float in the air", "The nail will be destroyed"] }, correct: 0 },
+            { q: { ms: "Objek akan TIMBUL di permukaan air jika objek tersebut?", en: "An object will FLOAT on the surface of water if the object is?" }, options: { ms: ["Lebih tumpat daripada air", "Kurang tumpat daripada air", "Sama tumpat dengan air", "Berwarna cerah"], en: ["More dense than water", "Less dense than water", "Same density as water", "Brightly colored"] }, correct: 1 },
+            { q: { ms: "Sebiji telur ayam biasanya akan tenggelam di dalam gelas berisi air paip. Bagaimanakah cara untuk membuat telur itu timbul?", en: "A chicken egg usually sinks in a glass of tap water. How to make the egg float?" }, options: { ms: ["Menambah garam ke dalam air", "Memanaskan air tersebut", "Menambah ais ke dalam air", "Menambah minyak ke dalam air"], en: ["Add salt into the water", "Heat up the water", "Add ice into the water", "Add oil into the water"] }, correct: 0 },
+            { q: { ms: "Kayu, gabus dan bola pingpong adalah contoh objek yang?", en: "Wood, cork and ping pong balls are examples of objects that?" }, options: { ms: ["Tenggelam di dalam air", "Timbul di permukaan air", "Larut dalam air", "Mencair dalam air"], en: ["Sink in water", "Float on water", "Dissolve in water", "Melt in water"] }, correct: 1 },
+            { q: { ms: "Kertas litmus mempunyai dua warna iaitu?", en: "Litmus paper has two colors which are?" }, options: { ms: ["Kuning dan Hijau", "Merah dan Biru", "Hitam dan Putih", "Ungu dan Oren"], en: ["Yellow and Green", "Red and Blue", "Black and White", "Purple and Orange"] }, correct: 1 },
+            { q: { ms: "Cecair cuka menukarkan warna kertas litmus biru kepada merah. Ini bermakna cuka bersifat?", en: "Vinegar turns blue litmus paper to red. This means vinegar is?" }, options: { ms: ["Asid", "Alkali", "Neutral", "Manis"], en: ["Acidic", "Alkaline", "Neutral", "Sweet"] }, correct: 0 },
+            { q: { ms: "Bahan yang berasid biasanya mempunyai rasa yang?", en: "Acidic substances usually have what kind of taste?" }, options: { ms: ["Pahit", "Manis", "Masam", "Tawar"], en: ["Bitter", "Sweet", "Sour", "Tasteless"] }, correct: 2 },
+            { q: { ms: "Kertas litmus merah bertukar menjadi biru apabila diuji dengan air sabun. Sabun bersifat?", en: "Red litmus paper turns blue when tested with soap water. Soap is?" }, options: { ms: ["Asid", "Alkali", "Neutral", "Pahit"], en: ["Acidic", "Alkaline", "Neutral", "Bitter"] }, correct: 1 },
+            { q: { ms: "Bahan beralkali selalunya mempunyai rasa pahit dan terasa ________ jika disentuh.", en: "Alkaline substances usually taste bitter and feel ________ when touched." }, options: { ms: ["Kasar", "Panas", "Licin", "Tajam"], en: ["Rough", "Hot", "Slippery/Soapy", "Sharp"] }, correct: 2 },
+            { q: { ms: "Air masak, gula dan garam TIDAK menukarkan warna kedua-dua kertas litmus. Ini kerana ia bersifat?", en: "Plain water, sugar and salt DO NOT change the color of both litmus papers. This is because they are?" }, options: { ms: ["Asid", "Alkali", "Neutral", "Pahit"], en: ["Acidic", "Alkaline", "Neutral", "Bitter"] }, correct: 2 },
+            { q: { ms: "Apakah yang berada di PUSAT (tengah-tengah) Sistem Suria kita?", en: "What is located at the CENTER of our Solar System?" }, options: { ms: ["Bumi", "Matahari", "Bulan", "Bintang"], en: ["Earth", "The Sun", "The Moon", "Stars"] }, correct: 1 },
+            { q: { ms: "Berapakah jumlah planet yang beredar mengelilingi Matahari dalam Sistem Suria kita?", en: "How many planets revolve around the Sun in our Solar System?" }, options: { ms: ["7 buah planet", "8 buah planet", "9 buah planet", "10 buah planet"], en: ["7 planets", "8 planets", "9 planets", "10 planets"] }, correct: 1 },
+            { q: { ms: "Planet yang manakah berkedudukan paling HAMPIR dengan Matahari?", en: "Which planet is located CLOSEST to the Sun?" }, options: { ms: ["Utarid (Mercury)", "Zuhrah (Venus)", "Marikh (Mars)", "Musytari (Jupiter)"], en: ["Mercury", "Venus", "Mars", "Jupiter"] }, correct: 0 },
+            { q: { ms: "Planet ketiga dari Matahari, dan merupakan satu-satunya planet yang ada hidupan ialah?", en: "The third planet from the Sun, and the only planet with life is?" }, options: { ms: ["Musytari (Jupiter)", "Bumi (Earth)", "Zuhal (Saturn)", "Neptun (Neptune)"], en: ["Jupiter", "Earth", "Saturn", "Neptune"] }, correct: 1 },
+            { q: { ms: "Planet manakah yang dikenali sebagai planet paling besar dalam Sistem Suria?", en: "Which planet is known as the largest planet in the Solar System?" }, options: { ms: ["Bumi", "Uranus", "Musytari (Jupiter)", "Zuhal (Saturn)"], en: ["Earth", "Uranus", "Jupiter", "Saturn"] }, correct: 2 },
+            { q: { ms: "Zuhal (Saturn) sangat mudah dikenali kerana ia mempunyai apa?", en: "Saturn is very easily recognized because it has what?" }, options: { ms: ["Gelang yang cantik", "Warna merah menyala", "Banyak gunung berapi", "Saiz yang kecil"], en: ["Beautiful rings", "Bright red color", "Many volcanoes", "Small size"] }, correct: 0 },
+            { q: { ms: "Planet yang paling sejuk dan terletak paling jauh dari Matahari ialah?", en: "The coldest planet and located furthest from the Sun is?" }, options: { ms: ["Neptun", "Marikh", "Utarid", "Zuhrah"], en: ["Neptune", "Mars", "Mercury", "Venus"] }, correct: 0 },
+            { q: { ms: "Semakin jauh sesebuah planet dari Matahari, masa untuk ia mengelilingi Matahari akan menjadi?", en: "The further a planet is from the Sun, the time it takes to orbit the Sun becomes?" }, options: { ms: ["Lebih cepat (singkat)", "Lebih lama", "Sama sahaja", "Berhenti"], en: ["Faster (shorter)", "Longer", "Stays the same", "Stops"] }, correct: 1 },
+            { q: { ms: "Mesin ringkas yang terdiri daripada satu roda beralur yang membolehkan tali lalu di atasnya dipanggil?", en: "A simple machine consisting of a grooved wheel that allows a rope to pass over it is called a?" }, options: { ms: ["Tuas (Lever)", "Takal (Pulley)", "Roda dan Gandar", "Baji (Wedge)"], en: ["Lever", "Pulley", "Wheel and Axle", "Wedge"] }, correct: 1 },
+            { q: { ms: "Apakah kegunaan utama mesin takal dalam kehidupan seharian kita?", en: "What is the main use of a pulley machine in our daily lives?" }, options: { ms: ["Memudahkan kerja mengangkat beban berat ke atas", "Memotong kayu dengan cepat", "Membawa barang ke tempat yang rata", "Melihat bintang"], en: ["Makes it easier to lift heavy loads upwards", "To cut wood quickly", "To carry things to flat places", "To see stars"] }, correct: 0 },
+            { q: { ms: "Antara berikut, yang manakah menggunakan prinsip takal?", en: "Which of the following uses the principle of a pulley?" }, options: { ms: ["Gunting kertas", "Tiang bendera", "Pisau potong sayur", "Kereta sorong"], en: ["Paper scissors", "Flagpole", "Vegetable knife", "Wheelbarrow"] }, correct: 1 },
+            { q: { ms: "Komponen asas bagi sebuah takal tetap terdiri daripada?", en: "The basic components of a fixed pulley consist of?" }, options: { ms: ["Bateri, wayar dan mentol", "Roda beralur, tali dan gandar", "Roda getah dan stereng", "Enjin dan minyak"], en: ["Battery, wire and bulb", "Grooved wheel, rope and axle", "Rubber wheel and steering", "Engine and oil"] }, correct: 1 },
+            { q: { ms: "Menaikkan layar pada kapal layar tradisional juga menggunakan mesin ringkas jenis?", en: "Raising the sail on a traditional sailboat also uses what type of simple machine?" }, options: { ms: ["Takal", "Baji", "Gear", "Skru"], en: ["Pulley", "Wedge", "Gear", "Screw"] }, correct: 0 },
+            { q: { ms: "Kemahiran saintifik untuk menyatakan jangkaan atau apa yang akan berlaku berdasarkan pemerhatian dikenali sebagai?", en: "The scientific skill of stating an expectation or what will happen based on observation is known as?" }, options: { ms: ["Mengukur", "Meramal", "Berkomunikasi", "Mengeksperimen"], en: ["Measuring", "Predicting", "Communicating", "Experimenting"] }, correct: 1 },
+            { q: { ms: "Mengukur panjang meja menggunakan pembaris meter adalah kemahiran saintifik?", en: "Measuring the length of a table using a meter ruler is what scientific skill?" }, options: { ms: ["Mengelas (Classifying)", "Menggunakan ruang dan masa", "Mengukur dan menggunakan nombor", "Membuat hipotesis"], en: ["Classifying", "Using space and time", "Measuring and using numbers", "Making hypotheses"] }, correct: 2 }
         ];
 
         function binaAvatar() {
@@ -510,7 +544,7 @@
                     localStorage.removeItem('sains_semasa_t3');
                 }
                 
-                renderSenaraiProfil(); // Update senarai tanpa reload page
+                renderSenaraiProfil(); 
             }
         }
 
@@ -613,10 +647,15 @@
             `;
             
             let container = document.getElementById("options-container");
+            
+            // Format A, B, C, D
+            const abcd = ["A", "B", "C", "D"];
+            
             data.options[lang].forEach((opt, index) => {
                 let btn = document.createElement("button");
                 btn.className = "option-btn";
-                btn.innerText = opt;
+                // Letak A. B. C. D. di hadapan teks
+                btn.innerHTML = `<span class="opt-letter">${abcd[index]}.</span> ${opt}`;
                 
                 if (jawapanDipilih !== null) {
                     if (index === data.correct) {
