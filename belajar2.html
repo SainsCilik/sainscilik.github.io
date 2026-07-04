@@ -51,7 +51,60 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Ditukar supaya kandungan bermula dari atas */
+            justify-content: flex-start;
+        }
+
+        .input-group {
+            margin: 12px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            color: #e65100;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .avatar-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 5px;
+        }
+
+        .avatar-option {
+            font-size: 1.8rem;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            background: white;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .avatar-option span {
+            display: block;
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .avatar-option.selected {
+            border-color: #ff9800;
+            background-color: #fff3e0;
+            transform: scale(1.05);
         }
 
         .instruction-screen {
@@ -65,12 +118,12 @@
         .instruction-box {
             background: #fff3e0;
             border-left: 5px solid #ff9800;
-            padding: 15px;
+            padding: 12px;
             text-align: left;
             border-radius: 10px;
-            margin: 20px 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .question-text {
@@ -101,13 +154,37 @@
             background-color: #ff9800;
             color: white;
             border: none;
-            padding: 15px;
-            font-size: 1.2rem;
+            padding: 14px;
+            font-size: 1.1rem;
             font-weight: bold;
             border-radius: 15px;
             box-shadow: 0 5px 0 #e65100;
             cursor: pointer;
-            margin-top: auto; /* Memastikan butang sentiasa di bawah kotak */
+            margin-top: 10px;
+        }
+
+        .report-btn {
+            background-color: #0288d1;
+            box-shadow: 0 5px 0 #01579b;
+            margin-top: 8px;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #b3e5fc;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .stats-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            border-bottom: 1px dashed #e0e0e0;
+            padding-bottom: 4px;
         }
 
         #result-message {
@@ -135,26 +212,43 @@
     <div class="phone-wrapper">
         <div class="quiz-header" id="header-bar" style="display: none;">
             <span id="progress-text">Soalan: 1/20</span>
-            <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
+            <span class="hearts" id="hearts-layer">♾️ Mod Latihan</span>
             <span id="score-text">Markah: 0</span>
         </div>
 
-        <h1>Cabaran Sains Tahun 2 🏆</h1>
+        <h1 id="main-title">Cabaran Sains Tahun 2 🏆</h1>
         <div id="paparNama" style="text-align:center; font-weight:bold; color:#e65100; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
-            <div class="instruction-screen" id="instruction-screen">
+            <!-- Skrin Utama / Pendaftaran Profil -->
+            <div class="instruction-screen" id="main-screen">
                 <div>
-                    <span style="font-size: 4rem;">🧬</span>
-                    <h2 style="color: #e65100; margin-top: 10px;">Mula Cabaran</h2>
+                    <span id="avatar-tayang" style="font-size: 3.5rem;">🧍‍♂️</span>
+                    <h2 style="color: #e65100; margin: 5px 0;">Profil Saintis</h2>
+                    
+                    <div class="input-group">
+                        <label>Nama Murid:</label>
+                        <input type="text" id="username" class="name-input" placeholder="Masukkan nama..." autocomplete="off">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Pilih Tema Pembelajaran (Avatar):</label>
+                        <div class="avatar-container">
+                            <div class="avatar-option selected" onclick="pilihAvatar('🧍‍♂️', this)">🧍‍♂️<span>Biotik</span></div>
+                            <div class="avatar-option" onclick="pilihAvatar('🌱', this)">🌱<span>Botani</span></div>
+                            <div class="avatar-option" onclick="pilihAvatar('⚡', this)">⚡<span>Tenaga</span></div>
+                        </div>
+                    </div>
+
                     <div class="instruction-box">
-                        👋 Hai <span id="namaArahan">Saintis Cilik</span>!<br><br>
-                        🎯 Selesaikan <b>20 soalan</b> silibus KSSR Tahun 2.<br>
-                        💯 Setiap jawapan betul memberikan <b>5 markah</b>.<br>
-                        ❤️ Anda mempunyai <b>3 nyawa</b>. Jawab dengan bijak!
+                        🎯 Selesaikan <b>20 soalan</b> silibus Sains Tahun 2.<br>
+                        💪 Nyawa <b>Infiniti</b> (Sesuai untuk ulangkaji & uji kefahaman).
                     </div>
                 </div>
-                <button class="action-btn" onclick="mulaKuiz()">MULA SEKARANG 🚀</button>
+                <div>
+                    <button class="action-btn" onclick="mulaKuiz()">🚀 MULA BELAJAR</button>
+                    <button class="action-btn report-btn" onclick="paparSistemPrestasi()">📊 REKOD PRESTASI (IBU BAPA)</button>
+                </div>
             </div>
         </div>
 
@@ -162,6 +256,7 @@
     </div>
 
     <script>
+        // 50 Bank Soalan KSSR Sains Tahun 2
         const bankSoalan = [
             { q: "Antara berikut, yang manakah merupakan keperluan asas manusia? 🍱", options: ["📱 Telefon pintar", "🍱 Makanan, air dan udara", "🧸 Mainan"], correct: 1 },
             { q: "Mengapakah manusia memerlukan udara? 💨", options: ["🏃 Untuk bernafas", "📈 Untuk membesar", "🚶 Untuk berjalan"], correct: 0 },
@@ -218,20 +313,35 @@
         let kuizSoalan = [];
         let soalanSekarang = 0;
         let markah = 0;
-        let nyawa = 3;
         let jawapanDipilih = null;
+        let emojiAvatar = "🧍‍♂️";
         const JUMLAH_SOALAN = 20;
 
-        let namaDisimpan = localStorage.getItem('namaMurid');
+        // Muat nilai asal dari LocalStorage jika ada
+        let namaDisimpan = localStorage.getItem('namaMurid') || "";
         if (namaDisimpan) {
-            let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerText = "Saintis: " + namaDisimpan.toUpperCase() + " 🚀";
-            elemenNama.style.display = "block";
-            document.getElementById('namaArahan').innerText = namaDisimpan.toUpperCase();
+            document.getElementById('username').value = namaDisimpan;
+        }
+
+        function pilihAvatar(emoji, element) {
+            emojiAvatar = emoji;
+            document.getElementById('avatar-tayang').innerText = emoji;
+            let options = document.querySelectorAll('.avatar-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
         }
 
         function mulaKuiz() {
-            document.getElementById("instruction-screen").style.display = "none";
+            let inputNama = document.getElementById("username").value.trim();
+            let namaFinal = inputNama ? inputNama : "SAINTIS CILIK";
+            
+            localStorage.setItem('namaMurid', namaFinal);
+
+            let elemenNama = document.getElementById('paparNama');
+            elemenNama.innerHTML = `${emojiAvatar} Saintis: <span style="color:#e65100">${namaFinal.toUpperCase()}</span>`;
+            elemenNama.style.display = "block";
+
+            document.getElementById("main-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
             
             let shuffled = bankSoalan.sort(() => 0.5 - Math.random());
@@ -239,19 +349,7 @@
             
             soalanSekarang = 0;
             markah = 0;
-            nyawa = 3;
-            
-            kemaskiniNyawaUI();
             paparSoalan();
-        }
-
-        function kemaskiniNyawaUI() {
-            let heartString = "";
-            for (let i = 0; i < nyawa; i++) {
-                heartString += "❤️ ";
-            }
-            if (nyawa === 0) heartString = "💀 GAME OVER";
-            document.getElementById("hearts-layer").innerText = heartString;
         }
 
         function paparSoalan() {
@@ -297,58 +395,76 @@
                 element.style.borderColor = "#f44336";
                 buttons[data.correct].style.backgroundColor = "#c8e6c9";
                 buttons[data.correct].style.borderColor = "#4caf50";
-                msg.innerText = "❌ SALAH! Nyawa berkurang 1 😢";
+                msg.innerText = "❌ SALAH! Jawapan betul warna hijau. 😉";
                 msg.style.color = "#c62828";
-                
-                nyawa--;
-                kemaskiniNyawaUI();
-            }
-            
-            if (nyawa <= 0) {
-                document.getElementById("next-btn").innerText = "LIHAT KEPUTUSAN 🏁";
             }
             document.getElementById("next-btn").style.display = "block";
         }
 
         function keSoalanSeterusnya() {
-            if (nyawa <= 0) {
-                tamatKuiz(false);
-                return;
-            }
-            
             soalanSekarang++;
             if (soalanSekarang < JUMLAH_SOALAN) {
                 paparSoalan();
             } else {
-                tamatKuiz(true);
+                tamatKuiz();
             }
         }
 
-        function tamatKuiz(isWin) {
+        function tamatKuiz() {
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
+            let piala = markah >= 80 ? "🏆" : "🥈";
             
-            if (!isWin && nyawa <= 0) {
-                quizArea.innerHTML = `
-                    <div style="text-align:center; padding:20px 0;">
-                        <span style="font-size:4rem;">💥</span>
-                        <h3 style="color:#c62828; font-size:1.5rem; margin:15px 0;">NYAWA HABIS!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Cuba lagi kawan! Markah anda:<br><span style="color:#ff9800; font-size:2rem;">💯 ${markah}/100</span></p>
-                        <button onclick="location.reload()" class="action-btn">🔄 CUBA LAGI</button>
-                    </div>
-                `;
-            } else {
-                let piala = markah >= 80 ? "🏆" : "🥈";
-                quizArea.innerHTML = `
-                    <div style="text-align:center; padding:20px 0;">
-                        <span style="font-size:4rem;">${piala}</span>
-                        <h3 style="color:#4caf50; font-size:1.5rem; margin:15px 0;">TAHNIAH KUIZ TAMAT!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Jumlah markah keseluruhan anda:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
-                        <p>Hebat betul pemikiran saintis cilik kita! 😍</p>
-                        <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI (SOALAN BARU)</button>
-                    </div>
-                `;
+            // Simpan data prestasi untuk ibu bapa
+            let totalMain = parseInt(localStorage.getItem('sains_total_main') || "0") + 1;
+            let markahTertinggi = parseInt(localStorage.getItem('sains_high_score') || "0");
+            if (markah > markahTertinggi) {
+                localStorage.setItem('sains_high_score', markah);
             }
+            localStorage.setItem('sains_total_main', totalMain);
+            localStorage.setItem('sains_last_date', new Date().toLocaleDateString('ms-MY'));
+
+            quizArea.innerHTML = `
+                <div style="text-align:center; padding:15px 0;">
+                    <span style="font-size:4rem;">${piala}</span>
+                    <h3 style="color:#4caf50; margin:10px 0;">TAHNIAH KUIZ TAMAT!</h3>
+                    <p style="font-size:1.1rem; font-weight:bold;">Markah Anda:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                    <p>Rekod prestasi anda telah dikemaskini untuk semakan ibu bapa! ❤️</p>
+                    <button onclick="location.reload()" class="action-btn">🔄 CUBA LAGI</button>
+                </div>
+            `;
+        }
+
+        function paparSistemPrestasi() {
+            let quizArea = document.getElementById("quiz-area");
+            let namaAnak = localStorage.getItem('namaMurid') || "Belum Letak Nama";
+            let hScore = localStorage.getItem('sains_high_score') || "0";
+            let tMain = localStorage.getItem('sains_total_main') || "0";
+            let lDate = localStorage.getItem('sains_last_date') || "Tiada Rekod";
+            
+            let gred = "U (Perlu Latihan)";
+            if(hScore >= 80) gred = "A (Cemerlang) 🌟";
+            else if(hScore >= 60) gred = "B (Bagus) 👍";
+            else if(hScore >= 40) gred = "C (Lulus) 👌";
+
+            quizArea.innerHTML = `
+                <div class="instruction-screen">
+                    <div>
+                        <span style="font-size: 3rem;">📊</span>
+                        <h3 style="color: #0288d1; margin: 5px 0;">Dashboard Ibu Bapa</h3>
+                        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Semak perkembangan subjek Sains anak anda di sini.</p>
+                        
+                        <div class="stats-card">
+                            <div class="stats-line"><b>Nama Anak:</b> <span>${namaAnak.toUpperCase()}</span></div>
+                            <div class="stats-line"><b>Markah Tertinggi:</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
+                            <div class="stats-line"><b>Gred Terbaik:</b> <span>${gred}</span></div>
+                            <div class="stats-line"><b>Jumlah Latihan:</b> <span>${tMain} Kali</span></div>
+                            <div class="stats-line"><b>Ujian Terakhir:</b> <span>${lDate}</span></div>
+                        </div>
+                    </div>
+                    <button class="action-btn" style="background-color:#757575; box-shadow:0 5px 0 #424242;" onclick="location.reload()">⬅️ KEMBALI</button>
+                </div>
+            `;
         }
     </script>
 </body>
