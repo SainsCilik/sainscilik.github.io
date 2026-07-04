@@ -16,9 +16,10 @@
             min-height: 100vh;
         }
 
-        .phone-wrapper {
+        /* RESPONSIVE CONTAINER */
+        .app-wrapper {
             width: 100%;
-            max-width: 420px;
+            max-width: 100%;
             background: white;
             min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
@@ -27,6 +28,40 @@
             padding: 25px 20px;
             box-sizing: border-box;
         }
+
+        /* Desktop View Adjustments */
+        @media (min-width: 768px) {
+            body { padding: 40px 20px; }
+            .app-wrapper {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 20px;
+                padding: 40px;
+            }
+            .option-btn { font-size: 1.15rem; padding: 18px; }
+            h1 { font-size: 2rem; }
+            .question-text { font-size: 1.3rem; }
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .lang-btn {
+            background: #ffb300;
+            color: #3e2723;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #ff8f00;
+            transition: 0.2s;
+        }
+        .lang-btn:active { box-shadow: 0 0 0 #ff8f00; transform: translateY(3px); }
 
         .quiz-header {
             display: flex;
@@ -40,7 +75,6 @@
         }
 
         .hearts { color: #ff5252; font-size: 1.2rem; }
-
         h1 { color: #2e7d32; text-align: center; font-size: 1.6rem; margin: 10px 0; }
         
         .kuiz-box {
@@ -54,18 +88,8 @@
             justify-content: flex-start;
         }
 
-        .input-group {
-            margin: 15px 0;
-            text-align: left;
-        }
-
-        .input-group label {
-            font-weight: bold;
-            color: #2e7d32;
-            display: block;
-            margin-bottom: 8px;
-        }
-
+        .input-group { margin: 15px 0; text-align: left; }
+        .input-group label { font-weight: bold; color: #2e7d32; display: block; margin-bottom: 8px; }
         .name-input {
             width: 100%;
             padding: 12px;
@@ -132,12 +156,7 @@
             margin-top: auto;
         }
 
-        .report-btn {
-            background-color: #0288d1;
-            box-shadow: 0 5px 0 #01579b;
-            margin-top: 10px;
-        }
-
+        .report-btn { background-color: #0288d1; box-shadow: 0 5px 0 #01579b; margin-top: 10px; }
         .stats-card {
             background: white;
             border-radius: 12px;
@@ -156,13 +175,7 @@
             padding-bottom: 4px;
         }
 
-        #result-message {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
+        #result-message { text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 15px; }
         .back-btn {
             text-align: center;
             display: block;
@@ -178,7 +191,11 @@
 </head>
 <body>
 
-    <div class="phone-wrapper">
+    <div class="app-wrapper">
+        <div class="top-bar">
+            <button class="lang-btn" id="langToggleBtn" onclick="tukarBahasa()">🇬🇧 English</button>
+        </div>
+
         <div class="quiz-header" id="header-bar" style="display: none;">
             <span id="progress-text">Soalan: 1/20</span>
             <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
@@ -189,86 +206,353 @@
         <div id="paparNama" style="text-align:center; font-weight:bold; color:#1b5e20; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
-            <!-- Skrin Utama -->
             <div class="instruction-screen" id="main-screen">
                 <div>
                     <span style="font-size: 4rem;">🔬</span>
-                    <h2 style="color: #1b5e20; margin-top: 5px;">Profil Saintis</h2>
+                    <h2 id="ui-profil" style="color: #1b5e20; margin-top: 5px;">Profil Saintis</h2>
                     
                     <div class="input-group">
-                        <label>Nama Murid:</label>
+                        <label id="ui-nama">Nama Murid:</label>
                         <input type="text" id="username" class="name-input" placeholder="Masukkan nama..." autocomplete="off">
                     </div>
 
-                    <div class="instruction-box">
+                    <div class="instruction-box" id="ui-instruksi">
                         🎯 Selesaikan <b>20 soalan</b> rawak daripada bank soalan.<br>
                         💯 Setiap jawapan betul memberikan <b>5 markah</b> (Maksimum 100).<br>
                         ❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!
                     </div>
                 </div>
                 <div>
-                    <button class="action-btn" onclick="mulaKuiz()">🚀 MULA BELAJAR</button>
-                    <button class="action-btn report-btn" onclick="paparSistemPrestasi()">📊 REKOD PRESTASI (IBU BAPA)</button>
+                    <button class="action-btn" id="ui-btn-mula" onclick="mulaKuiz()">🚀 MULA BELAJAR</button>
+                    <button class="action-btn report-btn" id="ui-btn-rekod" onclick="paparSistemPrestasi()">📊 REKOD PRESTASI (IBU BAPA)</button>
                 </div>
             </div>
         </div>
 
-        <a href="tahun2.html" class="back-btn">⬅️ Keluar</a>
+        <a href="tahun2.html" class="back-btn" id="ui-btn-keluar">⬅️ Keluar</a>
     </div>
 
     <script>
-        // BANK 50 SOALAN TAHUN 2 - 100% BERSIH TANPA SEBARANG EMOJI DI SOALAN/JAWAPAN
+        // TETAPAN BAHASA
+        let lang = 'ms'; // ms = Melayu, en = English
+
+        const teksUI = {
+            ms: {
+                toggleBtn: "🇬🇧 English",
+                title: "Latihan Sains TAHUN 2 🎯",
+                profil: "Profil Saintis",
+                nama: "Nama Murid:",
+                placeholder: "Masukkan nama...",
+                instruksi: "🎯 Selesaikan <b>20 soalan</b> rawak daripada bank soalan.<br>💯 Setiap jawapan betul memberikan <b>5 markah</b> (Maksimum 100).<br>❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!",
+                btnMula: "🚀 MULA BELAJAR",
+                btnRekod: "📊 REKOD PRESTASI (IBU BAPA)",
+                btnKeluar: "⬅️ Keluar",
+                soalan: "Soalan",
+                markah: "Markah",
+                betul: "🎉 BETUL! (+5 Markah) 🌟",
+                salah: "❌ SALAH! Jawapan betul warna hijau. 😉",
+                seterusnya: "SETERUSNYA ➡️",
+                gameOver: "GAME OVER!",
+                nyawaHabis: "Nyawa anda telah habis. Jangan putus asa, cuba lagi! 💪",
+                markahTerkumpul: "Markah Terkumpul",
+                cubaLagi: "🔄 CUBA LAGI",
+                tahniah: "TAHNIAH KUIZ TAMAT!",
+                mainLagi: "🔄 MAIN LAGI",
+                dashTajuk: "Dashboard Ibu Bapa (Kuiz 2)",
+                dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
+                lblAnak: "Nama Anak:",
+                lblTertinggi: "Markah Tertinggi:",
+                lblGred: "Gred Terbaik:",
+                lblLatihan: "Jumlah Latihan:",
+                lblUjian: "Ujian Terakhir:",
+                btnKembali: "⬅️ KEMBALI",
+                saintisLabel: "Saintis"
+            },
+            en: {
+                toggleBtn: "🇲🇾 Bahasa Melayu",
+                title: "YEAR 2 Science Practice 🎯",
+                profil: "Scientist Profile",
+                nama: "Student Name:",
+                placeholder: "Enter name...",
+                instruksi: "🎯 Answer <b>20 random questions</b> from the question bank.<br>💯 Each correct answer gives <b>5 marks</b> (Maximum 100).<br>❤️ You only have <b>3 lives</b>. Answer carefully!",
+                btnMula: "🚀 START LEARNING",
+                btnRekod: "📊 PERFORMANCE RECORD",
+                btnKeluar: "⬅️ Exit",
+                soalan: "Question",
+                markah: "Score",
+                betul: "🎉 CORRECT! (+5 Marks) 🌟",
+                salah: "❌ WRONG! The correct answer is green. 😉",
+                seterusnya: "NEXT ➡️",
+                gameOver: "GAME OVER!",
+                nyawaHabis: "You ran out of lives. Don't give up, try again! 💪",
+                markahTerkumpul: "Total Score",
+                cubaLagi: "🔄 TRY AGAIN",
+                tahniah: "CONGRATS, QUIZ FINISHED!",
+                mainLagi: "🔄 PLAY AGAIN",
+                dashTajuk: "Parents Dashboard (Quiz 2)",
+                dashDesc: "Check your child's quiz progress here.",
+                lblAnak: "Child's Name:",
+                lblTertinggi: "High Score:",
+                lblGred: "Best Grade:",
+                lblLatihan: "Total Attempts:",
+                lblUjian: "Last Test:",
+                btnKembali: "⬅️ BACK",
+                saintisLabel: "Scientist"
+            }
+        };
+
+        // BANK 50 SOALAN (Bilingual)
         const bankSoalan = [
-            { q: "Apakah keperluan asas manusia untuk mendapatkan tenaga?", options: ["Pakaian", "Makanan", "Rumah"], correct: 1 },
-            { q: "Mengapakah manusia memerlukan tempat perlindungan?", options: ["Untuk membesar dengan cepat", "Untuk berlindung daripada bahaya dan cuaca buruk", "Untuk menyimpan makanan"], correct: 1 },
-            { q: "Antara berikut, yang manakah merupakan tabiat hidup yang sihat?", options: ["Tidur lewat setiap hari", "Makan makanan seimbang", "Bermain permainan video tanpa henti"], correct: 1 },
-            { q: "Haiwan yang manakah melahirkan anak?", options: ["Katil", "Kucing", "Ayam"], correct: 1 },
-            { q: "Haiwan manakah yang bertelur dengan jumlah yang sangat banyak?", options: ["Burung merpati", "Katak", "Ayam"], correct: 1 },
-            { q: "Apakah yang berlaku kepada saiz badan kita semasa proses tumbesaran?", options: ["Semakin mengecil", "Semakin bertambah dan membesar", "Kekal sama"], correct: 1 },
-            { q: "Anak harimau menyerupai rupa bentuk siapa?", options: ["Induknya atau ibunya", "Bapanya sahaja", "Haiwan lain"], correct: 0 },
-            { q: "Tumbuhan memerlukan perkara berikut untuk tumbesaran, kecuali?", options: ["Air", "Cahaya matahari", "Susu formula"], correct: 2 },
-            { q: "Apakah sumber cahaya utama pada waktu siang?", options: ["Lampu suluh", "Matahari", "Lilin"], correct: 1 },
-            { q: "Bilakah bayang-bayang akan terbentuk?", options: ["Apabila cahaya dihalang oleh objek legap", "Apabila keadaan terlalu gelap", "Apabila lampu dipadamkan"], correct: 0 },
-            { q: "Antara berikut, aktiviti manakah yang lebih mudah dilakukan dalam keadaan terang?", options: ["Tidur", "Membaca buku", "Menonton wayang"], correct: 1 },
-            { q: "Apakah fungsi utama sel kering di dalam sesebuah litar elektrik?", options: ["Menghasilkan cahaya", "Membekalkan tenaga elektrik", "Menyambungkan litar"], correct: 1 },
-            { q: "Apakah komponen litar yang berfungsi untuk menyalakan cahaya?", options: ["Mentol", "Suis", "Wayar penyambung"], correct: 0 },
-            { q: "Apakah tugas utama suis di dalam satu litar elektrik?", options: ["Membekalkan arus elektrik", "Menyambung dan memutuskan litar", "Membuat mentol menjadi berwarna"], correct: 1 },
-            { q: "Bahan yang membenarkan arus elektrik mengalir melaluinya dikenali sebagai?", options: ["Konduktor", "Penebat", "Plastik"], correct: 0 },
-            { q: "Antara objek berikut, yang manakah merupakan contoh penebat elektrik?", options: ["Paku besi", "Pembaris plastik", "Sudu logam"], correct: 1 },
-            { q: "Bagaimanakah cara terbaik untuk mengasingkan campuran pasir dan klip kertas besi?", options: ["Menggunakan magnet", "Menggunakan penapis", "Menggunakan air"], correct: 0 },
-            { q: "Kaedah mengayak sesuai digunakan untuk mengasingkan campuran apa?", options: ["Bahan yang berbeza saiz", "Bahan yang boleh larut dalam air", "Dua jenis cecair"], correct: 0 },
-            { q: "Apakah cara untuk melarutkan gula dengan lebih cepat di dalam air?", options: ["Menggunakan air sejuk", "Menggunakan air panas dan mengacaunya", "Membiarkannya tanpa dikacau"], correct: 1 },
-            { q: "Bahan manakah yang tidak boleh larut di dalam air walaupun dikacau?", options: ["Gula pasir", "Garam halus", "Batu kerikil"], correct: 2 },
-            { q: "Apakah sumber cahaya semulajadi pada waktu malam jika langit cerah?", options: ["Lampu jalan", "Bintang dan bulan", "Api lilin"], correct: 1 },
-            { q: "Haiwan manakah yang menjaga anaknya selepas dilahirkan?", options: ["Kanggaru", "Penyu", "Katak"], correct: 0 },
-            { q: "Antara berikut, yang manakah merupakan urutan tumbesaran manusia yang betul?", options: ["Bayi ke Kanak-kanak ke Dewasa", "Dewasa ke Bayi ke Remaja", "Kanak-kanak ke Bayi ke Dewasa"], correct: 0 },
-            { q: "Mengapakah mentol tidak menyala dalam litar elektrik yang lengkap?", options: ["Kerana suis ditutup", "Kerana sel kering telah kehabisan tenaga", "Kerana wayar terlalu panjang"], correct: 1 },
-            { q: "Sudu besi ialah contoh konduktor elektrik kerana ia diperbuat daripada?", options: ["Kayu", "Logam", "Kain"], correct: 1 },
-            { q: "Apakah yang akan terjadi jika kita membaca buku dalam keadaan yang terlalu gelap?", options: ["Mata akan menjadi rosak atau sakit", "Tulisan menjadi lebih besar", "Membaca menjadi lebih cepat"], correct: 0 },
-            { q: "Apakah fungsi akar bagi tumbesaran pokok?", options: ["Menyerap air dan nutrien dari tanah", "Membuat makanan menggunakan cahaya matahari", "Menghasilkan bau wangi"], correct: 0 },
-            { q: "Haiwan manakah yang bertelur tetapi menjaga dan mengeramkan telurnya?", options: ["Penyu", "Ayam", "Ikan"], correct: 1 },
-            { q: "Apakah bahan utama yang digunakan untuk membuat set binaan mengikut manual?", options: ["Batu bata", "Komponen blok pelbagai bentuk", "Tanah liat"], correct: 1 },
-            { q: "Di manakah kita boleh merujuk untuk memasang komponen set binaan dengan betul?", options: ["Buku cerita", "Manual panduan pemasangan", "Surat khabar"], correct: 1 },
-            { q: "Apakah keperluan asas untuk biji benih mula bercambah?", options: ["Air, udara dan suhu yang sesuai", "Cahaya matahari sahaja", "Baja yang mahal"], correct: 0 },
-            { q: "Apakah perubahan yang dapat dilihat apabila sebatang pokok semakin membesar?", options: ["Bilangan daun bertambah dan batang menjadi tinggi", "Warna batang bertukar merah", "Pokok menjadi semakin pendek"], correct: 0 },
-            { q: "Apakah rupa bentuk fizikal anak katak yang baru menetas?", options: ["Mempunyai empat kaki", "Berbentuk berudu dan mempunyai ekor", "Sama rupa dengan katak dewasa"], correct: 1 },
-            { q: "Antara haiwan berikut, yang manakah melahirkan anak yang sedikit pada satu-satu masa?", options: ["Gajah", "Kucing", "Tikus"], correct: 0 },
-            { q: "Objek legap akan menghasilkan bayang-bayang yang bagaimana?", options: ["Sangat jelas dan gelap", "Kabur", "Tidak kelihatan langsung"], correct: 0 },
-            { q: "Wayar penyambung di dalam litar elektrik biasanya diperbuat daripada apa?", options: ["Tali plastik", "Kuprum atau logam", "Benang kain"], correct: 1 },
-            { q: "Apakah contoh objek yang menggunakan sel kering untuk berfungsi?", options: ["Jam dinding", "Sudu makan", "Pintu kayu"], correct: 0 },
-            { q: "Apakah kaedah terbaik untuk memisahkan daun teh daripada air teh?", options: ["Menggunakan kaedah menapis", "Menggunakan magnet", "Menggunakan kaedah mengayak"], correct: 0 },
-            { q: "Apakah yang dimaksudkan dengan bahan larut?", options: ["Bahan yang hilang dan bercampur sekata di dalam air", "Bahan yang terapung di atas air", "Bahan yang tenggelam di dasar air"], correct: 0 },
-            { q: "Mengapakah serbuk milo larut lebih cepat jika dikacau?", options: ["Kerana kacauan mempercepatkan proses pelarutan", "Kerana sudu bertukar warna", "Kerana air menjadi sejuk"], correct: 0 },
-            { q: "Mengapakah kita perlu mengasingkan sampah mengikut jenis?", options: ["Untuk memudahkan proses kitar semula", "Untuk mencantikkan kawasan", "Saja-saja mengisi masa lapang"], correct: 0 },
-            { q: "Apakah kegunaan utama cermin mata dalam membantu deria penglihatan?", options: ["Membantu melihat objek dengan lebih jelas", "Melindungi mata daripada air", "Menukar warna objek"], correct: 0 },
-            { q: "Haiwan manakah yang mengalami perubahan rupa yang sangat berbeza dari peringkat anak ke dewasa?", options: ["Kucing", "Rama-rama", "Lembu"], correct: 1 },
-            { q: "Apakah fungsi daun pada tumbuhan?", options: ["Menyerap air dari tanah", "Membuat makanan untuk tumbuhan", "Menyokong ranting"], correct: 1 },
-            { q: "Antara bahan berikut, yang manakah boleh mengalirkan arus elektrik?", options: ["Pemeris plastik", "Pemadam getah", "Kunci besi"], correct: 2 },
-            { q: "Lampu suluh mengeluarkan cahaya yang bersumberkan daripada?", options: ["Tenaga elektrik sel kering", "Cahaya matahari", "Lilin bakar"], correct: 0 },
-            { q: "Apakah yang berlaku apabila suis dalam litar elektrik dibuka?", options: ["Mentol menyala lebih terang", "Arus elektrik terputus dan mentol padam", "Sel kering menjadi panas"], correct: 1 },
-            { q: "Apakah kaedah mengapung sesuai digunakan?", options: ["Mengasingkan bahan yang boleh terapung daripada bahan yang tenggelam", "Mengasingkan besi", "Melarutkan garam"], correct: 0 },
-            { q: "Garam halus lebih cepat larut berbanding garam kasar kerana?", options: ["Saiz saiz zarahnya yang lebih kecil", "Warnanya yang lebih putih", "Rasianya yang kurang masin"], correct: 0 },
-            { q: "Selepas selesai memasang set binaan, apakah langkah yang perlu dilakukan?", options: ["Membiarkannya bersepah", "Membuka komponen dan menyimpannya semula ke dalam kotak", "Membuangnya ke dalam tong sampah"], correct: 1 }
+            { 
+                q: { ms: "Apakah keperluan asas manusia untuk mendapatkan tenaga?", en: "What is the basic human need to get energy?" }, 
+                options: { ms: ["Pakaian", "Makanan", "Rumah"], en: ["Clothes", "Food", "Shelter"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Mengapakah manusia memerlukan tempat perlindungan?", en: "Why do humans need shelter?" }, 
+                options: { ms: ["Untuk membesar dengan cepat", "Untuk berlindung daripada bahaya dan cuaca buruk", "Untuk menyimpan makanan"], en: ["To grow faster", "To protect from danger and bad weather", "To store food"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Antara berikut, yang manakah merupakan tabiat hidup yang sihat?", en: "Which of the following is a healthy lifestyle habit?" }, 
+                options: { ms: ["Tidur lewat setiap hari", "Makan makanan seimbang", "Bermain permainan video tanpa henti"], en: ["Sleeping late every day", "Eating a balanced diet", "Playing video games non-stop"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Haiwan yang manakah melahirkan anak?", en: "Which animal gives birth to its young?" }, 
+                options: { ms: ["Katak", "Kucing", "Ayam"], en: ["Frog", "Cat", "Chicken"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Haiwan manakah yang bertelur dengan jumlah yang sangat banyak?", en: "Which animal lays eggs in very large numbers?" }, 
+                options: { ms: ["Burung merpati", "Katak", "Ayam"], en: ["Pigeon", "Frog", "Chicken"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah yang berlaku kepada saiz badan kita semasa proses tumbesaran?", en: "What happens to our body size during the growth process?" }, 
+                options: { ms: ["Semakin mengecil", "Semakin bertambah dan membesar", "Kekal sama"], en: ["It gets smaller", "It increases and grows bigger", "It remains the same"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Anak harimau menyerupai rupa bentuk siapa?", en: "A tiger cub resembles the appearance of who?" }, 
+                options: { ms: ["Induknya atau ibunya", "Bapanya sahaja", "Haiwan lain"], en: ["Its parent or mother", "Its father only", "Other animals"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Tumbuhan memerlukan perkara berikut untuk tumbesaran, kecuali?", en: "Plants need the following for growth, EXCEPT?" }, 
+                options: { ms: ["Air", "Cahaya matahari", "Susu formula"], en: ["Water", "Sunlight", "Formula milk"] }, 
+                correct: 2 
+            },
+            { 
+                q: { ms: "Apakah sumber cahaya utama pada waktu siang?", en: "What is the main source of light during the day?" }, 
+                options: { ms: ["Lampu suluh", "Matahari", "Lilin"], en: ["Flashlight", "The Sun", "Candle"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Bilakah bayang-bayang akan terbentuk?", en: "When is a shadow formed?" }, 
+                options: { ms: ["Apabila cahaya dihalang oleh objek legap", "Apabila keadaan terlalu gelap", "Apabila lampu dipadamkan"], en: ["When light is blocked by an opaque object", "When it is too dark", "When the lights are turned off"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Antara berikut, aktiviti manakah yang lebih mudah dilakukan dalam keadaan terang?", en: "Which of the following activities is easier to do in a bright environment?" }, 
+                options: { ms: ["Tidur", "Membaca buku", "Menonton wayang"], en: ["Sleeping", "Reading a book", "Watching a movie"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah fungsi utama sel kering di dalam sesebuah litar elektrik?", en: "What is the main function of a dry cell in an electrical circuit?" }, 
+                options: { ms: ["Menghasilkan cahaya", "Membekalkan tenaga elektrik", "Menyambungkan litar"], en: ["To produce light", "To supply electrical energy", "To connect the circuit"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah komponen litar yang berfungsi untuk menyalakan cahaya?", en: "Which circuit component functions to light up?" }, 
+                options: { ms: ["Mentol", "Suis", "Wayar penyambung"], en: ["Bulb", "Switch", "Connecting wire"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah tugas utama suis di dalam satu litar elektrik?", en: "What is the main task of a switch in an electrical circuit?" }, 
+                options: { ms: ["Membekalkan arus elektrik", "Menyambung dan memutuskan litar", "Membuat mentol menjadi berwarna"], en: ["To supply electric current", "To connect and disconnect the circuit", "To make the bulb colorful"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Bahan yang membenarkan arus elektrik mengalir melaluinya dikenali sebagai?", en: "Materials that allow electric current to flow through them are known as?" }, 
+                options: { ms: ["Konduktor", "Penebat", "Plastik"], en: ["Conductors", "Insulators", "Plastic"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Antara objek berikut, yang manakah merupakan contoh penebat elektrik?", en: "Which of the following objects is an example of an electrical insulator?" }, 
+                options: { ms: ["Paku besi", "Pembaris plastik", "Sudu logam"], en: ["Iron nail", "Plastic ruler", "Metal spoon"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Bagaimanakah cara terbaik untuk mengasingkan campuran pasir dan klip kertas besi?", en: "What is the best way to separate a mixture of sand and metal paper clips?" }, 
+                options: { ms: ["Menggunakan magnet", "Menggunakan penapis", "Menggunakan air"], en: ["Using a magnet", "Using a filter", "Using water"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Kaedah mengayak sesuai digunakan untuk mengasingkan campuran apa?", en: "The sieving method is suitable for separating what kind of mixture?" }, 
+                options: { ms: ["Bahan yang berbeza saiz", "Bahan yang boleh larut dalam air", "Dua jenis cecair"], en: ["Materials of different sizes", "Materials that dissolve in water", "Two types of liquids"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah cara untuk melarutkan gula dengan lebih cepat di dalam air?", en: "What is the way to dissolve sugar faster in water?" }, 
+                options: { ms: ["Menggunakan air sejuk", "Menggunakan air panas dan mengacaunya", "Membiarkannya tanpa dikacau"], en: ["Use cold water", "Use hot water and stir", "Leave it without stirring"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Bahan manakah yang tidak boleh larut di dalam air walaupun dikacau?", en: "Which material cannot dissolve in water even if stirred?" }, 
+                options: { ms: ["Gula pasir", "Garam halus", "Batu kerikil"], en: ["Sugar", "Fine salt", "Gravel"] }, 
+                correct: 2 
+            },
+            { 
+                q: { ms: "Apakah sumber cahaya semulajadi pada waktu malam jika langit cerah?", en: "What is the natural light source at night if the sky is clear?" }, 
+                options: { ms: ["Lampu jalan", "Bintang dan bulan", "Api lilin"], en: ["Street lamp", "Stars and moon", "Candle fire"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Haiwan manakah yang menjaga anaknya selepas dilahirkan?", en: "Which animal takes care of its young after birth?" }, 
+                options: { ms: ["Kanggaru", "Penyu", "Katak"], en: ["Kangaroo", "Turtle", "Frog"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Antara berikut, yang manakah merupakan urutan tumbesaran manusia yang betul?", en: "Which of the following is the correct sequence of human growth?" }, 
+                options: { ms: ["Bayi ke Kanak-kanak ke Dewasa", "Dewasa ke Bayi ke Remaja", "Kanak-kanak ke Bayi ke Dewasa"], en: ["Baby to Child to Adult", "Adult to Baby to Teenager", "Child to Baby to Adult"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Mengapakah mentol tidak menyala dalam litar elektrik yang lengkap?", en: "Why does a bulb not light up in a complete electrical circuit?" }, 
+                options: { ms: ["Kerana suis dihidupkan", "Kerana sel kering telah kehabisan tenaga", "Kerana wayar terlalu panjang"], en: ["Because the switch is turned on", "Because the dry cell has run out of energy", "Because the wire is too long"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Sudu besi ialah contoh konduktor elektrik kerana ia diperbuat daripada?", en: "An iron spoon is an example of an electrical conductor because it is made of?" }, 
+                options: { ms: ["Kayu", "Logam", "Kain"], en: ["Wood", "Metal", "Fabric"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah yang akan terjadi jika kita membaca buku dalam keadaan yang terlalu gelap?", en: "What will happen if we read a book in an environment that is too dark?" }, 
+                options: { ms: ["Mata akan menjadi rosak atau sakit", "Tulisan menjadi lebih besar", "Membaca menjadi lebih cepat"], en: ["Eyes will get damaged or hurt", "The writing becomes bigger", "Reading becomes faster"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah fungsi akar bagi tumbesaran pokok?", en: "What is the function of roots for plant growth?" }, 
+                options: { ms: ["Menyerap air dan nutrien dari tanah", "Membuat makanan menggunakan cahaya matahari", "Menghasilkan bau wangi"], en: ["To absorb water and nutrients from the soil", "To make food using sunlight", "To produce a fragrant smell"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Haiwan manakah yang bertelur tetapi menjaga dan mengeramkan telurnya?", en: "Which animal lays eggs but takes care of and incubates them?" }, 
+                options: { ms: ["Penyu", "Ayam", "Ikan"], en: ["Turtle", "Chicken", "Fish"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah bahan utama yang digunakan untuk membuat set binaan mengikut manual?", en: "What is the main material used to build a construction set according to the manual?" }, 
+                options: { ms: ["Batu bata", "Komponen blok pelbagai bentuk", "Tanah liat"], en: ["Bricks", "Multi-shaped block components", "Clay"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Di manakah kita boleh merujuk untuk memasang komponen set binaan dengan betul?", en: "Where can we refer to assemble construction set components correctly?" }, 
+                options: { ms: ["Buku cerita", "Manual panduan pemasangan", "Surat khabar"], en: ["Storybook", "Installation manual", "Newspaper"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah keperluan asas untuk biji benih mula bercambah?", en: "What are the basic needs for seeds to start germinating?" }, 
+                options: { ms: ["Air, udara dan suhu yang sesuai", "Cahaya matahari sahaja", "Baja yang mahal"], en: ["Water, air, and suitable temperature", "Sunlight only", "Expensive fertilizer"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah perubahan yang dapat dilihat apabila sebatang pokok semakin membesar?", en: "What changes can be seen when a plant grows bigger?" }, 
+                options: { ms: ["Bilangan daun bertambah dan batang menjadi tinggi", "Warna batang bertukar merah", "Pokok menjadi semakin pendek"], en: ["Number of leaves increases and stem grows taller", "Stem color turns red", "Plant becomes shorter"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah rupa bentuk fizikal anak katak yang baru menetas?", en: "What is the physical appearance of a newly hatched froglet?" }, 
+                options: { ms: ["Mempunyai empat kaki", "Berbentuk berudu dan mempunyai ekor", "Sama rupa dengan katak dewasa"], en: ["Has four legs", "Tadpole shaped and has a tail", "Looks identical to an adult frog"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Antara haiwan berikut, yang manakah melahirkan anak yang sedikit pada satu-satu masa?", en: "Which of the following animals gives birth to only a few young at a time?" }, 
+                options: { ms: ["Gajah", "Kucing", "Tikus"], en: ["Elephant", "Cat", "Mouse"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Objek legap akan menghasilkan bayang-bayang yang bagaimana?", en: "What kind of shadow will an opaque object produce?" }, 
+                options: { ms: ["Sangat jelas dan gelap", "Kabur", "Tidak kelihatan langsung"], en: ["Very clear and dark", "Blurry", "Not visible at all"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Wayar penyambung di dalam litar elektrik biasanya diperbuat daripada apa?", en: "Connecting wires in electrical circuits are usually made of what?" }, 
+                options: { ms: ["Tali plastik", "Kuprum atau logam", "Benang kain"], en: ["Plastic rope", "Copper or metal", "Fabric thread"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah contoh objek yang menggunakan sel kering untuk berfungsi?", en: "What is an example of an object that uses a dry cell to function?" }, 
+                options: { ms: ["Jam dinding", "Sudu makan", "Pintu kayu"], en: ["Wall clock", "Eating spoon", "Wooden door"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah kaedah terbaik untuk memisahkan daun teh daripada air teh?", en: "What is the best method to separate tea leaves from tea?" }, 
+                options: { ms: ["Menggunakan kaedah menapis", "Menggunakan magnet", "Menggunakan kaedah mengayak"], en: ["Using the filtration method", "Using a magnet", "Using the sieving method"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah yang dimaksudkan dengan bahan larut?", en: "What is meant by a soluble material?" }, 
+                options: { ms: ["Bahan yang hilang dan bercampur sekata di dalam air", "Bahan yang terapung di atas air", "Bahan yang tenggelam di dasar air"], en: ["Material that dissolves and mixes evenly in water", "Material that floats on water", "Material that sinks to the bottom"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Mengapakah serbuk milo larut lebih cepat jika dikacau?", en: "Why does Milo powder dissolve faster if stirred?" }, 
+                options: { ms: ["Kerana kacauan mempercepatkan proses pelarutan", "Kerana sudu bertukar warna", "Kerana air menjadi sejuk"], en: ["Because stirring speeds up the dissolving process", "Because the spoon changes color", "Because the water gets cold"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Mengapakah kita perlu mengasingkan sampah mengikut jenis?", en: "Why do we need to separate trash by type?" }, 
+                options: { ms: ["Untuk memudahkan proses kitar semula", "Untuk mencantikkan kawasan", "Saja-saja mengisi masa lapang"], en: ["To facilitate the recycling process", "To beautify the area", "Just to fill free time"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah kegunaan utama cermin mata dalam membantu deria penglihatan?", en: "What is the main use of glasses in helping the sense of sight?" }, 
+                options: { ms: ["Membantu melihat objek dengan lebih jelas", "Melindungi mata daripada air", "Menukar warna objek"], en: ["Helps to see objects more clearly", "Protects eyes from water", "Changes the color of objects"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Haiwan manakah yang mengalami perubahan rupa yang sangat berbeza dari peringkat anak ke dewasa?", en: "Which animal undergoes a very different physical change from young to adult?" }, 
+                options: { ms: ["Kucing", "Rama-rama", "Lembu"], en: ["Cat", "Butterfly", "Cow"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah fungsi daun pada tumbuhan?", en: "What is the function of leaves on a plant?" }, 
+                options: { ms: ["Menyerap air dari tanah", "Membuat makanan untuk tumbuhan", "Menyokong ranting"], en: ["Absorbs water from soil", "Makes food for the plant", "Supports branches"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Antara bahan berikut, yang manakah boleh mengalirkan arus elektrik?", en: "Which of the following materials can conduct electricity?" }, 
+                options: { ms: ["Pembaris plastik", "Pemadam getah", "Kunci besi"], en: ["Plastic ruler", "Rubber eraser", "Iron key"] }, 
+                correct: 2 
+            },
+            { 
+                q: { ms: "Lampu suluh mengeluarkan cahaya yang bersumberkan daripada?", en: "A flashlight emits light sourced from?" }, 
+                options: { ms: ["Tenaga elektrik sel kering", "Cahaya matahari", "Lilin bakar"], en: ["Electrical energy of a dry cell", "Sunlight", "Burning candle"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Apakah yang berlaku apabila suis dalam litar elektrik dibuka (off)?", en: "What happens when a switch in an electrical circuit is opened (off)?" }, 
+                options: { ms: ["Mentol menyala lebih terang", "Arus elektrik terputus dan mentol padam", "Sel kering menjadi panas"], en: ["The bulb shines brighter", "Electric current is disconnected and bulb turns off", "Dry cell becomes hot"] }, 
+                correct: 1 
+            },
+            { 
+                q: { ms: "Apakah kaedah mengapung sesuai digunakan?", en: "What is the floatation method suitable for?" }, 
+                options: { ms: ["Mengasingkan bahan yang boleh terapung daripada bahan yang tenggelam", "Mengasingkan besi", "Melarutkan garam"], en: ["Separating floating materials from sinking materials", "Separating iron", "Dissolving salt"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Garam halus lebih cepat larut berbanding garam kasar kerana?", en: "Fine salt dissolves faster than coarse salt because?" }, 
+                options: { ms: ["Saiz zarahnya yang lebih kecil", "Warnanya yang lebih putih", "Rasanya yang kurang masin"], en: ["Its smaller particle size", "Its whiter color", "Its less salty taste"] }, 
+                correct: 0 
+            },
+            { 
+                q: { ms: "Selepas selesai memasang set binaan, apakah langkah yang perlu dilakukan?", en: "After finishing building the construction set, what step should be taken?" }, 
+                options: { ms: ["Membiarkannya bersepah", "Membuka komponen dan menyimpannya semula ke dalam kotak", "Membuangnya ke dalam tong sampah"], en: ["Leave it messy", "Disassemble components and store them back in the box", "Throw it in the trash can"] }, 
+                correct: 1 
+            }
         ];
 
         let kuizSoalan = [];
@@ -284,26 +568,66 @@
             document.getElementById('username').value = namaDisimpan;
         }
 
+        function kemasKiniUI() {
+            const ui = teksUI[lang];
+            document.getElementById('langToggleBtn').innerText = ui.toggleBtn;
+            document.getElementById('main-title').innerText = ui.title;
+            
+            // Elemen Utama (jika wujud di DOM)
+            if(document.getElementById('ui-profil')) document.getElementById('ui-profil').innerText = ui.profil;
+            if(document.getElementById('ui-nama')) document.getElementById('ui-nama').innerText = ui.nama;
+            if(document.getElementById('username')) document.getElementById('username').placeholder = ui.placeholder;
+            if(document.getElementById('ui-instruksi')) document.getElementById('ui-instruksi').innerHTML = ui.instruksi;
+            if(document.getElementById('ui-btn-mula')) document.getElementById('ui-btn-mula').innerText = ui.btnMula;
+            if(document.getElementById('ui-btn-rekod')) document.getElementById('ui-btn-rekod').innerText = ui.btnRekod;
+            if(document.getElementById('ui-btn-keluar')) document.getElementById('ui-btn-keluar').innerText = ui.btnKeluar;
+            
+            // Header Bar
+            if (document.getElementById("progress-text") && kuizSoalan.length > 0) {
+                document.getElementById("progress-text").innerText = `${ui.soalan}: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+                document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
+            }
+
+            // Jika dalam skrin soalan, render semula soalan
+            let pnlSoalan = document.querySelector(".question-text");
+            if(pnlSoalan && document.getElementById("header-bar").style.display !== "none") {
+                renderSoalanSemula();
+            }
+
+            // Update label nama jika ada
+            let elemenNama = document.getElementById('paparNama');
+            if (elemenNama && elemenNama.style.display !== "none") {
+                let namaTerkini = localStorage.getItem('namaMurid') || "SAINTIS";
+                elemenNama.innerHTML = `🔬 ${ui.saintisLabel}: <span style="color:#1b5e20">${namaTerkini.toUpperCase()}</span>`;
+            }
+        }
+
+        function tukarBahasa() {
+            lang = lang === 'ms' ? 'en' : 'ms';
+            kemasKiniUI();
+        }
+
         function kemaskiniNyawa() {
             let hStr = "";
             for (let i = 0; i < nyawa; i++) hStr += "❤️ ";
-            if (nyawa === 0) hStr = "💔 Game Over";
+            if (nyawa === 0) hStr = "💔 " + teksUI[lang].gameOver;
             document.getElementById("hearts-layer").innerText = hStr ? hStr.trim() : "💔";
         }
 
         function mulaKuiz() {
             let inputNama = document.getElementById("username").value.trim();
-            let namaFinal = inputNama ? inputNama : "SAINTIS CILIK";
+            let namaFinal = inputNama ? inputNama : "CILIK";
             
             namaFinal = namaFinal.replace(/🤖/g, '').trim();
             localStorage.setItem('namaMurid', namaFinal);
 
             let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerHTML = `🔬 Saintis: <span style="color:#1b5e20">${namaFinal.toUpperCase()}</span>`;
+            elemenNama.innerHTML = `🔬 ${teksUI[lang].saintisLabel}: <span style="color:#1b5e20">${namaFinal.toUpperCase()}</span>`;
             elemenNama.style.display = "block";
 
             document.getElementById("main-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
+            document.getElementById("ui-btn-keluar").style.display = "none";
             
             kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random()).slice(0, JUMLAH_SOALAN);
             
@@ -316,25 +640,58 @@
 
         function paparSoalan() {
             jawapanDipilih = null;
+            renderSoalanSemula();
+        }
+
+        function renderSoalanSemula() {
             let quizArea = document.getElementById("quiz-area");
             let data = kuizSoalan[soalanSekarang];
-            document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+            let ui = teksUI[lang];
+            
+            document.getElementById("progress-text").innerText = `${ui.soalan}: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+            document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
             
             quizArea.innerHTML = `
-                <div class="question-text">${data.q}</div>
+                <div class="question-text">${data.q[lang]}</div>
                 <div id="options-container"></div>
                 <div id="result-message"></div>
-                <button class="action-btn" id="next-btn" style="display:none;" onclick="keSoalanSeterusnya()">SETERUSNYA ➡️</button>
+                <button class="action-btn" id="next-btn" style="display:none;" onclick="keSoalanSeterusnya()">${ui.seterusnya}</button>
             `;
             
             let container = document.getElementById("options-container");
-            data.options.forEach((opt, index) => {
+            data.options[lang].forEach((opt, index) => {
                 let btn = document.createElement("button");
                 btn.className = "option-btn";
                 btn.innerText = opt;
-                btn.onclick = () => pilihJawapan(index, btn);
+                
+                // Keep styles if already answered
+                if (jawapanDipilih !== null) {
+                    if (index === data.correct) {
+                        btn.style.backgroundColor = "#c8e6c9";
+                        btn.style.borderColor = "#4caf50";
+                    } else if (index === jawapanDipilih && jawapanDipilih !== data.correct) {
+                        btn.style.backgroundColor = "#ffcdd2";
+                        btn.style.borderColor = "#f44336";
+                    }
+                } else {
+                    btn.onclick = () => pilihJawapan(index, btn);
+                }
+                
                 container.appendChild(btn);
             });
+
+            // Restore message and next button if already answered
+            if (jawapanDipilih !== null) {
+                let msg = document.getElementById("result-message");
+                if (jawapanDipilih === data.correct) {
+                    msg.innerText = ui.betul;
+                    msg.style.color = "#2e7d32";
+                } else {
+                    msg.innerText = ui.salah;
+                    msg.style.color = "#c62828";
+                }
+                document.getElementById("next-btn").style.display = "block";
+            }
         }
 
         function pilihJawapan(index, element) {
@@ -344,20 +701,21 @@
             let data = kuizSoalan[soalanSekarang];
             let msg = document.getElementById("result-message");
             let buttons = document.querySelectorAll(".option-btn");
+            let ui = teksUI[lang];
             
             if (index === data.correct) {
                 element.style.backgroundColor = "#c8e6c9";
                 element.style.borderColor = "#4caf50";
-                msg.innerText = "🎉 BETUL! (+5 Markah) 🌟";
+                msg.innerText = ui.betul;
                 msg.style.color = "#2e7d32";
                 markah += 5;
-                document.getElementById("score-text").innerText = `Markah: ${markah}`;
+                document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
             } else {
                 element.style.backgroundColor = "#ffcdd2";
                 element.style.borderColor = "#f44336";
                 buttons[data.correct].style.backgroundColor = "#c8e6c9";
                 buttons[data.correct].style.borderColor = "#4caf50";
-                msg.innerText = "❌ SALAH! Jawapan betul warna hijau. 😉";
+                msg.innerText = ui.salah;
                 msg.style.color = "#c62828";
                 nyawa--;
                 kemaskiniNyawa();
@@ -382,6 +740,7 @@
         function tamatKuiz(isGameOver) {
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
+            let ui = teksUI[lang];
             
             let totalMain = parseInt(localStorage.getItem('sains_kuiz2_total_main') || "0") + 1;
             let markahTertinggi = parseInt(localStorage.getItem('sains_kuiz2_high_score') || "0");
@@ -395,10 +754,10 @@
                 quizArea.innerHTML = `
                     <div style="text-align:center; padding:15px 0;">
                         <span style="font-size:4rem;">💥</span>
-                        <h3 style="color:#c62828; margin:10px 0;">GAME OVER!</h3>
-                        <p>Nyawa anda telah habis. Jangan putus asa, cuba lagi! 💪</p>
-                        <p style="font-size:1.1rem; font-weight:bold;">Markah Terkumpul: <span style="color:#c62828;">${markah}</span></p>
-                        <button onclick="location.reload()" class="action-btn">🔄 CUBA LAGI</button>
+                        <h3 style="color:#c62828; margin:10px 0;">${ui.gameOver}</h3>
+                        <p>${ui.nyawaHabis}</p>
+                        <p style="font-size:1.1rem; font-weight:bold;">${ui.markahTerkumpul}: <span style="color:#c62828;">${markah}</span></p>
+                        <button onclick="location.reload()" class="action-btn">🔄 ${ui.cubaLagi}</button>
                     </div>
                 `;
             } else {
@@ -406,9 +765,9 @@
                 quizArea.innerHTML = `
                     <div style="text-align:center; padding:15px 0;">
                         <span style="font-size:4rem;">${piala}</span>
-                        <h3 style="color:#4caf50; margin:10px 0;">TAHNIAH KUIZ TAMAT!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Markah Latihan 2:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
-                        <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI</button>
+                        <h3 style="color:#4caf50; margin:10px 0;">${ui.tahniah}</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;">${ui.markah}:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                        <button onclick="location.reload()" class="action-btn">🔄 ${ui.mainLagi}</button>
                     </div>
                 `;
             }
@@ -416,36 +775,42 @@
 
         function paparSistemPrestasi() {
             let quizArea = document.getElementById("quiz-area");
-            let namaAnak = localStorage.getItem('namaMurid') || "Belum Letak Nama";
+            let ui = teksUI[lang];
+            let namaAnak = localStorage.getItem('namaMurid') || "-";
             namaAnak = namaAnak.replace(/🤖/g, '').trim(); 
             let hScore = localStorage.getItem('sains_kuiz2_high_score') || "0";
             let tMain = localStorage.getItem('sains_kuiz2_total_main') || "0";
-            let lDate = localStorage.getItem('sains_kuiz2_last_date') || "Tiada Rekod";
+            let lDate = localStorage.getItem('sains_kuiz2_last_date') || "-";
             
-            let gred = "U (Perlu Latihan)";
-            if(hScore >= 80) gred = "A (Cemerlang) 🌟";
-            else if(hScore >= 60) gred = "B (Bagus) 👍";
-            else if(hScore >= 40) gred = "C (Lulus) 👌";
+            let gred = "U";
+            if(hScore >= 80) gred = "A 🌟";
+            else if(hScore >= 60) gred = "B 👍";
+            else if(hScore >= 40) gred = "C 👌";
 
             quizArea.innerHTML = `
                 <div class="instruction-screen">
                     <div>
                         <span style="font-size: 3rem;">📊</span>
-                        <h3 style="color: #0288d1; margin: 5px 0;">Dashboard Ibu Bapa (Kuiz 2)</h3>
-                        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Semak perkembangan kuiz pengenalan anak anda.</p>
+                        <h3 style="color: #0288d1; margin: 5px 0;">${ui.dashTajuk}</h3>
+                        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">${ui.dashDesc}</p>
                         
                         <div class="stats-card">
-                            <div class="stats-line"><b>Nama Anak:</b> <span>${namaAnak.toUpperCase()}</span></div>
-                            <div class="stats-line"><b>Markah Tertinggi:</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
-                            <div class="stats-line"><b>Gred Terbaik:</b> <span>${gred}</span></div>
-                            <div class="stats-line"><b>Jumlah Latihan:</b> <span>${tMain} Kali</span></div>
-                            <div class="stats-line"><b>Ujian Terakhir:</b> <span>${lDate}</span></div>
+                            <div class="stats-line"><b>${ui.lblAnak}</b> <span>${namaAnak.toUpperCase()}</span></div>
+                            <div class="stats-line"><b>${ui.lblTertinggi}</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
+                            <div class="stats-line"><b>${ui.lblGred}</b> <span>${gred}</span></div>
+                            <div class="stats-line"><b>${ui.lblLatihan}</b> <span>${tMain}</span></div>
+                            <div class="stats-line"><b>${ui.lblUjian}</b> <span>${lDate}</span></div>
                         </div>
                     </div>
-                    <button class="action-btn" style="background-color:#757575; box-shadow:0 5px 0 #424242;" onclick="location.reload()">⬅️ KEMBALI</button>
+                    <button class="action-btn" style="background-color:#757575; box-shadow:0 5px 0 #424242;" onclick="location.reload()">${ui.btnKembali}</button>
                 </div>
             `;
         }
+
+        // Set bahasa awal semasa mula-mula buka page
+        window.onload = function() {
+            kemasKiniUI();
+        };
     </script>
 </body>
 </html>
