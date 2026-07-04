@@ -69,7 +69,7 @@
             width: 100%; background: white; border: 2px dashed #4caf50; padding: 15px; border-radius: 15px; cursor: pointer;
             text-align: left; display: flex; justify-content: space-between; align-items: center; font-family: inherit; font-size: 1.1rem; transition: 0.2s;
         }
-        .existing-profile-btn:hover { background: #e8f5e9; }
+        .existing-profile-btn:hover { background: #e8f5e9; border-style: solid; }
         .ep-left { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #1b5e20; }
         .ep-right { font-weight: bold; color: #ff8f00; background: #fff8e1; padding: 5px 10px; border-radius: 10px; }
 
@@ -122,10 +122,8 @@
 
             <div id="existing-section" style="display: none;">
                 <div class="divider" id="ui-divider">ATAU PILIH PROFIL SEDIA ADA:</div>
-                <button class="existing-profile-btn" onclick="paparMenuUtama()">
-                    <div class="ep-left"><span id="ex-avatar">👤</span> <span id="ex-name">AMIR</span></div>
-                    <div class="ep-right">⭐ <span id="ex-score">0</span></div>
-                </button>
+                <div id="existing-list" style="display: flex; flex-direction: column; gap: 10px;">
+                    </div>
             </div>
             <div class="footer">SAINS CILIK TAHUN 1 • KSSR MALAYSIA</div>
         </div>
@@ -144,7 +142,7 @@
 
             <button class="action-btn" onclick="mulaKuiz()" id="ui-btn-mula">🚀 MULA LATIHAN 1</button>
             <button class="action-btn btn-rekod" onclick="paparSistemPrestasi()" id="ui-btn-rekod">📊 REKOD PRESTASI</button>
-            <button class="action-btn btn-keluar" onclick="logKeluar()" id="ui-btn-padam">🚪 PADAM / TUKAR PROFIL</button>
+            <button class="action-btn btn-keluar" onclick="logKeluar()" id="ui-btn-padam">🚪 TUKAR PROFIL / LOG KELUAR</button>
             <div class="footer">SAINS CILIK TAHUN 1 • KSSR MALAYSIA</div>
         </div>
 
@@ -179,7 +177,7 @@
         let jawapanDipilih = null;
         const JUMLAH_SOALAN = 20;
 
-        // KAMUS BAHASA KESELURUHAN (Login, Menu, Kuiz, Prestasi)
+        // KAMUS BAHASA
         const teksUI = {
             ms: {
                 toggle: "🇬🇧 English",
@@ -196,7 +194,7 @@
                 markahTertinggi: "Markah Tertinggi:",
                 btnMula: "🚀 MULA LATIHAN 1",
                 btnRekod: "📊 REKOD PRESTASI",
-                btnPadam: "🚪 PADAM / TUKAR PROFIL",
+                btnPadam: "🚪 TUKAR PROFIL / LOG KELUAR",
                 
                 titleQuiz: "Latihan Sains TAHUN 1 🎯",
                 saintisLabel: "Saintis",
@@ -213,7 +211,7 @@
                 mainLagi: "MAIN LAGI",
                 btnKembali: "⬅️ Kembali ke Menu Utama",
                 
-                dashTajuk: "Dashboard Ibu Bapa",
+                dashTajuk: "Dashboard Ibu Bapa (Latihan 1)",
                 dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
                 lblAnak: "Nama Anak:",
                 lblTertinggi: "Markah Tertinggi:",
@@ -236,7 +234,7 @@
                 markahTertinggi: "Highest Score:",
                 btnMula: "🚀 START PRACTICE 1",
                 btnRekod: "📊 PERFORMANCE RECORD",
-                btnPadam: "🚪 DELETE / CHANGE PROFILE",
+                btnPadam: "🚪 SWITCH PROFILE / LOG OUT",
 
                 titleQuiz: "YEAR 1 Science Practice 🎯",
                 saintisLabel: "Scientist",
@@ -253,7 +251,7 @@
                 mainLagi: "PLAY AGAIN",
                 btnKembali: "⬅️ Back to Main Menu",
 
-                dashTajuk: "Parents Dashboard",
+                dashTajuk: "Parents Dashboard (Practice 1)",
                 dashDesc: "Check your child's quiz progress here.",
                 lblAnak: "Child's Name:",
                 lblTertinggi: "High Score:",
@@ -263,7 +261,7 @@
             }
         };
 
-        // BANK 50 SOALAN TAHUN 1 KSSR (Sama macam sebelum ni)
+        // BANK 50 SOALAN TAHUN 1 KSSR
         const bankSoalan = [
             { q: { ms: "Apakah organ deria yang digunakan untuk melihat?", en: "What sensory organ is used for seeing?" }, options: { ms: ["Telinga", "Mata", "Hidung"], en: ["Ears", "Eyes", "Nose"] }, correct: 1 },
             { q: { ms: "Kita menggunakan hidung untuk?", en: "We use our nose to?" }, options: { ms: ["Menghidu bau", "Merasa makanan", "Mendengar bunyi"], en: ["Smell", "Taste food", "Hear sounds"] }, correct: 0 },
@@ -348,8 +346,10 @@
             if(document.getElementById('ui-divider')) document.getElementById('ui-divider').innerText = ui.divider;
 
             // Screen 2: Menu
+            let dataSemasa = getProfilSemasa();
+            let namaMu = dataSemasa ? dataSemasa.name : '';
             if(document.getElementById('ui-menu-tajuk')) document.getElementById('ui-menu-tajuk').innerText = ui.menuTajuk;
-            if(document.getElementById('ui-menu-selamat')) document.getElementById('ui-menu-selamat').innerHTML = `${ui.selamatDatang} <br><span id="mu-name" style="color:#2e7d32; font-size:1.8rem;">${localStorage.getItem('namaMurid') || ''}</span>!`;
+            if(document.getElementById('ui-menu-selamat')) document.getElementById('ui-menu-selamat').innerHTML = `${ui.selamatDatang} <br><span id="mu-name" style="color:#2e7d32; font-size:1.8rem;">${namaMu}</span>!`;
             if(document.getElementById('ui-menu-markah')) document.getElementById('ui-menu-markah').innerText = ui.markahTertinggi;
             if(document.getElementById('ui-btn-mula')) document.getElementById('ui-btn-mula').innerText = ui.btnMula;
             if(document.getElementById('ui-btn-rekod')) document.getElementById('ui-btn-rekod').innerText = ui.btnRekod;
@@ -360,10 +360,8 @@
             if(document.getElementById('ui-btn-kembali')) document.getElementById('ui-btn-kembali').innerText = ui.btnKembali;
             
             let elemenNama = document.getElementById('paparNama');
-            if (elemenNama && elemenNama.style.display !== "none") {
-                let namaTerkini = localStorage.getItem('namaMurid') || "SAINTIS";
-                let avatarTerkini = localStorage.getItem('avatarMurid') || "🎒";
-                elemenNama.innerHTML = `${avatarTerkini} ${ui.saintisLabel}: <span style="color:#1b5e20">${namaTerkini.toUpperCase()}</span>`;
+            if (elemenNama && elemenNama.style.display !== "none" && dataSemasa) {
+                elemenNama.innerHTML = `${dataSemasa.avatar} ${ui.saintisLabel}: <span style="color:#1b5e20">${dataSemasa.name}</span>`;
             }
 
             if (document.getElementById("progress-text") && kuizSoalan.length > 0 && document.getElementById("header-bar").style.display !== "none") {
@@ -392,7 +390,7 @@
             }
 
             // Jika dalam Dashboard Prestasi
-            if(document.getElementById('dash-title')) {
+            if(document.getElementById('dash-title') && dataSemasa) {
                 document.getElementById('dash-title').innerText = ui.dashTajuk;
                 document.getElementById('dash-desc').innerText = ui.dashDesc;
                 document.getElementById('dash-lbl-anak').innerText = ui.lblAnak;
@@ -401,7 +399,7 @@
                 document.getElementById('dash-lbl-latihan').innerText = ui.lblLatihan;
                 document.getElementById('dash-lbl-ujian').innerText = ui.lblUjian;
                 
-                let hScore = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
+                let hScore = dataSemasa.hScore;
                 let komenPrestasi = "";
                 if (lang === 'ms') {
                     if(hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
@@ -423,68 +421,133 @@
             kemasKiniUI();
         }
 
-        // ================= LOGIK PROFIL =================
-        function semakProfilSediaAda() {
-            let nama = localStorage.getItem('namaMurid');
-            let avatar = localStorage.getItem('avatarMurid') || '👤';
-            let markah = localStorage.getItem('sains_kuiz1_high_score') || "0";
+        // ================= LOGIK MULTI-PROFIL =================
+        function getSenaraiProfil() {
+            return JSON.parse(localStorage.getItem('sains_profil_list')) || [];
+        }
 
-            if (nama) {
-                // Sembunyikan login, terus masuk menu
+        function getProfilSemasa() {
+            let namaSemasa = localStorage.getItem('sains_semasa');
+            if(!namaSemasa) return null;
+            let senarai = getSenaraiProfil();
+            return senarai.find(p => p.name === namaSemasa);
+        }
+
+        function simpanDataSemasa(data) {
+            let senarai = getSenaraiProfil();
+            let index = senarai.findIndex(p => p.name === data.name);
+            if(index !== -1) {
+                senarai[index] = data;
+                localStorage.setItem('sains_profil_list', JSON.stringify(senarai));
+            }
+        }
+
+        // Semak semasa page loading
+        function semakProfilSediaAda() {
+            // Migrasi jika ada data lama yg belum jadi list (untuk selamatkan markah Fara!)
+            let oldName = localStorage.getItem('namaMurid');
+            if(oldName) {
+                let p = {
+                    name: oldName.toUpperCase(),
+                    avatar: localStorage.getItem('avatarMurid') || '🎒',
+                    hScore: parseInt(localStorage.getItem('sains_kuiz1_high_score')||"0"),
+                    tMain: parseInt(localStorage.getItem('sains_kuiz1_total_main')||"0"),
+                    lDate: localStorage.getItem('sains_kuiz1_last_date') || "-"
+                };
+                let s = getSenaraiProfil();
+                if(!s.find(x => x.name === p.name)) {
+                    s.push(p);
+                    localStorage.setItem('sains_profil_list', JSON.stringify(s));
+                }
+                localStorage.removeItem('namaMurid'); // Bersihkan
+            }
+
+            let profilSemasa = localStorage.getItem('sains_semasa');
+            if (profilSemasa) {
                 document.getElementById('screen-login').style.display = 'none';
                 paparMenuUtama();
             } else {
-                // Tunjuk form login
                 document.getElementById('screen-login').style.display = 'block';
                 document.getElementById('screen-menu').style.display = 'none';
                 document.getElementById('screen-quiz').style.display = 'none';
+                renderSenaraiProfil();
+            }
+        }
+
+        function renderSenaraiProfil() {
+            let container = document.getElementById('existing-section');
+            let listDiv = document.getElementById('existing-list');
+            let senarai = getSenaraiProfil();
+
+            if (senarai.length > 0) {
+                container.style.display = 'block';
+                listDiv.innerHTML = '';
+                senarai.forEach(p => {
+                    let btn = document.createElement('button');
+                    btn.className = 'existing-profile-btn';
+                    btn.innerHTML = `<div class="ep-left"><span>${p.avatar}</span> <span>${p.name}</span></div><div class="ep-right">⭐ ${p.hScore}</div>`;
+                    btn.onclick = () => {
+                        localStorage.setItem('sains_semasa', p.name);
+                        location.reload(); // Terus masuk menu
+                    };
+                    listDiv.appendChild(btn);
+                });
+            } else {
+                container.style.display = 'none';
             }
         }
 
         function simpanProfil() {
-            let inputNama = document.getElementById("username").value.trim();
+            let inputNama = document.getElementById("username").value.trim().toUpperCase();
             if (!inputNama) {
                 alert(lang === 'ms' ? "Sila masukkan nama anda!" : "Please enter your name!");
                 return;
             }
             
-            inputNama = inputNama.replace(/🤖/g, '').trim();
-            localStorage.setItem('namaMurid', inputNama);
-            localStorage.setItem('avatarMurid', avatarPilihan);
-            
-            if(!localStorage.getItem('sains_kuiz1_high_score')) {
-                localStorage.setItem('sains_kuiz1_high_score', "0");
-                localStorage.setItem('sains_kuiz1_total_main', "0");
+            inputNama = inputNama.replace(/🤖/g, '').trim(); // Buang emoji tersesat jika ada
+            let senarai = getSenaraiProfil();
+            let index = senarai.findIndex(p => p.name === inputNama);
+
+            if (index !== -1) {
+                // Profil dah wujud, cuma update avatar
+                senarai[index].avatar = avatarPilihan;
+            } else {
+                // Tambah profil baru
+                senarai.push({
+                    name: inputNama,
+                    avatar: avatarPilihan,
+                    hScore: 0,
+                    tMain: 0,
+                    lDate: "-"
+                });
             }
+
+            localStorage.setItem('sains_profil_list', JSON.stringify(senarai));
+            localStorage.setItem('sains_semasa', inputNama);
 
             document.getElementById('screen-login').style.display = 'none';
             paparMenuUtama();
         }
 
         function paparMenuUtama() {
+            let data = getProfilSemasa();
+            if(!data) {
+                logKeluar(); return; // Keselamatan jika data hilang
+            }
+
             document.getElementById('screen-menu').style.display = 'block';
             document.getElementById('screen-quiz').style.display = 'none';
 
-            let nama = localStorage.getItem('namaMurid') || 'CILIK';
-            let avatar = localStorage.getItem('avatarMurid') || '🎒';
-            let markah = localStorage.getItem('sains_kuiz1_high_score') || "0";
-
-            document.getElementById('mu-name').innerText = nama.toUpperCase();
-            document.getElementById('mu-avatar').innerText = avatar;
-            document.getElementById('mu-score').innerText = markah;
+            document.getElementById('mu-name').innerText = data.name;
+            document.getElementById('mu-avatar').innerText = data.avatar;
+            document.getElementById('mu-score').innerText = data.hScore;
             kemasKiniUI();
         }
 
         function logKeluar() {
-            let confirmMsg = lang === 'ms' ? "Adakah anda pasti mahu memadam profil ini?" : "Are you sure you want to delete this profile?";
-            if(confirm(confirmMsg)) {
-                localStorage.removeItem('namaMurid');
-                localStorage.removeItem('avatarMurid');
-                localStorage.removeItem('sains_kuiz1_high_score');
-                localStorage.removeItem('sains_kuiz1_total_main');
-                localStorage.removeItem('sains_kuiz1_last_date');
-                location.reload();
-            }
+            // HANYA buang status login. Senarai profil di bawah tak diusik.
+            localStorage.removeItem('sains_semasa');
+            location.reload();
         }
 
         // ================= LOGIK KUIZ =================
@@ -496,16 +559,16 @@
         }
 
         function mulaKuiz() {
-            // Tukar skrin
             document.getElementById('screen-menu').style.display = 'none';
             document.getElementById('screen-quiz').style.display = 'flex';
             document.getElementById("header-bar").style.display = "flex";
 
-            let namaFinal = localStorage.getItem('namaMurid') || "CILIK";
-            let avatarFinal = localStorage.getItem('avatarMurid') || "🎒";
+            let data = getProfilSemasa();
             let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerHTML = `${avatarFinal} ${teksUI[lang].saintisLabel}: <span style="color:#1b5e20">${namaFinal.toUpperCase()}</span>`;
-            elemenNama.style.display = "block";
+            if(data) {
+                elemenNama.innerHTML = `${data.avatar} ${teksUI[lang].saintisLabel}: <span style="color:#1b5e20">${data.name}</span>`;
+                elemenNama.style.display = "block";
+            }
 
             kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random()).slice(0, JUMLAH_SOALAN);
             soalanSekarang = 0;
@@ -615,13 +678,14 @@
             let quizArea = document.getElementById("quiz-area");
             let ui = teksUI[lang];
             
-            let totalMain = parseInt(localStorage.getItem('sains_kuiz1_total_main') || "0") + 1;
-            let markahTertinggi = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
-            if (markah > markahTertinggi) {
-                localStorage.setItem('sains_kuiz1_high_score', markah);
+            // Simpanan ke profil spesifik
+            let dataSemasa = getProfilSemasa();
+            if(dataSemasa) {
+                dataSemasa.tMain += 1;
+                if(markah > dataSemasa.hScore) dataSemasa.hScore = markah;
+                dataSemasa.lDate = new Date().toLocaleDateString('ms-MY');
+                simpanDataSemasa(dataSemasa); // Update dlm list utama
             }
-            localStorage.setItem('sains_kuiz1_total_main', totalMain);
-            localStorage.setItem('sains_kuiz1_last_date', new Date().toLocaleDateString('ms-MY'));
 
             if (isGameOver) {
                 quizArea.innerHTML = `
@@ -648,28 +712,26 @@
 
         // ================= DASHBOARD PRESTASI =================
         function paparSistemPrestasi() {
-            // Tukar skrin terus masuk ke kawasan kuiz untuk tunjuk report
             document.getElementById('screen-menu').style.display = 'none';
             document.getElementById('screen-quiz').style.display = 'flex';
             document.getElementById('header-bar').style.display = 'none';
 
             let quizArea = document.getElementById("quiz-area");
             let ui = teksUI[lang];
-            let namaAnak = localStorage.getItem('namaMurid') || "-";
-            let hScore = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
-            let tMain = localStorage.getItem('sains_kuiz1_total_main') || "0";
-            let lDate = localStorage.getItem('sains_kuiz1_last_date') || "-";
+            let dataSemasa = getProfilSemasa();
             
+            if(!dataSemasa) return; // safety
+
             let komenPrestasi = "";
             if (lang === 'ms') {
-                if(hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
-                else if(hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
-                else if(hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
+                if(dataSemasa.hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
+                else if(dataSemasa.hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
+                else if(dataSemasa.hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
                 else komenPrestasi = "Jangan putus asa, teruskan usaha! 💪";
             } else {
-                if(hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
-                else if(hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
-                else if(hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
+                if(dataSemasa.hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
+                else if(dataSemasa.hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
+                else if(dataSemasa.hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
                 else komenPrestasi = "Don't give up, keep trying! 💪";
             }
 
@@ -681,11 +743,11 @@
                         <p id="dash-desc" style="font-size:0.85rem; color:#666; margin-bottom:10px;">${ui.dashDesc}</p>
                         
                         <div class="stats-card">
-                            <div class="stats-line"><b id="dash-lbl-anak">${ui.lblAnak}</b> <span>${namaAnak.toUpperCase()}</span></div>
-                            <div class="stats-line"><b id="dash-lbl-tertinggi">${ui.lblTertinggi}</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
+                            <div class="stats-line"><b id="dash-lbl-anak">${ui.lblAnak}</b> <span>${dataSemasa.name}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-tertinggi">${ui.lblTertinggi}</b> <span style="color:#4caf50; font-weight:bold;">${dataSemasa.hScore}/100</span></div>
                             <div class="stats-line"><b id="dash-lbl-gred">${ui.lblGred}</b> <span id="dash-komen" style="color:#e65100; font-weight:bold; text-align:right; margin-left:10px;">${komenPrestasi}</span></div>
-                            <div class="stats-line"><b id="dash-lbl-latihan">${ui.lblLatihan}</b> <span>${tMain}</span></div>
-                            <div class="stats-line"><b id="dash-lbl-ujian">${ui.lblUjian}</b> <span>${lDate}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-latihan">${ui.lblLatihan}</b> <span>${dataSemasa.tMain}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-ujian">${ui.lblUjian}</b> <span>${dataSemasa.lDate}</span></div>
                         </div>
                     </div>
                 </div>
@@ -694,8 +756,8 @@
 
         window.onload = function() {
             binaAvatar();
+            semakProfilSediaAda(); // Ini akan detect profil Fara dan migrate kalau perlu
             kemasKiniUI();
-            semakProfilSediaAda();
         };
     </script>
 </body>
