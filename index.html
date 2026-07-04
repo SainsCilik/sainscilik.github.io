@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background-color: #e0f7fa;
+            background: linear-gradient(135deg, #e0f7fa, #fff9c4);
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,98 +16,130 @@
             min-height: 100vh;
         }
 
-        /* Kotak Bingkai Ala Handphone di Tengah Skrin */
         .phone-wrapper {
             width: 100%;
             max-width: 420px;
             background: white;
             min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 20px;
+            padding: 35px 20px;
             box-sizing: border-box;
-            position: relative;
+            border-radius: 25px;
         }
 
-        .logo-area {
-            font-size: 5rem;
+        .header-animated {
+            font-size: 4.5rem;
             margin-top: 20px;
+            animation: bounce 2.5s ease-in-out infinite;
         }
 
-        h1 {
-            color: #0288d1;
-            font-size: 2.2rem;
-            margin: 10px 0 5px 0;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        h1 { 
+            color: #0288d1; 
+            font-size: 2.4rem; 
+            margin: 10px 0 2px 0; 
+            text-align: center;
+            text-shadow: 2px 2px 0px #e0f2f1;
+            font-weight: 900;
+        }
+
+        .subtitle { 
+            color: #ff9800; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            margin-bottom: 30px; 
             text-align: center;
         }
 
-        .subtitle {
-            color: #4caf50;
-            font-size: 1.2rem;
-            font-weight: bold;
+        /* SUSUNAN GRID GEMPAK */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
             margin-bottom: 25px;
         }
 
-        /* Gaya Butang Menu */
-        .menu-grid {
-            width: 100%;
+        .grid-btn {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        .menu-btn {
-            display: block;
-            text-align: center;
-            padding: 18px;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 10px;
+            font-family: 'Comic Sans MS', sans-serif;
+            font-size: 1.1rem;
             font-weight: bold;
-            border-radius: 15px;
-            box-shadow: 0 5px 0 rgba(0,0,0,0.15);
-            transition: transform 0.1s;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-decoration: none;
+            text-align: center;
         }
 
-        .menu-btn:active {
+        .grid-btn span {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        /* WARNA INDIVIDU & BAYANG 3D */
+        .btn-t1 { background-color: #ff5252; box-shadow: 0 6px 0 #c62828; }
+        .btn-t2 { background-color: #ff9800; box-shadow: 0 6px 0 #ef6c00; }
+        .btn-t3 { background-color: #fbc02d; box-shadow: 0 6px 0 #f57f17; }
+        .btn-t4 { background-color: #4caf50; box-shadow: 0 6px 0 #2e7d32; }
+        .btn-t5 { background-color: #2196f3; box-shadow: 0 6px 0 #1565c0; }
+        .btn-t6 { background-color: #9c27b0; box-shadow: 0 6px 0 #6a1b9a; }
+
+        /* KESAN TEKAN BUTTON (POP EFFECT) */
+        .grid-btn:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+            box-shadow: 0 2px 0 inherit;
         }
-
-        /* Warna Butang Ikut Tahun */
-        .t1 { background-color: #ff5252; }
-        .t2 { background-color: #ff9800; }
-        .t3 { background-color: #fbc02d; }
-        .t4 { background-color: #4caf50; }
-        .t5 { background-color: #2196f3; }
-        .t6 { background-color: #9c27b0; }
 
         .footer {
             margin-top: auto;
-            font-size: 0.8rem;
-            color: #888;
-            padding-top: 30px;
-            text-align: center;
+            font-size: 0.85rem;
+            color: #999;
+            font-weight: bold;
+            padding-top: 25px;
         }
     </style>
 </head>
 <body>
 
     <div class="phone-wrapper">
-        <div class="logo-area">🔬🚀</div>
+        <div class="header-animated">🔬🚀</div>
         <h1>Sains Cilik</h1>
-        <div class="subtitle">Belajar Sains Jadi Seronok!</div>
-
-        <div class="menu-grid">
-            <!-- Pautan ke halaman tahun1.html -->
-            <a href="tahun1.html" class="menu-btn t1">TAHUN 1 JOM MAIN! 🎮</a>
-            <a href="#" class="menu-btn t2">TAHUN 2 MULA KUIZ 🏆</a>
-            <a href="#" class="menu-btn t3">TAHUN 3 TEROKA ⚡</a>
-            <a href="#" class="menu-btn t4">TAHUN 4 CABARAN 🗺️</a>
-            <a href="#" class="menu-btn t5">TAHUN 5 GENIUS 🧠</a>
-            <a href="#" class="menu-btn t4">TAHUN 6 JAGUH 🥇</a>
+        <div class="subtitle">Belajar Sains Jadi Seronok! 🎉</div>
+        
+        <!-- GRID UTAMA SEPERTI MENU GAME -->
+        <div class="grid-container">
+            <button class="grid-btn btn-t1" onclick="location.href='tahun1.html'">
+                <span>🎮</span>TAHUN 1
+            </button>
+            <button class="grid-btn btn-t2" onclick="location.href='tahun2.html'">
+                <span>🏆</span>TAHUN 2
+            </button>
+            <button class="grid-btn btn-t3" onclick="location.href='tahun3.html'">
+                <span>⚡</span>TAHUN 3
+            </button>
+            <button class="grid-btn btn-t4" onclick="location.href='tahun4.html'">
+                <span>📖</span>TAHUN 4
+            </button>
+            <button class="grid-btn btn-t5" onclick="location.href='tahun5.html'">
+                <span>🧠</span>TAHUN 5
+            </button>
+            <button class="grid-btn btn-t6" onclick="location.href='tahun6.html'">
+                <span>🏅</span>TAHUN 6
+            </button>
         </div>
 
         <div class="footer">
