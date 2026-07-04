@@ -180,7 +180,7 @@
 
     <div class="phone-wrapper">
         <div class="quiz-header" id="header-bar" style="display: none;">
-            <span id="progress-text">Soalan: 1/10</span>
+            <span id="progress-text">Soalan: 1/20</span>
             <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
             <span id="score-text">Markah: 0</span>
         </div>
@@ -201,8 +201,8 @@
                     </div>
 
                     <div class="instruction-box">
-                        🎯 Selesaikan <b>10 soalan</b> asas silibus Sains Tahun 1.<br>
-                        💯 Setiap jawapan betul memberikan <b>10 markah</b>.<br>
+                        🎯 Selesaikan <b>20 soalan</b> rawak daripada bank soalan.<br>
+                        💯 Setiap jawapan betul memberikan <b>5 markah</b> (Maksimum 100).<br>
                         ❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!
                     </div>
                 </div>
@@ -217,17 +217,58 @@
     </div>
 
     <script>
+        // BANK 50 SOALAN TAHUN 1 MUTLAK Bersih & Padat
         const bankSoalan = [
-            { q: "Antara berikut, yang manakah merupakan benda hidup? 🐈", options: ["🧸 Patung mainan", "🐈 Kucing", "🚗 Kereta"], correct: 1 },
-            { q: "Apakah keperluan asas bagi benda hidup untuk hidup? 💧", options: ["📱 Telefon pintar dan TV", "🍱 Makanan, air dan udara", "👕 Baju baru"], correct: 1 },
-            { q: "Antara berikut, yang manakah benda bukan hidup? 🤖", options: ["🌱 Pokok betik", "🤖 Robot mainan", "🐦 Burung"], correct: 1 },
-            { q: "Apakah deria yang digunakan untuk melihat pelangi yang berwarna-warni? 👁️", options: ["👂 Deria pendengaran", "👁️ Deria penglihatan", "👃 Deria bau"], correct: 1 },
-            { q: "Kita menggunakan deria sentuhan melalui anggota badan yang mana? ✋", options: ["👃 Hidung", "👅 Lidah", "✋ Kulit / Tangan"], correct: 2 },
-            { q: "Bahagian tumbuhan yang manakah berfungsi menyerap air dari dalam tanah? 🪵", options: ["🍃 Daun", "🌺 Bunga", "🪵 Akar"], correct: 2 },
-            { q: "Apakah yang akan berlaku jika dua kutub magnet yang SAMA didekatkan? 🧲", options: ["🤝 Menarik antara satu sama lain", "🛑 Menolak antara satu sama lain", "❌ Tiada apa-apa berlaku"], correct: 1 },
-            { q: "Objek manakah yang boleh ditarik oleh magnet? 📎", options: ["📎 Klip kertas logam", "✏️ Pemadam plastik", "🪵 Pembaris kayu"], correct: 0 },
-            { q: "Antara bahan berikut, yang manakah boleh menyerap air? 🧻", options: ["🥤 Gelas plastik", "🧻 Tuala kertas / Kain", "🪙 Syiling besi"], correct: 1 },
-            { q: "Mengapakah kita menggunakan payung semasa hari hujan? 🌧️", options: ["🧱 Kerana payung kalis air", "🧻 Kerana payung menyerap air", "🌱 Kerana payung boleh membesar"], correct: 0 }
+            { q: "Antara berikut, yang manakah benda hidup? 🐈", options: ["🧸 Anak patung", "🐈 Kucing", "🚗 Kereta mainan"], correct: 1 },
+            { q: "Apakah keperluan asas benda hidup untuk bernafas? 💨", options: ["💨 Udara", "🍔 Makanan", "🏠 Rumah"], correct: 0 },
+            { q: "Manakah benda bukan hidup yang boleh bergerak menggunakan bateri? 🤖", options: ["🐦 Burung", "🤖 Robot mainan", "🐠 Ikan"], correct: 1 },
+            { q: "Apakah deria yang digunakan untuk mendengar lagu? 👂", options: ["👁️ Penglihatan", "👂 Pendengaran", "👅 Rasa"], correct: 1 },
+            { q: "Kita menggunakan deria bau melalui anggota badan... 👃", options: ["👃 Hidung", "👁️ Mata", "✋ Tangan"], correct: 0 },
+            { q: "Apakah rasa buah lemon? 🍋", options: ["🍬 Manis", "🧂 Masin", "🍋 Masam"], correct: 2 },
+            { q: "Bahagian tumbuhan manakah yang menyerap air dari tanah? 🪵", options: ["🍃 Daun", "🌺 Bunga", "🪵 Akar"], correct: 2 },
+            { q: "Apakah tindakan magnet apabila dua kutub yang SAMA didekatkan? 🧲", options: ["🤝 Menarik", "🛑 Menolak", "❌ Tiada apa-apa"], correct: 1 },
+            { q: "Objek manakah yang boleh ditarik oleh magnet? 📎", options: ["📎 Klip kertas logam", "✏️ Pemadam", "🪵 Pembaris kayu"], correct: 0 },
+            { q: "Antara bahan berikut, yang manakah boleh menyerap air? 🧻", options: ["🥤 Gelas plastik", "🧻 Tuala kertas", "🪙 Syiling besi"], correct: 1 },
+            { q: "Mengapakah kita guna payung semasa hujan? 🌧️", options: ["🧱 Guna payung kalis air", "🧻 Guna payung serap air", "🌱 Biar payung membesar"], correct: 0 },
+            { q: "Pokok memerlukan apa untuk membuat makanannya sendiri? ☀️", options: ["☀️ Cahaya matahari", "🥛 Susu", "🥩 Daging"], correct: 0 },
+            { q: "Antara berikut, yang manakah haiwan berkaki dua? 🐔", options: ["🐈 Kucing", "🐔 Ayam", "Lembu"], correct: 1 },
+            { q: "Apakah fungsi bunga pada sesetengah tumbuhan? 🌺", options: ["🌺 Menjadi buah dan biji benih", "🏃 Berjalan", "💨 Bernafas"], correct: 0 },
+            { q: "Deria rasa berada di anggota badan yang mana? 👅", options: ["👃 Hidung", "👅 Lidah", "✋ Kulit"], correct: 1 },
+            { q: "Objek manakah yang KALIS AIR? 🪵", options: ["🧻 Tisu", "👕 Baju kain", "🥾 Boot getah"], correct: 2 },
+            { q: "Haiwan manakah yang hidup di dalam air? 🐠", options: ["🐠 Ikan", "🐕 Anjing", "🐈 Kucing"], correct: 0 },
+            { q: "Apakah bentuk bumi yang tinggi dan curam? ⛰️", options: ["⛰️ Gunung", "🌾 Sawah padi", "🏖️ Pantai"], correct: 0 },
+            { q: "Bahan manakah yang sesuai untuk mengelap air yang tumpah? 🧽", options: ["塑料 Beg plastik", "🧽 Kain tuala", "Kertas pasir"], correct: 1 },
+            { q: "Apakah yang akan berlaku jika benda hidup tidak mendapat air? 💀", options: ["📈 Membesar cepat", "💀 Boleh mati", "🏃 Menjadi kuat"], correct: 1 },
+            { q: "Cermin mata digunakan untuk membantu deria apa? 👁️", options: ["👁️ Deria penglihatan", "👂 Deria pendengaran", "👃 Deria bau"], correct: 0 },
+            { q: "Antara tumbuhan berikut, yang manakah mempunyai duri? 🌵", options: ["🌱 Pokok pisang", "🌵 Pokok kaktus", "🌱 Pokok keembung"], correct: 1 },
+            { q: "Apakah kegunaan utama batu baur dalam pembinaan? 🧱", options: ["🍔 Makanan", "🧱 Membuat bangunan/jalan", "👕 Pakaian"], correct: 1 },
+            { q: "Bentuk asas bagi sebiji bola ialah... ⚽", options: ["📐 Segi tiga", "🟪 Segi empat", "🟢 Sfera / Bulat"], correct: 2 },
+            { q: "Magnet mempunyai berapa kutub? 🧲", options: ["1 Kutub", "2 Kutub (Utara & Selatan)", "4 Kutub"], correct: 1 },
+            { q: "Apakah deria yang terjejas jika kita selsema? 👃", options: ["👁️ Penglihatan", "👂 Pendengaran", "👃 Bau"], correct: 2 },
+            { q: "Benda bukan hidup tidak memerlukan... 🍱", options: ["🍱 Makanan dan air", "Bateri", "❌ Tiada apa-apa"], correct: 0 },
+            { q: "Apakah bahagian pokok yang memegang pokok pada tanah? 🪵", options: ["🪵 Akar", "🌺 Bunga", "🍃 Daun"], correct: 0 },
+            { q: "Antara haiwan berikut, yang manakah terbang di udara? 🦋", options: ["🐍 Ular", "🦋 Kupu-kupu", "🐕 Kucing"], correct: 1 },
+            { q: "Gula memberikan rasa apa pada lidah? 🍬", options: ["🍋 Masam", "🍬 Manis", "☕ Pahit"], correct: 1 },
+            { q: "Ubat pahit dikesan oleh deria apa? 👅", options: ["👅 Deria rasa", "👃 Deria bau", "👁️ Deria lihat"], correct: 0 },
+            { q: "Objek manakah yang diperbuat daripada plastik dan kalis air? 📐", options: ["👕 Sapu tangan", "📐 Pembaris plastik", "🧻 Kadbod"], correct: 1 },
+            { q: "Apakah bahagian badan burung untuk terbang? 🦅", options: ["🦿 Kaki", "🦅 Sayap", "👄 Paruh"], correct: 1 },
+            { q: "Pokok semalu akan buat apa jika disentuh? 🌿", options: ["🌿 Daunnya menguncup", "📈 Berubah warna", "💀 Terus mati"], correct: 0 },
+            { q: "Antara berikut, tanah manakah yang mengandungi banyak batu pasir? 🏜️", options: ["🌱 Tanah kebun", "🏜️ Tanah pasir", "Tanah liat"], correct: 1 },
+            { q: "Tanah liat sangat sesuai untuk menanam... 🌾", options: ["🌵 Kaktus", "🌾 Padi", "🌱 Pokok jagung"], correct: 1 },
+            { q: "Apakah nama objek berbentuk U atau bar yang boleh menarik besi? 🧲", options: ["🧲 Magnet", "✏️ Pensel", "🔑 Pemutar skru"], correct: 0 },
+            { q: "Mengapakah cacing tanah suka duduk di dalam tanah kebun? 🌱", options: ["🌱 Banyak nutrien/makanan", "🥵 Cuaca panas", "❌ Saja-saja"], correct: 0 },
+            { q: "Susu lembu segar memberikan rasa... 🥛", options: [" Masam", "🥛 Lemak / Manis", "☕ Pahit"], correct: 1 },
+            { q: "Haiwan manakah yang tidak mempunyai kaki? 🐍", options: ["🐸 Katak", "🐍 Ular", "🦆 Itik"], correct: 1 },
+            { q: "Apakah deria yang digunakan untuk tahu permukaan meja kasar? ✋", options: ["👃 Bau", "👂 Dengar", "✋ Sentuhan"], correct: 2 },
+            { q: "Antara benda berikut, yang manakah akan tenggelam dalam air? 🪙", options: ["🍃 Daun kering", "🪙 Duit syiling logam", "🪵 Pembaris kayu"], correct: 1 },
+            { q: "Pokok bunga mawar melindungi diri dengan... 🌹", options: ["🍂 Bau busuk", "🌹 Duri tajam", "🥛 Getah"], correct: 1 },
+            { q: "Bunyi guruh yang kuat dikesan oleh deria... 👂", options: ["👂 Pendengaran", "👁️ Penglihatan", "👅 Rasa"], correct: 0 },
+            { q: "Kita memerlukan tempat perlindungan untuk... 🏠", options: ["🏃 Bermain", "🏠 Berlindung dari hujan & panas", "📈 Menjadi kaya"], correct: 1 },
+            { q: "Benda hidup akan mengalami apa apabila masa berlalu? 📈", options: ["📉 Menjadi kecil", "📈 Tumbesaran/Membesar", "❌ Kekal sama"], correct: 1 },
+            { q: "Ular digolongkan sebagai haiwan yang... 🐍", options: [" Fly", "🐍 Merangkak/Melata", "🏃 Berlari laju"], correct: 1 },
+            { q: "Apakah komponen utama yang ada dalam tanah kebun? 🌱", options: ["🌱 Humus (reputan daun/haiwan)", "💎 Berlian", "🥤 Plastik"], correct: 0 },
+            { q: "Klip kertas diperbuat daripada besi, jadi ia adalah objek... 📎", options: ["🧲 Magnetik", "❌ Bukan magnetik", " Kaca"], correct: 0 },
+            { q: "Matahari terbit pada waktu... 🌅", options: ["🌙 Malam", "🌅 Pagi", " Petang"], correct: 1 }
         ];
 
         let kuizSoalan = [];
@@ -235,7 +276,7 @@
         let markah = 0;
         let nyawa = 3;
         let jawapanDipilih = null;
-        const JUMLAH_SOALAN = 10;
+        const JUMLAH_SOALAN = 20; // Tetap 20 soalan wajib selesai!
 
         let namaDisimpan = localStorage.getItem('namaMurid') || "";
         if (namaDisimpan) {
@@ -264,7 +305,8 @@
             document.getElementById("main-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
             
-            kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random());
+            // Rawak kan 50 soalan, pastu ambil 20 teratas sahaja!
+            kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random()).slice(0, JUMLAH_SOALAN);
             
             soalanSekarang = 0;
             markah = 0;
@@ -307,9 +349,9 @@
             if (index === data.correct) {
                 element.style.backgroundColor = "#c8e6c9";
                 element.style.borderColor = "#4caf50";
-                msg.innerText = "🎉 BETUL! (+10 Markah) 🌟";
+                msg.innerText = "🎉 BETUL! (+5 Markah) 🌟";
                 msg.style.color = "#2e7d32";
-                markah += 10;
+                markah += 5; // 20 soalan * 5 markah = 100 markah penuh
                 document.getElementById("score-text").innerText = `Markah: ${markah}`;
             } else {
                 element.style.backgroundColor = "#ffcdd2";
