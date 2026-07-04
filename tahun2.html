@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
@@ -65,13 +65,23 @@
         .action-btn:active { box-shadow: 0 0 0 #1b5e20; transform: translateY(5px); }
 
         .divider { text-align: center; font-weight: bold; color: #757575; font-size: 0.85rem; margin: 20px 0 10px 0; letter-spacing: 1px; }
+        
+        /* Senarai Profil Styles */
+        .profile-row { display: flex; gap: 8px; align-items: stretch; }
         .existing-profile-btn {
-            width: 100%; background: white; border: 2px dashed #4caf50; padding: 15px; border-radius: 15px; cursor: pointer;
+            flex-grow: 1; background: white; border: 2px dashed #4caf50; padding: 15px; border-radius: 15px; cursor: pointer;
             text-align: left; display: flex; justify-content: space-between; align-items: center; font-family: inherit; font-size: 1.1rem; transition: 0.2s;
         }
         .existing-profile-btn:hover { background: #e8f5e9; border-style: solid; }
         .ep-left { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #1b5e20; }
         .ep-right { font-weight: bold; color: #ff8f00; background: #fff8e1; padding: 5px 10px; border-radius: 10px; }
+        
+        .delete-profile-btn {
+            background: #ffebee; border: 2px solid #ffcdd2; color: #c62828;
+            border-radius: 15px; padding: 0 15px; cursor: pointer;
+            font-size: 1.2rem; transition: 0.2s; box-shadow: 0 4px 0 #ef9a9a;
+        }
+        .delete-profile-btn:active { box-shadow: 0 0 0 #ef9a9a; transform: translateY(4px); }
 
         .menu-card { background: #e8f5e9; border: 3px solid #4caf50; border-radius: 15px; padding: 25px 20px; text-align: center; margin-bottom: 25px; }
         .menu-avatar { font-size: 4rem; margin-bottom: 10px; }
@@ -140,7 +150,7 @@
                 </div>
             </div>
 
-            <button class="action-btn" onclick="mulaKuiz()" id="ui-btn-mula">🚀 MULA LATIHAN 2</button>
+            <button class="action-btn" onclick="mulaKuiz()" id="ui-btn-mula">🚀 MULA LATIHAN</button>
             <button class="action-btn btn-rekod" onclick="paparSistemPrestasi()" id="ui-btn-rekod">📊 REKOD PRESTASI</button>
             <button class="action-btn btn-keluar" onclick="logKeluar()" id="ui-btn-padam">🚪 TUKAR PROFIL / LOG KELUAR</button>
             <div class="footer">SAINS CILIK TAHUN 2 • KSSR MALAYSIA</div>
@@ -192,7 +202,7 @@
                 menuTajuk: "Menu Utama",
                 selamatDatang: "Selamat Datang,",
                 markahTertinggi: "Markah Tertinggi:",
-                btnMula: "🚀 MULA LATIHAN 2",
+                btnMula: "🚀 MULA LATIHAN",
                 btnRekod: "📊 REKOD PRESTASI",
                 btnPadam: "🚪 TUKAR PROFIL / LOG KELUAR",
                 
@@ -422,7 +432,6 @@
         }
 
         // ================= LOGIK MULTI-PROFIL TAHUN 2 =================
-        // Ditetapkan kunci storan 't2' supaya tidak campur markah Tahun 1
         function getSenaraiProfil() {
             return JSON.parse(localStorage.getItem('sains_profil_list_t2')) || [];
         }
@@ -482,6 +491,9 @@
                 container.style.display = 'block';
                 listDiv.innerHTML = '';
                 senarai.forEach(p => {
+                    let row = document.createElement('div');
+                    row.className = 'profile-row';
+
                     let btn = document.createElement('button');
                     btn.className = 'existing-profile-btn';
                     btn.innerHTML = `<div class="ep-left"><span>${p.avatar}</span> <span>${p.name}</span></div><div class="ep-right">⭐ ${p.hScore}</div>`;
@@ -489,10 +501,33 @@
                         localStorage.setItem('sains_semasa_t2', p.name);
                         location.reload(); 
                     };
-                    listDiv.appendChild(btn);
+
+                    let delBtn = document.createElement('button');
+                    delBtn.className = 'delete-profile-btn';
+                    delBtn.innerHTML = '🗑️';
+                    delBtn.onclick = () => padamProfil(p.name);
+
+                    row.appendChild(btn);
+                    row.appendChild(delBtn);
+                    listDiv.appendChild(row);
                 });
             } else {
                 container.style.display = 'none';
+            }
+        }
+
+        function padamProfil(nama) {
+            let confirmMsg = lang === 'ms' ? `Adakah anda pasti mahu memadam profil ${nama}? Segala rekod markahnya akan hilang!` : `Are you sure you want to delete ${nama}'s profile? All their score records will be lost!`;
+            if (confirm(confirmMsg)) {
+                let senarai = getSenaraiProfil();
+                senarai = senarai.filter(p => p.name !== nama);
+                localStorage.setItem('sains_profil_list_t2', JSON.stringify(senarai));
+                
+                if (localStorage.getItem('sains_semasa_t2') === nama) {
+                    localStorage.removeItem('sains_semasa_t2');
+                }
+                
+                renderSenaraiProfil(); // Update senarai tanpa reload page
             }
         }
 
