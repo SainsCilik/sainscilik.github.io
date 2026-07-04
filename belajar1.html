@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik Tahun 1 - Belajar & Kuiz</title>
+    <title>Sains Cilik - Kuiz Interaktif</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
@@ -28,59 +28,79 @@
             box-sizing: border-box;
         }
 
-        h1 { color: #ff5722; text-align: center; font-size: 1.8rem; margin-bottom: 5px; }
-        
-        .welcome-msg {
-            text-align: center;
+        /* Top Bar Markah */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            background: #ede7f6;
+            padding: 10px 15px;
+            border-radius: 12px;
             font-weight: bold;
-            color: #3f51b5;
-            margin-bottom: 15px;
-            background: #e8eaf6;
-            padding: 8px;
-            border-radius: 10px;
-        }
-
-        h2 { color: #009688; font-size: 1.3rem; border-bottom: 3px dashed #009688; padding-bottom: 5px; margin-top: 25px; }
-
-        /* Gaya Nota */
-        .nota-box {
-            background-color: #e8f5e9;
-            border-left: 5px solid #4caf50;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        .nota-box ul { margin: 5px 0; padding-left: 20px; }
-
-        /* Gaya Kuiz */
-        .kuiz-container {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 15px;
-            border: 2px solid #e0e0e0;
+            color: #5e35b1;
             margin-bottom: 20px;
         }
+
+        h1 { color: #ff5722; text-align: center; font-size: 1.6rem; margin: 10px 0; }
+        
+        /* Kotak Soalan */
+        .kuiz-box {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #e0e0e0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         .option-btn {
             display: block;
             width: 100%;
             background-color: white;
-            border: 2px solid #ccc;
-            padding: 12px;
+            border: 3px solid #e0e0e0;
+            padding: 14px;
             margin: 8px 0;
-            border-radius: 10px;
+            border-radius: 15px;
             font-size: 1rem;
             cursor: pointer;
             text-align: left;
             font-weight: bold;
-            transition: 0.1s;
+            box-shadow: 0 4px 0 #e0e0e0;
         }
-        .option-btn:hover { background-color: #f0f0f0; }
-        
-        #result {
+
+        .option-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #e0e0e0;
+        }
+
+        /* Butang Aksi */
+        .action-btn {
+            width: 100%;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 15px;
+            box-shadow: 0 5px 0 #0b7dda;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none; /* Sembunyi dulu, keluar lepas pilih jawapan */
+        }
+
+        #result-message {
             text-align: center;
             font-size: 1.2rem;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .back-btn {
@@ -92,76 +112,123 @@
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
-            margin-top: auto;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="phone-wrapper">
-        <h1>Benda Hidup & Bukan Hidup</h1>
-        
-        <!-- Papar Nama Murid Yang Disimpan -->
-        <div id="paparNama" class="welcome-msg">Hai, Saintis Cilik! 👋</div>
-        
-        <!-- BAHAGIAN NOTA -->
-        <h2>1. Nota Ringkas 📚</h2>
-        <div class="nota-box">
-            <strong>🌱 Benda Hidup:</strong>
-            <ul>
-                <li>Memerlukan air dan makanan</li>
-                <li>Bernafas, Bergerak & Membesar</li>
-                <li>Contoh: Manusia, Kucing, Pokok</li>
-            </ul>
-        </div>
-        <div class="nota-box" style="background-color: #ffe0b2; border-left-color: #ff9800;">
-            <strong>🪨 Benda Bukan Hidup:</strong>
-            <ul>
-                <li>❌ Tidak bernafas</li>
-                <li>❌ Tidak memerlukan makanan & air</li>
-                <li>Contoh: Batu, Kereta, Rumah</li>
-            </ul>
+        <!-- Header Kuiz -->
+        <div class="quiz-header">
+            <span id="progress-text">Soalan: 1/3</span>
+            <span id="score-text">⭐ Markah: 0</span>
         </div>
 
-        <!-- BAHAGIAN KUIZ INTERAKTIF -->
-        <h2>2. Jawab Kuiz Mini 🎮</h2>
-        <div class="kuiz-container">
-            <p><strong>Soalan:</strong> Antara berikut, yang manakah merupakan <u>Benda Hidup</u>?</p>
-            <button class="option-btn" onclick="semakJawapan(false, this)">🪨 Batu Jalan</button>
-            <button class="option-btn" onclick="semakJawapan(true, this)">🐱 Kucing Comel</button>
-            <button class="option-btn" onclick="semakJawapan(false, this)">🧸 Anak Patung</button>
-            
-            <div id="result"></div>
+        <h1>Cabaran Benda Hidup 🧬</h1>
+        
+        <!-- Kotak Kuiz Dinamik -->
+        <div class="kuiz-box" id="quiz-area">
+            <div class="question-text" id="question">Memuatkan soalan...</div>
+            <div id="options-container"></div>
+            <div id="result-message"></div>
+            <button class="action-btn" id="next-btn" onclick="keSoalanSeterusnya()">SETERUSNYA ➡️</button>
         </div>
 
-        <a href="index.html" class="back-btn">⬅️ Menu Utama</a>
+        <a href="tahun1.html" class="back-btn">⬅️ Keluar Kuiz</a>
     </div>
 
     <script>
-        // Ambil nama murid dari memori browser dan paparkan
-        let namaDisimpan = localStorage.getItem('namaMurid');
-        if(namaDisimpan) {
-            document.getElementById('paparNama').innerText = "Jom Belajar, " + namaDisimpan + "! 🚀";
+        // Bank Soalan (Boleh tambah lagi di sini nanti)
+        const soalanSains = [
+            {
+                q: "Antara berikut, yang manakah merupakan BENDA HIDUP?",
+                options: ["🪨 Batu Jalan", "🐱 Kucing Comel", "🧸 Anak Patung"],
+                correct: 1
+            },
+            {
+                q: "Kenapa pokok bunga dianggap sebagai benda hidup?",
+                options: ["Sebab ia berwarna-warni", "Sebab ia memerlukan air & membesar", "Sebab ia boleh berjalan"],
+                correct: 1
+            },
+            {
+                q: "Manakah antara berikut BENDA BUKAN HIDUP yang boleh bergerak sendiri?",
+                options: ["🚗 Kereta", "🌳 Pokok Kelapa", "🐦 Burung Pipit"],
+                correct: 0
+            }
+        ];
+
+        let soalanSekarang = 0;
+        let markah = 0;
+        let jawapanDipilih = null;
+
+        function paparSoalan() {
+            jawapanDipilih = null;
+            document.getElementById("result-message").innerText = "";
+            document.getElementById("next-btn").style.display = "none";
+            
+            let data = soalanSains[soalanSekarang];
+            document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${soalanSains.length}`;
+            document.getElementById("question").innerText = data.q;
+            
+            let container = document.getElementById("options-container");
+            container.innerHTML = "";
+            
+            data.options.forEach((opt, index) => {
+                let btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = opt;
+                btn.onclick = () => pilihJawapan(index, btn);
+                container.appendChild(btn);
+            });
         }
 
-        // Fungsi semak jawapan kuiz
-        function semakJawapan(isCorrect, element) {
-            let buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(btn => btn.style.backgroundColor = "white");
-
-            let resultDiv = document.getElementById('result');
+        function pilihJawapan(index, element) {
+            if (jawapanDipilih !== null) return; // Kunci jawapan
             
-            if(isCorrect) {
-                element.style.backgroundColor = "#c8e6c9"; 
-                resultDiv.innerHTML = "🎉 JAWAPAN BETUL! Hebatnya kamu! 🌟";
-                resultDiv.style.color = "#2e7d32";
+            jawapanDipilih = index;
+            let data = soalanSains[soalanSekarang];
+            let msg = document.getElementById("result-message");
+            let buttons = document.querySelectorAll(".option-btn");
+            
+            if (index === data.correct) {
+                element.style.backgroundColor = "#c8e6c9"; // Hijau
+                element.style.borderColor = "#4caf50";
+                msg.innerText = "🎉 BETUL! Hebatlah kamu! 🌟";
+                msg.style.color = "#2e7d32";
+                markah += 10;
+                document.getElementById("score-text").innerText = `⭐ Markah: ${markah}`;
             } else {
-                element.style.backgroundColor = "#ffcdd2"; 
-                resultDiv.innerHTML = "❌ Cuba Lagi, Kawan! Anda pasti boleh! 💪";
-                resultDiv.style.color = "#c62828";
+                element.style.backgroundColor = "#ffcdd2"; // Merah
+                element.style.borderColor = "#f44336";
+                buttons[data.correct].style.backgroundColor = "#c8e6c9"; // Tunjuk yang betul
+                buttons[data.correct].style.borderColor = "#4caf50";
+                msg.innerText = "❌ Alahai, salah... Cuba lagi!";
+                msg.style.color = "#c62828";
+            }
+            
+            // Keluarkan butang "SETERUSNYA" lepas klik jawapan
+            document.getElementById("next-btn").style.display = "block";
+        }
+
+        function keSoalanSeterusnya() {
+            soalanSekarang++;
+            if (soalanSekarang < soalanSains.length) {
+                paparSoalan();
+            } else {
+                // Skrin Keputusan Akhir
+                document.getElementById("quiz-area").innerHTML = `
+                    <div style="text-align:center; padding:30px 10px;">
+                        <span style="font-size:4rem;">🏆</span>
+                        <h3 style="color:#4caf50; font-size:1.5rem; margin:15px 0 5px 0;">KUIZ TAMAT!</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;">Kamu berjaya mengumpul <br><span style="color:#ff9800; font-size:1.6rem;">⭐ ${markah} Bintang!</span></p>
+                        <p>Hebatlah bakal saintis kita ni! 😍</p>
+                    </div>
+                `;
             }
         }
-    </script>
 
+        paparSoalan();
+    </script>
 </body>
 </html>
