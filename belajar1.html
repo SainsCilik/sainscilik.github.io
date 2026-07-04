@@ -319,7 +319,7 @@
             }
         }
 
-        function tamatKuiz(isWin) {
+       function tamatKuiz(isWin) {
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
             
@@ -329,7 +329,8 @@
                         <span style="font-size:4rem;">💥</span>
                         <h3 style="color:#c62828; font-size:1.5rem; margin:15px 0;">NYAWA HABIS!</h3>
                         <p style="font-size:1.1rem; font-weight:bold;">Cuba lagi kawan! Markah terkumpul anda:<br><span style="color:#ff9800; font-size:2rem;">💯 ${markah}/100</span></p>
-                        <button onclick="mulaKuizSebenar()" class="action-btn" style="background:#ff9800; box-shadow:0 5px 0 #e65100;">🔄 CUBA LAGI</button>
+                        <!-- Tukar onclick di bawah supaya reload page dengan bersih -->
+                        <button onclick="location.reload()" class="action-btn" style="background:#ff9800; box-shadow:0 5px 0 #e65100;">🔄 CUBA LAGI</button>
                     </div>
                 `;
             } else {
@@ -340,7 +341,7 @@
                         <h3 style="color:#4caf50; font-size:1.5rem; margin:15px 0;">TAHNIAH KUIZ TAMAT!</h3>
                         <p style="font-size:1.1rem; font-weight:bold;">Jumlah markah keseluruhan anda:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
                         <p>Hebat betul pemikiran saintis cilik kita! 😍</p>
-                        <button onclick="mulaKuizSebenar()" class="action-btn">🔄 MAIN LAGI (SOALAN BARU)</button>
+                        <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI (SOALAN BARU)</button>
                     </div>
                 `;
             }
