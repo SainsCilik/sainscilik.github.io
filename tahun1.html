@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sains Cilik Tahun 1</title>
     <style>
+        /* KOD ANTI-CURI: Halang Highlight Teks */
         body {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             font-family: 'Comic Sans MS', sans-serif;
             background-color: #e8f5e9;
             margin: 0;
@@ -14,6 +18,12 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+        }
+        /* Kecualikan input supaya budak masih boleh taip nama */
+        input {
+            -webkit-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         .app-wrapper {
@@ -65,13 +75,23 @@
         .action-btn:active { box-shadow: 0 0 0 #1b5e20; transform: translateY(5px); }
 
         .divider { text-align: center; font-weight: bold; color: #757575; font-size: 0.85rem; margin: 20px 0 10px 0; letter-spacing: 1px; }
+        
+        /* Senarai Profil Styles */
+        .profile-row { display: flex; gap: 8px; align-items: stretch; }
         .existing-profile-btn {
-            width: 100%; background: white; border: 2px dashed #4caf50; padding: 15px; border-radius: 15px; cursor: pointer;
+            flex-grow: 1; background: white; border: 2px dashed #4caf50; padding: 15px; border-radius: 15px; cursor: pointer;
             text-align: left; display: flex; justify-content: space-between; align-items: center; font-family: inherit; font-size: 1.1rem; transition: 0.2s;
         }
         .existing-profile-btn:hover { background: #e8f5e9; border-style: solid; }
         .ep-left { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #1b5e20; }
         .ep-right { font-weight: bold; color: #ff8f00; background: #fff8e1; padding: 5px 10px; border-radius: 10px; }
+        
+        .delete-profile-btn {
+            background: #ffebee; border: 2px solid #ffcdd2; color: #c62828;
+            border-radius: 15px; padding: 0 15px; cursor: pointer;
+            font-size: 1.2rem; transition: 0.2s; box-shadow: 0 4px 0 #ef9a9a;
+        }
+        .delete-profile-btn:active { box-shadow: 0 0 0 #ef9a9a; transform: translateY(4px); }
 
         .menu-card { background: #e8f5e9; border: 3px solid #4caf50; border-radius: 15px; padding: 25px 20px; text-align: center; margin-bottom: 25px; }
         .menu-avatar { font-size: 4rem; margin-bottom: 10px; }
@@ -88,6 +108,10 @@
         .kuiz-box { background-color: #f5f5f5; padding: 20px; border-radius: 20px; border: 2px solid #e0e0e0; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 15px; }
         .question-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.5; }
         .option-btn { display: block; width: 100%; background-color: white; border: 3px solid #e0e0e0; padding: 14px; margin: 8px 0; border-radius: 15px; font-size: 1rem; cursor: pointer; text-align: left; font-weight: bold; box-shadow: 0 4px 0 #e0e0e0; }
+        
+        /* Highlight huruf A, B, C, D */
+        .opt-letter { display: inline-block; width: 28px; color: #1b5e20; font-weight: 900; }
+        
         #result-message { text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 15px; margin-bottom: 15px; }
         
         .back-btn { text-align: center; display: block; background-color: #757575; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-family: inherit; font-size: 1.1rem; width: 100%; }
@@ -165,6 +189,18 @@
     </div>
 
     <script>
+        // ================= KOD ANTI-CURI =================
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12') { e.preventDefault(); }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a' || 
+                e.key === 'U' || e.key === 'C' || e.key === 'S' || e.key === 'A')) {
+                e.preventDefault();
+            }
+        });
+        // ==================================================
+
         // TETAPAN ASAS
         let lang = 'ms';
         const senaraiAvatar = ['🎒', '🤖', '👨‍🚀', '🐱', '🦄', '🦁', '🦖', '🦊'];
@@ -212,7 +248,7 @@
                 btnKembali: "⬅️ Kembali ke Menu Utama",
                 
                 dashTajuk: "Dashboard Ibu Bapa",
-                dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
+                dashDesc: "Semak perkembangan rekod kuiz anak anda.",
                 lblAnak: "Nama Anak:",
                 lblTertinggi: "Markah Tertinggi:",
                 lblGred: "Status Pencapaian:",
@@ -232,7 +268,7 @@
                 menuTajuk: "Main Menu",
                 selamatDatang: "Welcome,",
                 markahTertinggi: "Highest Score:",
-                btnMula: "🚀 START PRACTICE 1",
+                btnMula: "🚀 START PRACTICE",
                 btnRekod: "📊 PERFORMANCE RECORD",
                 btnPadam: "🚪 SWITCH PROFILE / LOG OUT",
 
@@ -261,58 +297,58 @@
             }
         };
 
-        // BANK 50 SOALAN TAHUN 1 KSSR
+        // BANK 50 SOALAN TAHUN 1 KSSR (4 PILIHAN JAWAPAN A, B, C, D)
         const bankSoalan = [
-            { q: { ms: "Apakah organ deria yang digunakan untuk melihat?", en: "What sensory organ is used for seeing?" }, options: { ms: ["Telinga", "Mata", "Hidung"], en: ["Ears", "Eyes", "Nose"] }, correct: 1 },
-            { q: { ms: "Kita menggunakan hidung untuk?", en: "We use our nose to?" }, options: { ms: ["Menghidu bau", "Merasa makanan", "Mendengar bunyi"], en: ["Smell", "Taste food", "Hear sounds"] }, correct: 0 },
-            { q: { ms: "Organ apakah yang memberitahu kita bahawa ais itu sejuk?", en: "Which organ tells us that ice is cold?" }, options: { ms: ["Mata", "Lidah", "Kulit"], en: ["Eyes", "Tongue", "Skin"] }, correct: 2 },
-            { q: { ms: "Apakah rasa bagi buah lemon?", en: "What is the taste of a lemon?" }, options: { ms: ["Manis", "Masam", "Pahit"], en: ["Sweet", "Sour", "Bitter"] }, correct: 1 },
-            { q: { ms: "Bunyi loceng sekolah dikesan menggunakan deria?", en: "The sound of the school bell is detected using the sense of?" }, options: { ms: ["Sentuhan", "Pendengaran", "Penglihatan"], en: ["Touch", "Hearing", "Sight"] }, correct: 1 },
-            { q: { ms: "Antara berikut, yang manakah benda hidup?", en: "Which of the following is a living thing?" }, options: { ms: ["Kereta", "Pokok bunga", "Batu"], en: ["Car", "Flower plant", "Stone"] }, correct: 1 },
-            { q: { ms: "Apakah ciri benda hidup?", en: "What is a characteristic of living things?" }, options: { ms: ["Tidak perlukan air", "Membiak dan membesar", "Tidak bergerak"], en: ["Do not need water", "Reproduce and grow", "Do not move"] }, correct: 1 },
-            { q: { ms: "Benda bukan hidup ialah objek yang?", en: "Non-living things are objects that?" }, options: { ms: ["Perlukan makanan", "Tidak bernafas", "Boleh membesar"], en: ["Need food", "Do not breathe", "Can grow"] }, correct: 1 },
-            { q: { ms: "Pilih contoh benda bukan hidup.", en: "Choose an example of a non-living thing." }, options: { ms: ["Kucing", "Meja", "Katak"], en: ["Cat", "Table", "Frog"] }, correct: 1 },
-            { q: { ms: "Apakah keperluan asas benda hidup?", en: "What are the basic needs of living things?" }, options: { ms: ["Buku dan pensel", "Makanan, air dan udara", "Rumah yang besar"], en: ["Books and pencils", "Food, water and air", "A big house"] }, correct: 1 },
-            { q: { ms: "Burung menggunakan apa untuk terbang?", en: "What do birds use to fly?" }, options: { ms: ["Kepak", "Ekor", "Sirip"], en: ["Wings", "Tail", "Fins"] }, correct: 0 },
-            { q: { ms: "Ikan berenang di dalam air menggunakan?", en: "Fish swim in the water using?" }, options: { ms: ["Kaki", "Sirip", "Paruh"], en: ["Legs", "Fins", "Beaks"] }, correct: 1 },
-            { q: { ms: "Antara haiwan berikut, yang manakah mempunyai tanduk?", en: "Which of the following animals has horns?" }, options: { ms: ["Kerbau", "Katak", "Kucing"], en: ["Buffalo", "Frog", "Cat"] }, correct: 0 },
-            { q: { ms: "Siput melindungi dirinya menggunakan?", en: "Snails protect themselves using?" }, options: { ms: ["Bulu pelepah", "Cengkerang", "Sisik"], en: ["Feathers", "Shell", "Scales"] }, correct: 1 },
-            { q: { ms: "Haiwan apakah yang mempunyai badan bersisik?", en: "Which animal has a scaly body?" }, options: { ms: ["Ular", "Arnab", "Itik"], en: ["Snake", "Rabbit", "Duck"] }, correct: 0 },
-            { q: { ms: "Bahagian tumbuhan yang manakah berada di bawah tanah?", en: "Which part of the plant is underground?" }, options: { ms: ["Akar", "Daun", "Bunga"], en: ["Roots", "Leaves", "Flowers"] }, correct: 0 },
-            { q: { ms: "Daun pokok pisang mempunyai urat daun jenis?", en: "Banana leaves have what type of leaf veins?" }, options: { ms: ["Selari", "Jejari", "Bulat"], en: ["Parallel", "Netted", "Round"] }, correct: 0 },
-            { q: { ms: "Pokok bunga mawar dan pokok mangga mempunyai batang jenis?", en: "Rose plants and mango trees have what type of stem?" }, options: { ms: ["Batang tidak berkayu", "Batang berkayu", "Batang berair"], en: ["Non-woody stem", "Woody stem", "Watery stem"] }, correct: 1 },
-            { q: { ms: "Akar pokok durian dikenali sebagai akar?", en: "The roots of a durian tree are known as?" }, options: { ms: ["Akar serabut", "Akar tunjang", "Akar palsu"], en: ["Fibrous root", "Taproot", "False root"] }, correct: 1 },
-            { q: { ms: "Apakah yang terhasil selepas bunga layu dan gugur pada pokok betik?", en: "What is produced after flowers wither and fall on a papaya tree?" }, options: { ms: ["Daun baru", "Buah betik", "Akar"], en: ["New leaves", "Papaya fruit", "Roots"] }, correct: 1 },
-            { q: { ms: "Magnet yang berbentuk seperti huruf 'U' dinamakan?", en: "A magnet shaped like the letter 'U' is called?" }, options: { ms: ["Magnet bar", "Magnet ladam", "Magnet butang"], en: ["Bar magnet", "U-shaped / Horseshoe magnet", "Button magnet"] }, correct: 1 },
-            { q: { ms: "Antara objek berikut, yang manakah ditarik oleh magnet?", en: "Which of the following objects is attracted to a magnet?" }, options: { ms: ["Pembaris plastik", "Klip kertas besi", "Pemadam getah"], en: ["Plastic ruler", "Iron paper clip", "Rubber eraser"] }, correct: 1 },
-            { q: { ms: "Objek yang tidak ditarik oleh magnet biasanya diperbuat daripada?", en: "Objects not attracted to magnets are usually made of?" }, options: { ms: ["Besi", "Plastik atau kayu", "Logam"], en: ["Iron", "Plastic or wood", "Metal"] }, correct: 1 },
-            { q: { ms: "Jika dua kutub magnet yang berlainan didekatkan, apakah yang berlaku?", en: "If two different magnet poles are brought together, what happens?" }, options: { ms: ["Menarik antara satu sama lain", "Menolak antara satu sama lain", "Magnet rosak"], en: ["Attract each other", "Repel each other", "Magnet breaks"] }, correct: 0 },
-            { q: { ms: "Kutub yang sama (Utara dan Utara) akan?", en: "Same poles (North and North) will?" }, options: { ms: ["Tarik-menarik", "Tolak-menolak", "Bercantum"], en: ["Attract", "Repel", "Stick together"] }, correct: 1 },
-            { q: { ms: "Antara berikut, objek manakah yang boleh menyerap air?", en: "Which of the following objects can absorb water?" }, options: { ms: ["Baju kapas", "Baju hujan", "Gelas kaca"], en: ["Cotton shirt", "Raincoat", "Glass cup"] }, correct: 0 },
-            { q: { ms: "Objek kalis air bermaksud objek yang?", en: "A waterproof object means an object that?" }, options: { ms: ["Boleh menyerap air", "Tidak menyerap air", "Mudah rosak kena air"], en: ["Can absorb water", "Does not absorb water", "Easily damaged by water"] }, correct: 1 },
-            { q: { ms: "Untuk mengelap air susu yang tumpah, kita paling sesuai menggunakan?", en: "To wipe up spilled milk, it is most suitable to use?" }, options: { ms: ["Kertas surat khabar", "Kain lap tisu dapur", "Plastik pembalut"], en: ["Newspaper", "Kitchen tissue towel", "Plastic wrap"] }, correct: 1 },
-            { q: { ms: "Mengapakah payung diperbuat daripada bahan plastik atau nilon?", en: "Why are umbrellas made of plastic or nylon material?" }, options: { ms: ["Kerana ia berat", "Kerana ia kalis air", "Kerana ia menyerap hujan"], en: ["Because it is heavy", "Because it is waterproof", "Because it absorbs rain"] }, correct: 1 },
-            { q: { ms: "Bahan manakah yang paling sesuai dijadikan mop lantai?", en: "Which material is best used as a floor mop?" }, options: { ms: ["Benang kapas", "Kertas", "Dawai besi"], en: ["Cotton string", "Paper", "Iron wire"] }, correct: 0 },
-            { q: { ms: "Kawasan daratan yang paling tinggi dan curam dikenali sebagai?", en: "The highest and steepest landform is known as?" }, options: { ms: ["Bukit", "Gunung", "Lembah"], en: ["Hill", "Mountain", "Valley"] }, correct: 1 },
-            { q: { ms: "Kawasan air yang sangat luas dan airnya masin dipanggil?", en: "A very large area of salt water is called?" }, options: { ms: ["Tasik", "Sungai", "Laut / Pantai"], en: ["Lake", "River", "Sea / Beach"] }, correct: 2 },
-            { q: { ms: "Tanah yang paling sesuai untuk menanam sayur-sayuran ialah?", en: "The best soil for planting vegetables is?" }, options: { ms: ["Tanah liat", "Tanah kebun", "Pasir"], en: ["Clay", "Garden soil", "Sand"] }, correct: 1 },
-            { q: { ms: "Tanah di kawasan tepi pantai kebanyakannya ialah?", en: "Soil at the beach area is mostly?" }, options: { ms: ["Pasir", "Tanah gambut", "Tanah liat"], en: ["Sand", "Peat soil", "Clay"] }, correct: 0 },
-            { q: { ms: "Bentuk muka bumi yang mempunyai air mengalir perlahan-lahan ke laut dipanggil?", en: "A landform with water flowing slowly to the sea is called a?" }, options: { ms: ["Gunung", "Sungai", "Kolam"], en: ["Mountain", "River", "Pond"] }, correct: 1 },
-            { q: { ms: "Bentuk asas yang mempunyai 3 sisi (bucu) dikenali sebagai?", en: "A basic shape with 3 sides (corners) is known as?" }, options: { ms: ["Segiempat sama", "Segitiga", "Bulatan"], en: ["Square", "Triangle", "Circle"] }, correct: 1 },
-            { q: { ms: "Bola sepak mempunyai bentuk bongkah jenis?", en: "A football has a block shape of?" }, options: { ms: ["Silinder", "Sfera", "Kubus"], en: ["Cylinder", "Sphere", "Cube"] }, correct: 1 },
-            { q: { ms: "Bentuk buku teks Sains menyerupai bongkah?", en: "The shape of a Science textbook resembles a block of?" }, options: { ms: ["Kuboid", "Piramid", "Kon"], en: ["Cuboid", "Pyramid", "Cone"] }, correct: 0 },
-            { q: { ms: "Cawan minuman selalunya berbentuk bongkah?", en: "A drinking cup usually has the block shape of a?" }, options: { ms: ["Prisma", "Silinder", "Sfera"], en: ["Prism", "Cylinder", "Sphere"] }, correct: 1 },
-            { q: { ms: "Di dalam bilik sains, kita TIDAK DIBENARKAN untuk?", en: "In the science room, we are NOT ALLOWED to?" }, options: { ms: ["Membaca buku", "Berlari dan bermain", "Mendengar arahan guru"], en: ["Read books", "Run and play", "Listen to the teacher's instructions"] }, correct: 1 },
-            { q: { ms: "Selepas selesai membuat eksperimen, apakah yang perlu dilakukan?", en: "After finishing an experiment, what should be done?" }, options: { ms: ["Tinggalkan di atas meja", "Cuci alatan dan simpan semula", "Buang ke luar tingkap"], en: ["Leave it on the table", "Wash tools and keep them back", "Throw it out the window"] }, correct: 1 },
-            { q: { ms: "Jika tangan kita terluka di bilik sains, kita perlu?", en: "If our hand gets cut in the science room, we should?" }, options: { ms: ["Berdiam diri", "Cepat-cepat basuh", "Beritahu guru segera"], en: ["Keep quiet", "Wash it quickly", "Tell the teacher immediately"] }, correct: 2 },
-            { q: { ms: "Kemahiran saintifik untuk 'melihat perubahan' menggunakan mata dipanggil?", en: "The scientific skill to 'see changes' using the eyes is called?" }, options: { ms: ["Memerhati", "Membina", "Bercakap"], en: ["Observing", "Building", "Talking"] }, correct: 0 },
-            { q: { ms: "Apakah deria yang digunakan untuk membezakan gula dan garam tanpa merasa?", en: "What sense is used to differentiate sugar and salt without tasting?" }, options: { ms: ["Pendengaran", "Penglihatan (melihat saiz biji)", "Bau"], en: ["Hearing", "Sight (seeing seed size)", "Smell"] }, correct: 1 },
-            { q: { ms: "Tumbuhan membesar. Apakah perubahan yang akan berlaku?", en: "Plants grow. What changes will happen?" }, options: { ms: ["Pokok menjadi semakin pendek", "Bilangan daun bertambah", "Warna batang menjadi biru"], en: ["Plant becomes shorter", "Number of leaves increases", "Stem color becomes blue"] }, correct: 1 },
-            { q: { ms: "Haiwan manakah yang melahirkan anak?", en: "Which animal gives birth to young?" }, options: { ms: ["Katak", "Kucing", "Ayam"], en: ["Frog", "Cat", "Chicken"] }, correct: 1 },
-            { q: { ms: "Katak dan buaya mempunyai persamaan iaitu?", en: "Frogs and crocodiles have a similarity, which is?" }, options: { ms: ["Bertelur", "Berbulu tebal", "Tinggal di udara"], en: ["Lay eggs", "Have thick fur", "Live in the air"] }, correct: 0 },
-            { q: { ms: "Sebuah kotak kasut berbentuk bongkah?", en: "A shoebox has a block shape of?" }, options: { ms: ["Kuboid", "Sfera", "Silinder"], en: ["Cuboid", "Sphere", "Cylinder"] }, correct: 0 },
-            { q: { ms: "Sudu logam bersifat?", en: "A metal spoon is?" }, options: { ms: ["Lembut dan menyerap air", "Keras dan tidak menyerap air", "Ringan dan terapung"], en: ["Soft and absorbs water", "Hard and does not absorb water", "Light and floats"] }, correct: 1 },
-            { q: { ms: "Kenapa pasu bunga diperbuat daripada tanah liat?", en: "Why are flower pots made from clay?" }, options: { ms: ["Kerana tanah liat menahan air dengan baik", "Kerana ia sangat ringan", "Kerana ia cantik dan jernih"], en: ["Because clay holds water well", "Because it is very light", "Because it is beautiful and clear"] }, correct: 0 }
+            { q: { ms: "Apakah organ deria yang digunakan untuk melihat?", en: "What sensory organ is used for seeing?" }, options: { ms: ["Telinga", "Mata", "Hidung", "Kulit"], en: ["Ears", "Eyes", "Nose", "Skin"] }, correct: 1 },
+            { q: { ms: "Kita menggunakan hidung untuk?", en: "We use our nose to?" }, options: { ms: ["Menghidu bau", "Merasa makanan", "Mendengar bunyi", "Melihat objek"], en: ["Smell", "Taste food", "Hear sounds", "See objects"] }, correct: 0 },
+            { q: { ms: "Organ apakah yang memberitahu kita bahawa ais itu sejuk?", en: "Which organ tells us that ice is cold?" }, options: { ms: ["Mata", "Lidah", "Kulit", "Hidung"], en: ["Eyes", "Tongue", "Skin", "Nose"] }, correct: 2 },
+            { q: { ms: "Apakah rasa bagi buah lemon?", en: "What is the taste of a lemon?" }, options: { ms: ["Manis", "Masam", "Pahit", "Masin"], en: ["Sweet", "Sour", "Bitter", "Salty"] }, correct: 1 },
+            { q: { ms: "Bunyi loceng sekolah dikesan menggunakan deria?", en: "The sound of the school bell is detected using the sense of?" }, options: { ms: ["Sentuhan", "Pendengaran", "Penglihatan", "Bau"], en: ["Touch", "Hearing", "Sight", "Smell"] }, correct: 1 },
+            { q: { ms: "Antara berikut, yang manakah benda hidup?", en: "Which of the following is a living thing?" }, options: { ms: ["Kereta", "Pokok bunga", "Batu", "Buku"], en: ["Car", "Flower plant", "Stone", "Book"] }, correct: 1 },
+            { q: { ms: "Apakah ciri benda hidup?", en: "What is a characteristic of living things?" }, options: { ms: ["Tidak perlukan air", "Membiak dan membesar", "Tidak bergerak", "Tidak bernafas"], en: ["Do not need water", "Reproduce and grow", "Do not move", "Do not breathe"] }, correct: 1 },
+            { q: { ms: "Benda bukan hidup ialah objek yang?", en: "Non-living things are objects that?" }, options: { ms: ["Perlukan makanan", "Tidak bernafas", "Boleh membesar", "Melahirkan anak"], en: ["Need food", "Do not breathe", "Can grow", "Give birth"] }, correct: 1 },
+            { q: { ms: "Pilih contoh benda bukan hidup.", en: "Choose an example of a non-living thing." }, options: { ms: ["Kucing", "Meja", "Katak", "Burung"], en: ["Cat", "Table", "Frog", "Bird"] }, correct: 1 },
+            { q: { ms: "Apakah keperluan asas benda hidup?", en: "What are the basic needs of living things?" }, options: { ms: ["Buku dan pensel", "Makanan, air dan udara", "Rumah yang besar", "Mainan"], en: ["Books and pencils", "Food, water and air", "A big house", "Toys"] }, correct: 1 },
+            { q: { ms: "Burung menggunakan apa untuk terbang?", en: "What do birds use to fly?" }, options: { ms: ["Kepak", "Ekor", "Sirip", "Tanduk"], en: ["Wings", "Tail", "Fins", "Horns"] }, correct: 0 },
+            { q: { ms: "Ikan berenang di dalam air menggunakan?", en: "Fish swim in the water using?" }, options: { ms: ["Kaki", "Sirip", "Paruh", "Kepak"], en: ["Legs", "Fins", "Beaks", "Wings"] }, correct: 1 },
+            { q: { ms: "Antara haiwan berikut, yang manakah mempunyai tanduk?", en: "Which of the following animals has horns?" }, options: { ms: ["Kerbau", "Katak", "Kucing", "Itik"], en: ["Buffalo", "Frog", "Cat", "Duck"] }, correct: 0 },
+            { q: { ms: "Siput melindungi dirinya menggunakan?", en: "Snails protect themselves using?" }, options: { ms: ["Bulu pelepah", "Cengkerang", "Sisik", "Bulu lebat"], en: ["Feathers", "Shell", "Scales", "Thick fur"] }, correct: 1 },
+            { q: { ms: "Haiwan apakah yang mempunyai badan bersisik?", en: "Which animal has a scaly body?" }, options: { ms: ["Ular", "Arnab", "Itik", "Kucing"], en: ["Snake", "Rabbit", "Duck", "Cat"] }, correct: 0 },
+            { q: { ms: "Bahagian tumbuhan yang manakah berada di bawah tanah?", en: "Which part of the plant is underground?" }, options: { ms: ["Akar", "Daun", "Bunga", "Batang"], en: ["Roots", "Leaves", "Flowers", "Stem"] }, correct: 0 },
+            { q: { ms: "Daun pokok pisang mempunyai urat daun jenis?", en: "Banana leaves have what type of leaf veins?" }, options: { ms: ["Selari", "Jejari", "Bulat", "Segi empat"], en: ["Parallel", "Netted", "Round", "Square"] }, correct: 0 },
+            { q: { ms: "Pokok bunga mawar dan pokok mangga mempunyai batang jenis?", en: "Rose plants and mango trees have what type of stem?" }, options: { ms: ["Batang tidak berkayu", "Batang berkayu", "Batang berair", "Batang plastik"], en: ["Non-woody stem", "Woody stem", "Watery stem", "Plastic stem"] }, correct: 1 },
+            { q: { ms: "Akar pokok durian dikenali sebagai akar?", en: "The roots of a durian tree are known as?" }, options: { ms: ["Akar serabut", "Akar tunjang", "Akar palsu", "Akar gantung"], en: ["Fibrous root", "Taproot", "False root", "Aerial root"] }, correct: 1 },
+            { q: { ms: "Apakah yang terhasil selepas bunga layu dan gugur pada pokok betik?", en: "What is produced after flowers wither and fall on a papaya tree?" }, options: { ms: ["Daun baru", "Buah betik", "Akar", "Ranting"], en: ["New leaves", "Papaya fruit", "Roots", "Branches"] }, correct: 1 },
+            { q: { ms: "Magnet yang berbentuk seperti huruf 'U' dinamakan?", en: "A magnet shaped like the letter 'U' is called?" }, options: { ms: ["Magnet bar", "Magnet ladam", "Magnet butang", "Magnet cincin"], en: ["Bar magnet", "Horseshoe magnet", "Button magnet", "Ring magnet"] }, correct: 1 },
+            { q: { ms: "Antara objek berikut, yang manakah ditarik oleh magnet?", en: "Which of the following objects is attracted to a magnet?" }, options: { ms: ["Pembaris plastik", "Klip kertas besi", "Pemadam getah", "Pensel kayu"], en: ["Plastic ruler", "Iron paper clip", "Rubber eraser", "Wooden pencil"] }, correct: 1 },
+            { q: { ms: "Objek yang tidak ditarik oleh magnet biasanya diperbuat daripada?", en: "Objects not attracted to magnets are usually made of?" }, options: { ms: ["Besi", "Plastik atau kayu", "Logam", "Keluli"], en: ["Iron", "Plastic or wood", "Metal", "Steel"] }, correct: 1 },
+            { q: { ms: "Jika dua kutub magnet yang berlainan didekatkan, apakah yang berlaku?", en: "If two different magnet poles are brought together, what happens?" }, options: { ms: ["Menarik antara satu sama lain", "Menolak antara satu sama lain", "Magnet rosak", "Mencair"], en: ["Attract each other", "Repel each other", "Magnet breaks", "Melts"] }, correct: 0 },
+            { q: { ms: "Kutub yang sama (Utara dan Utara) akan?", en: "Same poles (North and North) will?" }, options: { ms: ["Tarik-menarik", "Tolak-menolak", "Bercantum", "Bertukar warna"], en: ["Attract", "Repel", "Stick together", "Change color"] }, correct: 1 },
+            { q: { ms: "Antara berikut, objek manakah yang boleh menyerap air?", en: "Which of the following objects can absorb water?" }, options: { ms: ["Baju kapas", "Baju hujan", "Gelas kaca", "Beg plastik"], en: ["Cotton shirt", "Raincoat", "Glass cup", "Plastic bag"] }, correct: 0 },
+            { q: { ms: "Objek kalis air bermaksud objek yang?", en: "A waterproof object means an object that?" }, options: { ms: ["Boleh menyerap air", "Tidak menyerap air", "Mudah rosak kena air", "Menjadi berat"], en: ["Can absorb water", "Does not absorb water", "Easily damaged by water", "Becomes heavy"] }, correct: 1 },
+            { q: { ms: "Untuk mengelap air susu yang tumpah, kita paling sesuai menggunakan?", en: "To wipe up spilled milk, it is most suitable to use?" }, options: { ms: ["Kertas surat khabar", "Kain lap tisu dapur", "Plastik pembalut", "Kaca"], en: ["Newspaper", "Kitchen tissue towel", "Plastic wrap", "Glass"] }, correct: 1 },
+            { q: { ms: "Mengapakah payung diperbuat daripada bahan plastik atau nilon?", en: "Why are umbrellas made of plastic or nylon material?" }, options: { ms: ["Kerana ia berat", "Kerana ia kalis air", "Kerana ia menyerap hujan", "Kerana ia mudah koyak"], en: ["Because it is heavy", "Because it is waterproof", "Because it absorbs rain", "Because it tears easily"] }, correct: 1 },
+            { q: { ms: "Bahan manakah yang paling sesuai dijadikan mop lantai?", en: "Which material is best used as a floor mop?" }, options: { ms: ["Benang kapas", "Kertas", "Dawai besi", "Getah"], en: ["Cotton string", "Paper", "Iron wire", "Rubber"] }, correct: 0 },
+            { q: { ms: "Kawasan daratan yang paling tinggi dan curam dikenali sebagai?", en: "The highest and steepest landform is known as?" }, options: { ms: ["Bukit", "Gunung", "Lembah", "Pantai"], en: ["Hill", "Mountain", "Valley", "Beach"] }, correct: 1 },
+            { q: { ms: "Kawasan air yang sangat luas dan airnya masin dipanggil?", en: "A very large area of salt water is called?" }, options: { ms: ["Tasik", "Sungai", "Laut", "Kolam"], en: ["Lake", "River", "Sea", "Pond"] }, correct: 2 },
+            { q: { ms: "Tanah yang paling sesuai untuk menanam sayur-sayuran ialah?", en: "The best soil for planting vegetables is?" }, options: { ms: ["Tanah liat", "Tanah kebun", "Pasir", "Batu-batu"], en: ["Clay", "Garden soil", "Sand", "Stones"] }, correct: 1 },
+            { q: { ms: "Tanah di kawasan tepi pantai kebanyakannya ialah?", en: "Soil at the beach area is mostly?" }, options: { ms: ["Pasir", "Tanah gambut", "Tanah liat", "Lumpur"], en: ["Sand", "Peat soil", "Clay", "Mud"] }, correct: 0 },
+            { q: { ms: "Bentuk muka bumi yang mempunyai air mengalir perlahan-lahan ke laut dipanggil?", en: "A landform with water flowing slowly to the sea is called a?" }, options: { ms: ["Gunung", "Sungai", "Kolam", "Tasik"], en: ["Mountain", "River", "Pond", "Lake"] }, correct: 1 },
+            { q: { ms: "Bentuk asas yang mempunyai 3 sisi (bucu) dikenali sebagai?", en: "A basic shape with 3 sides (corners) is known as?" }, options: { ms: ["Segiempat sama", "Segitiga", "Bulatan", "Segiempat tepat"], en: ["Square", "Triangle", "Circle", "Rectangle"] }, correct: 1 },
+            { q: { ms: "Bola sepak mempunyai bentuk bongkah jenis?", en: "A football has a block shape of?" }, options: { ms: ["Silinder", "Sfera", "Kubus", "Piramid"], en: ["Cylinder", "Sphere", "Cube", "Pyramid"] }, correct: 1 },
+            { q: { ms: "Bentuk buku teks Sains menyerupai bongkah?", en: "The shape of a Science textbook resembles a block of?" }, options: { ms: ["Kuboid", "Piramid", "Kon", "Sfera"], en: ["Cuboid", "Pyramid", "Cone", "Sphere"] }, correct: 0 },
+            { q: { ms: "Cawan minuman selalunya berbentuk bongkah?", en: "A drinking cup usually has the block shape of a?" }, options: { ms: ["Prisma", "Silinder", "Sfera", "Kubus"], en: ["Prism", "Cylinder", "Sphere", "Cube"] }, correct: 1 },
+            { q: { ms: "Di dalam bilik sains, kita TIDAK DIBENARKAN untuk?", en: "In the science room, we are NOT ALLOWED to?" }, options: { ms: ["Membaca buku", "Berlari dan bermain", "Mendengar arahan guru", "Membuat eksperimen"], en: ["Read books", "Run and play", "Listen to the teacher's instructions", "Do experiments"] }, correct: 1 },
+            { q: { ms: "Selepas selesai membuat eksperimen, apakah yang perlu dilakukan?", en: "After finishing an experiment, what should be done?" }, options: { ms: ["Tinggalkan di atas meja", "Cuci alatan dan simpan semula", "Buang ke luar tingkap", "Sorok dalam beg"], en: ["Leave it on the table", "Wash tools and keep them back", "Throw it out the window", "Hide in bag"] }, correct: 1 },
+            { q: { ms: "Jika tangan kita terluka di bilik sains, kita perlu?", en: "If our hand gets cut in the science room, we should?" }, options: { ms: ["Berdiam diri", "Cepat-cepat basuh", "Beritahu guru segera", "Menangis sekuat hati"], en: ["Keep quiet", "Wash it quickly", "Tell the teacher immediately", "Cry loudly"] }, correct: 2 },
+            { q: { ms: "Kemahiran saintifik untuk 'melihat perubahan' menggunakan mata dipanggil?", en: "The scientific skill to 'see changes' using the eyes is called?" }, options: { ms: ["Memerhati", "Membina", "Bercakap", "Berlari"], en: ["Observing", "Building", "Talking", "Running"] }, correct: 0 },
+            { q: { ms: "Tanpa merasa, kita boleh menggunakan deria apa untuk melihat bentuk zarah gula dan garam?", en: "Without tasting, what sense can we use to see the shape of sugar and salt particles?" }, options: { ms: ["Pendengaran", "Penglihatan", "Bau", "Sentuhan"], en: ["Hearing", "Sight", "Smell", "Touch"] }, correct: 1 },
+            { q: { ms: "Tumbuhan membesar. Apakah perubahan yang akan berlaku?", en: "Plants grow. What changes will happen?" }, options: { ms: ["Pokok menjadi semakin pendek", "Bilangan daun bertambah", "Warna batang menjadi biru", "Daun hilang"], en: ["Plant becomes shorter", "Number of leaves increases", "Stem color becomes blue", "Leaves disappear"] }, correct: 1 },
+            { q: { ms: "Haiwan manakah yang melahirkan anak?", en: "Which animal gives birth to young?" }, options: { ms: ["Katak", "Kucing", "Ayam", "Semut"], en: ["Frog", "Cat", "Chicken", "Ant"] }, correct: 1 },
+            { q: { ms: "Katak dan buaya mempunyai persamaan iaitu?", en: "Frogs and crocodiles have a similarity, which is?" }, options: { ms: ["Bertelur", "Berbulu tebal", "Tinggal di udara", "Hanya makan pokok"], en: ["Lay eggs", "Have thick fur", "Live in the air", "Only eat plants"] }, correct: 0 },
+            { q: { ms: "Sebuah kotak kasut berbentuk bongkah?", en: "A shoebox has a block shape of?" }, options: { ms: ["Kuboid", "Sfera", "Silinder", "Kon"], en: ["Cuboid", "Sphere", "Cylinder", "Cone"] }, correct: 0 },
+            { q: { ms: "Sudu logam bersifat?", en: "A metal spoon is?" }, options: { ms: ["Lembut dan menyerap air", "Keras dan tidak menyerap air", "Ringan dan terapung", "Mudah mencair"], en: ["Soft and absorbs water", "Hard and does not absorb water", "Light and floats", "Easily melts"] }, correct: 1 },
+            { q: { ms: "Kenapa pasu bunga diperbuat daripada tanah liat?", en: "Why are flower pots made from clay?" }, options: { ms: ["Kerana tanah liat menahan air dengan baik", "Kerana ia sangat ringan", "Kerana ia cantik dan jernih", "Kerana ia terapung di air"], en: ["Because clay holds water well", "Because it is very light", "Because it is beautiful and clear", "Because it floats on water"] }, correct: 0 }
         ];
 
         function binaAvatar() {
@@ -421,13 +457,13 @@
             kemasKiniUI();
         }
 
-        // ================= LOGIK MULTI-PROFIL =================
+        // ================= LOGIK MULTI-PROFIL TAHUN 1 =================
         function getSenaraiProfil() {
-            return JSON.parse(localStorage.getItem('sains_profil_list')) || [];
+            return JSON.parse(localStorage.getItem('sains_profil_list_t1')) || [];
         }
 
         function getProfilSemasa() {
-            let namaSemasa = localStorage.getItem('sains_semasa');
+            let namaSemasa = localStorage.getItem('sains_semasa_t1');
             if(!namaSemasa) return null;
             let senarai = getSenaraiProfil();
             return senarai.find(p => p.name === namaSemasa);
@@ -438,15 +474,14 @@
             let index = senarai.findIndex(p => p.name === data.name);
             if(index !== -1) {
                 senarai[index] = data;
-                localStorage.setItem('sains_profil_list', JSON.stringify(senarai));
+                localStorage.setItem('sains_profil_list_t1', JSON.stringify(senarai));
             }
         }
 
-        // Semak semasa page loading
         function semakProfilSediaAda() {
-            // Migrasi jika ada data lama yg belum jadi list (untuk selamatkan markah Fara!)
+            // Migrasi dari data Tahun 1 versi awal jika ada
             let oldName = localStorage.getItem('namaMurid');
-            if(oldName) {
+            if(oldName && localStorage.getItem('sains_kuiz1_high_score')) {
                 let p = {
                     name: oldName.toUpperCase(),
                     avatar: localStorage.getItem('avatarMurid') || '🎒',
@@ -457,12 +492,11 @@
                 let s = getSenaraiProfil();
                 if(!s.find(x => x.name === p.name)) {
                     s.push(p);
-                    localStorage.setItem('sains_profil_list', JSON.stringify(s));
+                    localStorage.setItem('sains_profil_list_t1', JSON.stringify(s));
                 }
-                localStorage.removeItem('namaMurid'); // Bersihkan
             }
 
-            let profilSemasa = localStorage.getItem('sains_semasa');
+            let profilSemasa = localStorage.getItem('sains_semasa_t1');
             if (profilSemasa) {
                 document.getElementById('screen-login').style.display = 'none';
                 paparMenuUtama();
@@ -483,17 +517,43 @@
                 container.style.display = 'block';
                 listDiv.innerHTML = '';
                 senarai.forEach(p => {
+                    let row = document.createElement('div');
+                    row.className = 'profile-row';
+
                     let btn = document.createElement('button');
                     btn.className = 'existing-profile-btn';
                     btn.innerHTML = `<div class="ep-left"><span>${p.avatar}</span> <span>${p.name}</span></div><div class="ep-right">⭐ ${p.hScore}</div>`;
                     btn.onclick = () => {
-                        localStorage.setItem('sains_semasa', p.name);
-                        location.reload(); // Terus masuk menu
+                        localStorage.setItem('sains_semasa_t1', p.name);
+                        location.reload(); 
                     };
-                    listDiv.appendChild(btn);
+
+                    let delBtn = document.createElement('button');
+                    delBtn.className = 'delete-profile-btn';
+                    delBtn.innerHTML = '🗑️';
+                    delBtn.onclick = () => padamProfil(p.name);
+
+                    row.appendChild(btn);
+                    row.appendChild(delBtn);
+                    listDiv.appendChild(row);
                 });
             } else {
                 container.style.display = 'none';
+            }
+        }
+
+        function padamProfil(nama) {
+            let confirmMsg = lang === 'ms' ? `Adakah anda pasti mahu memadam profil ${nama}? Segala rekod markahnya akan hilang!` : `Are you sure you want to delete ${nama}'s profile? All their score records will be lost!`;
+            if (confirm(confirmMsg)) {
+                let senarai = getSenaraiProfil();
+                senarai = senarai.filter(p => p.name !== nama);
+                localStorage.setItem('sains_profil_list_t1', JSON.stringify(senarai));
+                
+                if (localStorage.getItem('sains_semasa_t1') === nama) {
+                    localStorage.removeItem('sains_semasa_t1');
+                }
+                
+                renderSenaraiProfil(); 
             }
         }
 
@@ -504,15 +564,13 @@
                 return;
             }
             
-            inputNama = inputNama.replace(/🤖/g, '').trim(); // Buang emoji tersesat jika ada
+            inputNama = inputNama.replace(/🤖/g, '').trim(); 
             let senarai = getSenaraiProfil();
             let index = senarai.findIndex(p => p.name === inputNama);
 
             if (index !== -1) {
-                // Profil dah wujud, cuma update avatar
                 senarai[index].avatar = avatarPilihan;
             } else {
-                // Tambah profil baru
                 senarai.push({
                     name: inputNama,
                     avatar: avatarPilihan,
@@ -522,8 +580,8 @@
                 });
             }
 
-            localStorage.setItem('sains_profil_list', JSON.stringify(senarai));
-            localStorage.setItem('sains_semasa', inputNama);
+            localStorage.setItem('sains_profil_list_t1', JSON.stringify(senarai));
+            localStorage.setItem('sains_semasa_t1', inputNama);
 
             document.getElementById('screen-login').style.display = 'none';
             paparMenuUtama();
@@ -532,7 +590,7 @@
         function paparMenuUtama() {
             let data = getProfilSemasa();
             if(!data) {
-                logKeluar(); return; // Keselamatan jika data hilang
+                logKeluar(); return; 
             }
 
             document.getElementById('screen-menu').style.display = 'block';
@@ -545,8 +603,7 @@
         }
 
         function logKeluar() {
-            // HANYA buang status login. Senarai profil di bawah tak diusik.
-            localStorage.removeItem('sains_semasa');
+            localStorage.removeItem('sains_semasa_t1');
             location.reload();
         }
 
@@ -599,10 +656,15 @@
             `;
             
             let container = document.getElementById("options-container");
+            
+            // Format A, B, C, D
+            const abcd = ["A", "B", "C", "D"];
+            
             data.options[lang].forEach((opt, index) => {
                 let btn = document.createElement("button");
                 btn.className = "option-btn";
-                btn.innerText = opt;
+                // Letak A. B. C. D. di hadapan teks
+                btn.innerHTML = `<span class="opt-letter">${abcd[index]}.</span> ${opt}`;
                 
                 if (jawapanDipilih !== null) {
                     if (index === data.correct) {
@@ -678,13 +740,12 @@
             let quizArea = document.getElementById("quiz-area");
             let ui = teksUI[lang];
             
-            // Simpanan ke profil spesifik
             let dataSemasa = getProfilSemasa();
             if(dataSemasa) {
                 dataSemasa.tMain += 1;
                 if(markah > dataSemasa.hScore) dataSemasa.hScore = markah;
                 dataSemasa.lDate = new Date().toLocaleDateString('ms-MY');
-                simpanDataSemasa(dataSemasa); // Update dlm list utama
+                simpanDataSemasa(dataSemasa); 
             }
 
             if (isGameOver) {
@@ -720,7 +781,7 @@
             let ui = teksUI[lang];
             let dataSemasa = getProfilSemasa();
             
-            if(!dataSemasa) return; // safety
+            if(!dataSemasa) return; 
 
             let komenPrestasi = "";
             if (lang === 'ms') {
@@ -756,7 +817,7 @@
 
         window.onload = function() {
             binaAvatar();
-            semakProfilSediaAda(); // Ini akan detect profil Fara dan migrate kalau perlu
+            semakProfilSediaAda(); 
             kemasKiniUI();
         };
     </script>
