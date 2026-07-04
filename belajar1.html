@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik Tahun 1 - Kuiz Latihan 1</title>
+    <title>Sains Cilik Tahun 1</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background-color: #fff3e0;
+            background-color: #e8f5e9;
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,9 +16,10 @@
             min-height: 100vh;
         }
 
-        .phone-wrapper {
+        /* RESPONSIVE CONTAINER */
+        .app-wrapper {
             width: 100%;
-            max-width: 420px;
+            max-width: 100%;
             background: white;
             min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
@@ -28,20 +29,53 @@
             box-sizing: border-box;
         }
 
+        /* Desktop View Adjustments */
+        @media (min-width: 768px) {
+            body { padding: 40px 20px; }
+            .app-wrapper {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 20px;
+                padding: 40px;
+            }
+            .option-btn { font-size: 1.15rem; padding: 18px; }
+            h1 { font-size: 2rem; }
+            .question-text { font-size: 1.3rem; }
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .lang-btn {
+            background: #ffb300;
+            color: #3e2723;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #ff8f00;
+            transition: 0.2s;
+        }
+        .lang-btn:active { box-shadow: 0 0 0 #ff8f00; transform: translateY(3px); }
+
         .quiz-header {
             display: flex;
             justify-content: space-between;
-            background: #ffe0b2;
+            background: #c8e6c9;
             padding: 10px 15px;
             border-radius: 12px;
             font-weight: bold;
-            color: #e65100;
+            color: #1b5e20;
             margin-bottom: 20px;
         }
 
         .hearts { color: #ff5252; font-size: 1.2rem; }
-
-        h1 { color: #ff9800; text-align: center; font-size: 1.6rem; margin: 10px 0; }
+        h1 { color: #2e7d32; text-align: center; font-size: 1.6rem; margin: 10px 0; }
         
         .kuiz-box {
             background-color: #f5f5f5;
@@ -54,23 +88,13 @@
             justify-content: flex-start;
         }
 
-        .input-group {
-            margin: 15px 0;
-            text-align: left;
-        }
-
-        .input-group label {
-            font-weight: bold;
-            color: #e65100;
-            display: block;
-            margin-bottom: 8px;
-        }
-
+        .input-group { margin: 15px 0; text-align: left; }
+        .input-group label { font-weight: bold; color: #2e7d32; display: block; margin-bottom: 8px; }
         .name-input {
             width: 100%;
             padding: 12px;
             font-size: 1rem;
-            border: 2px solid #ff9800;
+            border: 2px solid #4caf50;
             border-radius: 10px;
             box-sizing: border-box;
             font-family: inherit;
@@ -85,8 +109,8 @@
         }
         
         .instruction-box {
-            background: #fff3e0;
-            border-left: 5px solid #ff9800;
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
             padding: 15px;
             text-align: left;
             border-radius: 10px;
@@ -120,24 +144,19 @@
 
         .action-btn {
             width: 100%;
-            background-color: #ff9800;
+            background-color: #4caf50;
             color: white;
             border: none;
             padding: 15px;
             font-size: 1.2rem;
             font-weight: bold;
             border-radius: 15px;
-            box-shadow: 0 5px 0 #e65100;
+            box-shadow: 0 5px 0 #1b5e20;
             cursor: pointer;
             margin-top: auto;
         }
 
-        .report-btn {
-            background-color: #0288d1;
-            box-shadow: 0 5px 0 #01579b;
-            margin-top: 10px;
-        }
-
+        .report-btn { background-color: #0288d1; box-shadow: 0 5px 0 #01579b; margin-top: 10px; }
         .stats-card {
             background: white;
             border-radius: 12px;
@@ -156,13 +175,7 @@
             padding-bottom: 4px;
         }
 
-        #result-message {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
+        #result-message { text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 15px; }
         .back-btn {
             text-align: center;
             display: block;
@@ -178,7 +191,11 @@
 </head>
 <body>
 
-    <div class="phone-wrapper">
+    <div class="app-wrapper">
+        <div class="top-bar">
+            <button class="lang-btn" id="langToggleBtn" onclick="tukarBahasa()">🇬🇧 English</button>
+        </div>
+
         <div class="quiz-header" id="header-bar" style="display: none;">
             <span id="progress-text">Soalan: 1/20</span>
             <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
@@ -186,89 +203,156 @@
         </div>
 
         <h1 id="main-title">Latihan Sains TAHUN 1 🎯</h1>
-        <div id="paparNama" style="text-align:center; font-weight:bold; color:#e65100; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
+        <div id="paparNama" style="text-align:center; font-weight:bold; color:#1b5e20; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
-            <!-- Skrin Utama -->
             <div class="instruction-screen" id="main-screen">
                 <div>
-                    <span style="font-size: 4rem;">🧪</span>
-                    <h2 style="color: #e65100; margin-top: 5px;">Profil Saintis</h2>
+                    <span style="font-size: 4rem;">🔬</span>
+                    <h2 id="ui-profil" style="color: #1b5e20; margin-top: 5px;">Profil Saintis</h2>
                     
                     <div class="input-group">
-                        <label>Nama Murid:</label>
+                        <label id="ui-nama">Nama Murid:</label>
                         <input type="text" id="username" class="name-input" placeholder="Masukkan nama..." autocomplete="off">
                     </div>
 
-                    <div class="instruction-box">
-                        🎯 Selesaikan <b>20 soalan</b> rawak daripada bank soalan.<br>
+                    <div class="instruction-box" id="ui-instruksi">
+                        🎯 Jawab <b>20 soalan</b> secara rawak.<br>
                         💯 Setiap jawapan betul memberikan <b>5 markah</b> (Maksimum 100).<br>
                         ❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!
                     </div>
                 </div>
                 <div>
-                    <button class="action-btn" onclick="mulaKuiz()">🚀 MULA BELAJAR</button>
-                    <button class="action-btn report-btn" onclick="paparSistemPrestasi()">📊 REKOD PRESTASI (IBU BAPA)</button>
+                    <button class="action-btn" id="ui-btn-mula" onclick="mulaKuiz()">🚀 MULA BELAJAR</button>
+                    <button class="action-btn report-btn" id="ui-btn-rekod" onclick="paparSistemPrestasi()">📊 REKOD PRESTASI (IBU BAPA)</button>
                 </div>
             </div>
         </div>
 
-        <a href="tahun1.html" class="back-btn">⬅️ Keluar</a>
+        <a href="tahun1.html" class="back-btn" id="ui-btn-keluar">⬅️ Keluar</a>
     </div>
 
     <script>
-        // BANK 50 SOALAN TAHUN 1 - BERSIH 100% TANPA EMOJI DI SOALAN/JAWAPAN
+        // TETAPAN BAHASA
+        let lang = 'ms'; // ms = Melayu, en = English
+
+        const teksUI = {
+            ms: {
+                toggleBtn: "🇬🇧 English",
+                title: "Latihan Sains TAHUN 1 🎯",
+                profil: "Profil Saintis",
+                nama: "Nama Murid:",
+                placeholder: "Masukkan nama...",
+                instruksi: "🎯 Jawab <b>20 soalan</b> secara rawak.<br>💯 Setiap jawapan betul memberikan <b>5 markah</b> (Maksimum 100).<br>❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!",
+                btnMula: "🚀 MULA BELAJAR",
+                btnRekod: "📊 REKOD PRESTASI (IBU BAPA)",
+                btnKeluar: "⬅️ Keluar",
+                soalan: "Soalan",
+                markah: "Markah",
+                betul: "🎉 BETUL! (+5 Markah) 🌟",
+                salah: "❌ SALAH! Jawapan betul warna hijau. 😉",
+                seterusnya: "SETERUSNYA ➡️",
+                gameOver: "GAME OVER!",
+                nyawaHabis: "Nyawa anda telah habis. Jangan putus asa, cuba lagi! 💪",
+                markahTerkumpul: "Markah Terkumpul",
+                cubaLagi: "CUBA LAGI",
+                tahniah: "TAHNIAH KUIZ TAMAT!",
+                mainLagi: "MAIN LAGI",
+                dashTajuk: "Dashboard Ibu Bapa",
+                dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
+                lblAnak: "Nama Anak:",
+                lblTertinggi: "Markah Tertinggi:",
+                lblGred: "Status Pencapaian:",
+                lblLatihan: "Jumlah Latihan:",
+                lblUjian: "Ujian Terakhir:",
+                btnKembali: "⬅️ KEMBALI",
+                saintisLabel: "Saintis"
+            },
+            en: {
+                toggleBtn: "🇲🇾 Bahasa Melayu",
+                title: "YEAR 1 Science Practice 🎯",
+                profil: "Scientist Profile",
+                nama: "Student Name:",
+                placeholder: "Enter name...",
+                instruksi: "🎯 Answer <b>20 random questions</b>.<br>💯 Each correct answer gives <b>5 marks</b> (Maximum 100).<br>❤️ You only have <b>3 lives</b>. Answer carefully!",
+                btnMula: "🚀 START LEARNING",
+                btnRekod: "📊 PERFORMANCE RECORD",
+                btnKeluar: "⬅️ Exit",
+                soalan: "Question",
+                markah: "Score",
+                betul: "🎉 CORRECT! (+5 Marks) 🌟",
+                salah: "❌ WRONG! The correct answer is green. 😉",
+                seterusnya: "NEXT ➡️",
+                gameOver: "GAME OVER!",
+                nyawaHabis: "You ran out of lives. Don't give up, try again! 💪",
+                markahTerkumpul: "Total Score",
+                cubaLagi: "TRY AGAIN",
+                tahniah: "CONGRATS, QUIZ FINISHED!",
+                mainLagi: "PLAY AGAIN",
+                dashTajuk: "Parents Dashboard",
+                dashDesc: "Check your child's quiz progress here.",
+                lblAnak: "Child's Name:",
+                lblTertinggi: "High Score:",
+                lblGred: "Achievement Status:",
+                lblLatihan: "Total Attempts:",
+                lblUjian: "Last Test:",
+                btnKembali: "⬅️ BACK",
+                saintisLabel: "Scientist"
+            }
+        };
+
+        // BANK 50 SOALAN TAHUN 1 (KSSR SEMAKAN 2017)
         const bankSoalan = [
-            { q: "Antara berikut, yang manakah merupakan benda hidup?", options: ["Anak patung", "Kucing", "Kereta mainan"], correct: 1 },
-            { q: "Apakah keperluan asas benda hidup untuk bernafas?", options: ["Udara", "Makanan", "Rumah"], correct: 0 },
-            { q: "Manakah benda bukan hidup yang boleh bergerak menggunakan bateri?", options: ["Burung", "Robot mainan", "Ikan"], correct: 1 },
-            { q: "Apakah deria yang digunakan untuk mendengar lagu?", options: ["Penglihatan", "Pendengaran", "Rasa"], correct: 1 },
-            { q: "Kita menggunakan deria bau melalui anggota badan yang mana?", options: ["Hidung", "Mata", "Tangan"], correct: 0 },
-            { q: "Apakah rasa buah lemon?", options: ["Manis", "Masin", "Masam"], correct: 2 },
-            { q: "Bahagian tumbuhan manakah yang berfungsi menyerap air dari tanah?", options: ["Daun", "Bunga", "Akar"], correct: 2 },
-            { q: "Apakah tindakan magnet apabila dua kutub yang sama didekatkan?", options: ["Menarik", "Menolak", "Tiada apa-apa berlaku"], correct: 1 },
-            { q: "Objek manakah yang boleh ditarik oleh magnet?", options: ["Klip kertas logam", "Pemadam", "Pembaris kayu"], correct: 0 },
-            { q: "Antara bahan berikut, yang manakah boleh menyerap air?", options: ["Gelas plastik", "Tuala kertas", "Syiling besi"], correct: 1 },
-            { q: "Mengapakah kita menggunakan payung semasa hari hujan?", options: ["Kerana payung kalis air", "Kerana payung menyerap air", "Kerana payung boleh membesar"], correct: 0 },
-            { q: "Pokok memerlukan apa untuk membuat makanannya sendiri?", options: ["Cahaya matahari", "Susu", "Daging"], correct: 0 },
-            { q: "Antara berikut, yang manakah haiwan berkaki dua?", options: ["Kucing", "Ayam", "Lembu"], correct: 1 },
-            { q: "Apakah fungsi bunga pada sesetengah tumbuhan?", options: ["Menjadi buah dan biji benih", "Membantu pokok berjalan", "Membantu pokok bernafas"], correct: 0 },
-            { q: "Deria rasa berada di anggota badan yang mana?", options: ["Hidung", "Lidah", "Kulit"], correct: 1 },
-            { q: "Objek manakah yang bersifat kalis air?", options: ["Tisu", "Baju kain", "Boot getah"], correct: 2 },
-            { q: "Haiwan manakah yang hidup di dalam air?", options: ["Ikan", "Anjing", "Kucing"], correct: 0 },
-            { q: "Apakah bentuk muka bumi yang tinggi dan curam?", options: ["Gunung", "Sawah padi", "Pantai"], correct: 0 },
-            { q: "Bahan manakah yang paling sesuai untuk mengelap air yang tumpah?", options: ["Beg plastik", "Kain tuala", "Kertas pasir"], correct: 1 },
-            { q: "Apakah yang akan berlaku jika benda hidup tidak mendapat air?", options: ["Membesar dengan cepat", "Boleh mati", "Menjadi semakin kuat"], correct: 1 },
-            { q: "Cermin mata digunakan untuk membantu deria apa?", options: ["Deria penglihatan", "Deria pendengaran", "Deria bau"], correct: 0 },
-            { q: "Antara tumbuhan berikut, yang manakah mempunyai duri?", options: ["Pokok pisang", "Pokok kaktus", "Pokok keembung"], correct: 1 },
-            { q: "Apakah kegunaan utama batu baur dalam bidang pembinaan?", options: ["Sebagai makanan", "Membuat bangunan dan jalan", "Membuat pakaian"], correct: 1 },
-            { q: "Bentuk asas bagi sebiji bola ialah?", options: ["Segi tiga", "Segi empat", "Sfera atau bulat"], correct: 2 },
-            { q: "Magnet mempunyai berapa kutub?", options: ["1 kutub", "2 kutub iaitu Utara dan Selatan", "4 kutub"], correct: 1 },
-            { q: "Apakah deria yang terjejas apabila kita mengalami selsema?", options: ["Penglihatan", "Pendengaran", "Bau"], correct: 2 },
-            { q: "Benda bukan hidup tidak memerlukan perkara berikut untuk kekal wujud?", options: ["Makanan dan air", "Bateri", "Tiada apa-apa"], correct: 0 },
-            { q: "Apakah bahagian pokok yang mencengkam pokok pada tanah?", options: ["Akar", "Bunga", "Daun"], correct: 0 },
-            { q: "Antara haiwan berikut, yang manakah terbang di udara?", options: ["Ular", "Kupu-kupu", "Kucing"], correct: 1 },
-            { q: "Gula memberikan rasa apa pada lidah kita?", options: ["Masam", "Manis", "Pahit"], correct: 1 },
-            { q: "Rasa ubat yang pahit dikesan oleh deria apa?", options: ["Deria rasa", "Deria bau", "Deria lihat"], correct: 0 },
-            { q: "Objek manakah yang diperbuat daripada plastik dan bersifat kalis air?", options: ["Sapu tangan", "Pembaris plastik", "Kadbod"], correct: 1 },
-            { q: "Apakah bahagian badan utama burung yang digunakan untuk terbang?", options: ["Kaki", "Sayap", "Paruh"], correct: 1 },
-            { q: "Apakah yang dilakukan oleh pokok semalu jika daunnya disentuh?", options: ["Daunnya menguncup", "Berubah warna", "Terus mati"], correct: 0 },
-            { q: "Antara berikut, jenis jenis tanah manakah yang mengandungi banyak batu pasir?", options: ["Tanah kebun", "Tanah pasir", "Tanah liat"], correct: 1 },
-            { q: "Tanah liat sangat sesuai digunakan untuk menanam pokok apa?", options: ["Kaktus", "Padi", "Pokok jagung"], correct: 1 },
-            { q: "Apakah nama objek yang boleh menarik objek berunsurkan besi?", options: ["Magnet", "Pensel", "Pemutar skru"], correct: 0 },
-            { q: "Mengapakah cacing tanah gemar tinggal di dalam tanah kebun?", options: ["Kerana banyak nutrien dan makanan", "Kerana cuaca panas", "Saja-saja tinggal di situ"], correct: 0 },
-            { q: "Susu lembu segar memberikan rasa apa?", options: ["Masam", "Lemak dan manis", "Pahit"], correct: 1 },
-            { q: "Haiwan manakah yang tidak mempunyai kaki untuk berjalan?", options: ["Katak", "Ular", "Itik"], correct: 1 },
-            { q: "Apakah deria yang digunakan untuk mengetahui permukaan meja itu kasar?", options: ["Bau", "Dengar", "Sentuhan"], correct: 2 },
-            { q: "Antara benda berikut, yang manakah akan tenggelam di dalam air?", options: ["Daun kering", "Duit syiling logam", "Pembaris kayu"], correct: 1 },
-            { q: "Pokok bunga mawar melindungi diri daripada musuh menggunakan apa?", options: ["Bau busuk", "Duri tajam", "Getah melekit"], correct: 1 },
-            { q: "Bunyi guruh yang kuat di langit dikesan oleh deria apa?", options: ["Pendengaran", "Penglihatan", "Rasa"], correct: 0 },
-            { q: "Manusia dan haiwan memerlukan tempat perlindungan untuk?", options: ["Bermain", "Berlindung daripada hujan dan panas", "Menjadi kaya"], correct: 1 },
-            { q: "Apakah yang dialami oleh benda hidup apabila masa berlalu?", options: ["Menjadi semakin kecil", "Tumbesaran atau membesar", "Kekal sama saiz"], correct: 1 },
-            { q: "Ular digolongkan sebagai jenis haiwan yang bergerak secara apa?", options: ["Terbang", "Merangkak atau melata", "Berlari laju"], correct: 1 },
-            { q: "Apakah komponen utama yang terkandung di dalam tanah kebun?", options: ["Humus iaitu reputan daun dan haiwan", "Berlian", "Plastik"], correct: 0 },
-            { q: "Klip kertas diperbuat daripada besi, jadi ia dikenali sebagai objek?", options: ["Magnetik", "Bukan magnetik", "Kaca"], correct: 0 },
-            { q: "Matahari akan terbit pada waktu apa?", options: ["Malam", "Pagi", "Petang"], correct: 1 }
+            { q: { ms: "Apakah organ deria yang digunakan untuk melihat?", en: "What sensory organ is used for seeing?" }, options: { ms: ["Telinga", "Mata", "Hidung"], en: ["Ears", "Eyes", "Nose"] }, correct: 1 },
+            { q: { ms: "Kita menggunakan hidung untuk?", en: "We use our nose to?" }, options: { ms: ["Menghidu bau", "Merasa makanan", "Mendengar bunyi"], en: ["Smell", "Taste food", "Hear sounds"] }, correct: 0 },
+            { q: { ms: "Organ apakah yang memberitahu kita bahawa ais itu sejuk?", en: "Which organ tells us that ice is cold?" }, options: { ms: ["Mata", "Lidah", "Kulit"], en: ["Eyes", "Tongue", "Skin"] }, correct: 2 },
+            { q: { ms: "Apakah rasa bagi buah lemon?", en: "What is the taste of a lemon?" }, options: { ms: ["Manis", "Masam", "Pahit"], en: ["Sweet", "Sour", "Bitter"] }, correct: 1 },
+            { q: { ms: "Bunyi loceng sekolah dikesan menggunakan deria?", en: "The sound of the school bell is detected using the sense of?" }, options: { ms: ["Sentuhan", "Pendengaran", "Penglihatan"], en: ["Touch", "Hearing", "Sight"] }, correct: 1 },
+            { q: { ms: "Antara berikut, yang manakah benda hidup?", en: "Which of the following is a living thing?" }, options: { ms: ["Kereta", "Pokok bunga", "Batu"], en: ["Car", "Flower plant", "Stone"] }, correct: 1 },
+            { q: { ms: "Apakah ciri benda hidup?", en: "What is a characteristic of living things?" }, options: { ms: ["Tidak perlukan air", "Membiak dan membesar", "Tidak bergerak"], en: ["Do not need water", "Reproduce and grow", "Do not move"] }, correct: 1 },
+            { q: { ms: "Benda bukan hidup ialah objek yang?", en: "Non-living things are objects that?" }, options: { ms: ["Perlukan makanan", "Tidak bernafas", "Boleh membesar"], en: ["Need food", "Do not breathe", "Can grow"] }, correct: 1 },
+            { q: { ms: "Pilih contoh benda bukan hidup.", en: "Choose an example of a non-living thing." }, options: { ms: ["Kucing", "Meja", "Katak"], en: ["Cat", "Table", "Frog"] }, correct: 1 },
+            { q: { ms: "Apakah keperluan asas benda hidup?", en: "What are the basic needs of living things?" }, options: { ms: ["Buku dan pensel", "Makanan, air dan udara", "Rumah yang besar"], en: ["Books and pencils", "Food, water and air", "A big house"] }, correct: 1 },
+            { q: { ms: "Burung menggunakan apa untuk terbang?", en: "What do birds use to fly?" }, options: { ms: ["Kepak", "Ekor", "Sirip"], en: ["Wings", "Tail", "Fins"] }, correct: 0 },
+            { q: { ms: "Ikan berenang di dalam air menggunakan?", en: "Fish swim in the water using?" }, options: { ms: ["Kaki", "Sirip", "Paruh"], en: ["Legs", "Fins", "Beaks"] }, correct: 1 },
+            { q: { ms: "Antara haiwan berikut, yang manakah mempunyai tanduk?", en: "Which of the following animals has horns?" }, options: { ms: ["Kerbau", "Katak", "Kucing"], en: ["Buffalo", "Frog", "Cat"] }, correct: 0 },
+            { q: { ms: "Siput melindungi dirinya menggunakan?", en: "Snails protect themselves using?" }, options: { ms: ["Bulu pelepah", "Cengkerang", "Sisik"], en: ["Feathers", "Shell", "Scales"] }, correct: 1 },
+            { q: { ms: "Haiwan apakah yang mempunyai badan bersisik?", en: "Which animal has a scaly body?" }, options: { ms: ["Ular", "Arnab", "Itik"], en: ["Snake", "Rabbit", "Duck"] }, correct: 0 },
+            { q: { ms: "Bahagian tumbuhan yang manakah berada di bawah tanah?", en: "Which part of the plant is underground?" }, options: { ms: ["Akar", "Daun", "Bunga"], en: ["Roots", "Leaves", "Flowers"] }, correct: 0 },
+            { q: { ms: "Daun pokok pisang mempunyai urat daun jenis?", en: "Banana leaves have what type of leaf veins?" }, options: { ms: ["Selari", "Jejari", "Bulat"], en: ["Parallel", "Netted", "Round"] }, correct: 0 },
+            { q: { ms: "Pokok bunga mawar dan pokok mangga mempunyai batang jenis?", en: "Rose plants and mango trees have what type of stem?" }, options: { ms: ["Batang tidak berkayu", "Batang berkayu", "Batang berair"], en: ["Non-woody stem", "Woody stem", "Watery stem"] }, correct: 1 },
+            { q: { ms: "Akar pokok durian dikenali sebagai akar?", en: "The roots of a durian tree are known as?" }, options: { ms: ["Akar serabut", "Akar tunjang", "Akar palsu"], en: ["Fibrous root", "Taproot", "False root"] }, correct: 1 },
+            { q: { ms: "Apakah yang terhasil selepas bunga layu dan gugur pada pokok betik?", en: "What is produced after flowers wither and fall on a papaya tree?" }, options: { ms: ["Daun baru", "Buah betik", "Akar"], en: ["New leaves", "Papaya fruit", "Roots"] }, correct: 1 },
+            { q: { ms: "Magnet yang berbentuk seperti huruf 'U' dinamakan?", en: "A magnet shaped like the letter 'U' is called?" }, options: { ms: ["Magnet bar", "Magnet ladam", "Magnet butang"], en: ["Bar magnet", "U-shaped / Horseshoe magnet", "Button magnet"] }, correct: 1 },
+            { q: { ms: "Antara objek berikut, yang manakah ditarik oleh magnet?", en: "Which of the following objects is attracted to a magnet?" }, options: { ms: ["Pembaris plastik", "Klip kertas besi", "Pemadam getah"], en: ["Plastic ruler", "Iron paper clip", "Rubber eraser"] }, correct: 1 },
+            { q: { ms: "Objek yang tidak ditarik oleh magnet biasanya diperbuat daripada?", en: "Objects not attracted to magnets are usually made of?" }, options: { ms: ["Besi", "Plastik atau kayu", "Logam"], en: ["Iron", "Plastic or wood", "Metal"] }, correct: 1 },
+            { q: { ms: "Jika dua kutub magnet yang berlainan didekatkan, apakah yang berlaku?", en: "If two different magnet poles are brought together, what happens?" }, options: { ms: ["Menarik antara satu sama lain", "Menolak antara satu sama lain", "Magnet rosak"], en: ["Attract each other", "Repel each other", "Magnet breaks"] }, correct: 0 },
+            { q: { ms: "Kutub yang sama (Utara dan Utara) akan?", en: "Same poles (North and North) will?" }, options: { ms: ["Tarik-menarik", "Tolak-menolak", "Bercantum"], en: ["Attract", "Repel", "Stick together"] }, correct: 1 },
+            { q: { ms: "Antara berikut, objek manakah yang boleh menyerap air?", en: "Which of the following objects can absorb water?" }, options: { ms: ["Baju kapas", "Baju hujan", "Gelas kaca"], en: ["Cotton shirt", "Raincoat", "Glass cup"] }, correct: 0 },
+            { q: { ms: "Objek kalis air bermaksud objek yang?", en: "A waterproof object means an object that?" }, options: { ms: ["Boleh menyerap air", "Tidak menyerap air", "Mudah rosak kena air"], en: ["Can absorb water", "Does not absorb water", "Easily damaged by water"] }, correct: 1 },
+            { q: { ms: "Untuk mengelap air susu yang tumpah, kita paling sesuai menggunakan?", en: "To wipe up spilled milk, it is most suitable to use?" }, options: { ms: ["Kertas surat khabar", "Kain lap tisu dapur", "Plastik pembalut"], en: ["Newspaper", "Kitchen tissue towel", "Plastic wrap"] }, correct: 1 },
+            { q: { ms: "Mengapakah payung diperbuat daripada bahan plastik atau nilon?", en: "Why are umbrellas made of plastic or nylon material?" }, options: { ms: ["Kerana ia berat", "Kerana ia kalis air", "Kerana ia menyerap hujan"], en: ["Because it is heavy", "Because it is waterproof", "Because it absorbs rain"] }, correct: 1 },
+            { q: { ms: "Bahan manakah yang paling sesuai dijadikan mop lantai?", en: "Which material is best used as a floor mop?" }, options: { ms: ["Benang kapas", "Kertas", "Dawai besi"], en: ["Cotton string", "Paper", "Iron wire"] }, correct: 0 },
+            { q: { ms: "Kawasan daratan yang paling tinggi dan curam dikenali sebagai?", en: "The highest and steepest landform is known as?" }, options: { ms: ["Bukit", "Gunung", "Lembah"], en: ["Hill", "Mountain", "Valley"] }, correct: 1 },
+            { q: { ms: "Kawasan air yang sangat luas dan airnya masin dipanggil?", en: "A very large area of salt water is called?" }, options: { ms: ["Tasik", "Sungai", "Laut / Pantai"], en: ["Lake", "River", "Sea / Beach"] }, correct: 2 },
+            { q: { ms: "Tanah yang paling sesuai untuk menanam sayur-sayuran ialah?", en: "The best soil for planting vegetables is?" }, options: { ms: ["Tanah liat", "Tanah kebun", "Pasir"], en: ["Clay", "Garden soil", "Sand"] }, correct: 1 },
+            { q: { ms: "Tanah di kawasan tepi pantai kebanyakannya ialah?", en: "Soil at the beach area is mostly?" }, options: { ms: ["Pasir", "Tanah gambut", "Tanah liat"], en: ["Sand", "Peat soil", "Clay"] }, correct: 0 },
+            { q: { ms: "Bentuk muka bumi yang mempunyai air mengalir perlahan-lahan ke laut dipanggil?", en: "A landform with water flowing slowly to the sea is called a?" }, options: { ms: ["Gunung", "Sungai", "Kolam"], en: ["Mountain", "River", "Pond"] }, correct: 1 },
+            { q: { ms: "Bentuk asas yang mempunyai 3 sisi (bucu) dikenali sebagai?", en: "A basic shape with 3 sides (corners) is known as?" }, options: { ms: ["Segiempat sama", "Segitiga", "Bulatan"], en: ["Square", "Triangle", "Circle"] }, correct: 1 },
+            { q: { ms: "Bola sepak mempunyai bentuk bongkah jenis?", en: "A football has a block shape of?" }, options: { ms: ["Silinder", "Sfera", "Kubus"], en: ["Cylinder", "Sphere", "Cube"] }, correct: 1 },
+            { q: { ms: "Bentuk buku teks Sains menyerupai bongkah?", en: "The shape of a Science textbook resembles a block of?" }, options: { ms: ["Kuboid", "Piramid", "Kon"], en: ["Cuboid", "Pyramid", "Cone"] }, correct: 0 },
+            { q: { ms: "Cawan minuman selalunya berbentuk bongkah?", en: "A drinking cup usually has the block shape of a?" }, options: { ms: ["Prisma", "Silinder", "Sfera"], en: ["Prism", "Cylinder", "Sphere"] }, correct: 1 },
+            { q: { ms: "Di dalam bilik sains, kita TIDAK DIBENARKAN untuk?", en: "In the science room, we are NOT ALLOWED to?" }, options: { ms: ["Membaca buku", "Berlari dan bermain", "Mendengar arahan guru"], en: ["Read books", "Run and play", "Listen to the teacher's instructions"] }, correct: 1 },
+            { q: { ms: "Selepas selesai membuat eksperimen, apakah yang perlu dilakukan?", en: "After finishing an experiment, what should be done?" }, options: { ms: ["Tinggalkan di atas meja", "Cuci alatan dan simpan semula", "Buang ke luar tingkap"], en: ["Leave it on the table", "Wash tools and keep them back", "Throw it out the window"] }, correct: 1 },
+            { q: { ms: "Jika tangan kita terluka di bilik sains, kita perlu?", en: "If our hand gets cut in the science room, we should?" }, options: { ms: ["Berdiam diri", "Cepat-cepat basuh", "Beritahu guru segera"], en: ["Keep quiet", "Wash it quickly", "Tell the teacher immediately"] }, correct: 2 },
+            { q: { ms: "Kemahiran saintifik untuk 'melihat perubahan' menggunakan mata dipanggil?", en: "The scientific skill to 'see changes' using the eyes is called?" }, options: { ms: ["Memerhati", "Membina", "Bercakap"], en: ["Observing", "Building", "Talking"] }, correct: 0 },
+            { q: { ms: "Apakah deria yang digunakan untuk membezakan gula dan garam tanpa merasa?", en: "What sense is used to differentiate sugar and salt without tasting?" }, options: { ms: ["Pendengaran", "Penglihatan (melihat saiz biji)", "Bau"], en: ["Hearing", "Sight (seeing seed size)", "Smell"] }, correct: 1 },
+            { q: { ms: "Tumbuhan membesar. Apakah perubahan yang akan berlaku?", en: "Plants grow. What changes will happen?" }, options: { ms: ["Pokok menjadi semakin pendek", "Bilangan daun bertambah", "Warna batang menjadi biru"], en: ["Plant becomes shorter", "Number of leaves increases", "Stem color becomes blue"] }, correct: 1 },
+            { q: { ms: "Haiwan manakah yang melahirkan anak?", en: "Which animal gives birth to young?" }, options: { ms: ["Katak", "Kucing", "Ayam"], en: ["Frog", "Cat", "Chicken"] }, correct: 1 },
+            { q: { ms: "Katak dan buaya mempunyai persamaan iaitu?", en: "Frogs and crocodiles have a similarity, which is?" }, options: { ms: ["Bertelur", "Berbulu tebal", "Tinggal di udara"], en: ["Lay eggs", "Have thick fur", "Live in the air"] }, correct: 0 },
+            { q: { ms: "Sebuah kotak kasut berbentuk bongkah?", en: "A shoebox has a block shape of?" }, options: { ms: ["Kuboid", "Sfera", "Silinder"], en: ["Cuboid", "Sphere", "Cylinder"] }, correct: 0 },
+            { q: { ms: "Sudu logam bersifat?", en: "A metal spoon is?" }, options: { ms: ["Lembut dan menyerap air", "Keras dan tidak menyerap air", "Ringan dan terapung"], en: ["Soft and absorbs water", "Hard and does not absorb water", "Light and floats"] }, correct: 1 },
+            { q: { ms: "Kenapa pasu bunga diperbuat daripada tanah liat?", en: "Why are flower pots made from clay?" }, options: { ms: ["Kerana tanah liat menahan air dengan baik", "Kerana ia sangat ringan", "Kerana ia cantik dan jernih"], en: ["Because clay holds water well", "Because it is very light", "Because it is beautiful and clear"] }, correct: 0 }
         ];
 
         let kuizSoalan = [];
@@ -276,36 +360,112 @@
         let markah = 0;
         let nyawa = 3;
         let jawapanDipilih = null;
-        const JUMLAH_SOALAN = 20; // Wajib selesaikan 20 soalan!
+        const JUMLAH_SOALAN = 20;
 
+        // LOCAL STORAGE - Pastikan pakai kunci sains_kuiz1_* untuk Tahun 1
         let namaDisimpan = localStorage.getItem('namaMurid') || "";
         if (namaDisimpan) {
             namaDisimpan = namaDisimpan.replace(/🤖/g, '').trim(); 
             document.getElementById('username').value = namaDisimpan;
         }
 
+        function kemasKiniUI() {
+            const ui = teksUI[lang];
+            document.getElementById('langToggleBtn').innerText = ui.toggleBtn;
+            document.getElementById('main-title').innerText = ui.title;
+            
+            if(document.getElementById('ui-profil')) document.getElementById('ui-profil').innerText = ui.profil;
+            if(document.getElementById('ui-nama')) document.getElementById('ui-nama').innerText = ui.nama;
+            if(document.getElementById('username')) document.getElementById('username').placeholder = ui.placeholder;
+            if(document.getElementById('ui-instruksi')) document.getElementById('ui-instruksi').innerHTML = ui.instruksi;
+            if(document.getElementById('ui-btn-mula')) document.getElementById('ui-btn-mula').innerText = ui.btnMula;
+            if(document.getElementById('ui-btn-rekod')) document.getElementById('ui-btn-rekod').innerText = ui.btnRekod;
+            if(document.getElementById('ui-btn-keluar')) document.getElementById('ui-btn-keluar').innerText = ui.btnKeluar;
+            
+            if (document.getElementById("progress-text") && kuizSoalan.length > 0) {
+                document.getElementById("progress-text").innerText = `${ui.soalan}: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+                document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
+            }
+
+            let elemenNama = document.getElementById('paparNama');
+            if (elemenNama && elemenNama.style.display !== "none") {
+                let namaTerkini = localStorage.getItem('namaMurid') || "SAINTIS";
+                elemenNama.innerHTML = `🔬 ${ui.saintisLabel}: <span style="color:#1b5e20">${namaTerkini.toUpperCase()}</span>`;
+            }
+
+            let pnlSoalan = document.querySelector(".question-text");
+            if(pnlSoalan && document.getElementById("header-bar").style.display !== "none") {
+                renderSoalanSemula();
+            }
+
+            if(document.getElementById('end-title')) {
+                if (nyawa <= 0) {
+                    document.getElementById('end-title').innerText = ui.gameOver;
+                    document.getElementById('end-desc').innerText = ui.nyawaHabis;
+                    document.getElementById('end-score-label').innerText = ui.markahTerkumpul;
+                    document.getElementById('end-btn-text').innerText = ui.cubaLagi;
+                } else {
+                    document.getElementById('end-title').innerText = ui.tahniah;
+                    document.getElementById('end-score-label').innerText = ui.markah;
+                    document.getElementById('end-btn-text').innerText = ui.mainLagi;
+                }
+            }
+
+            if(document.getElementById('dash-title')) {
+                document.getElementById('dash-title').innerText = ui.dashTajuk;
+                document.getElementById('dash-desc').innerText = ui.dashDesc;
+                document.getElementById('dash-lbl-anak').innerText = ui.lblAnak;
+                document.getElementById('dash-lbl-tertinggi').innerText = ui.lblTertinggi;
+                document.getElementById('dash-lbl-gred').innerText = ui.lblGred;
+                document.getElementById('dash-lbl-latihan').innerText = ui.lblLatihan;
+                document.getElementById('dash-lbl-ujian').innerText = ui.lblUjian;
+                document.getElementById('dash-btn-kembali').innerText = ui.btnKembali;
+                
+                // Gunakan kekunci kuiz1
+                let hScore = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
+                let komenPrestasi = "";
+                if (lang === 'ms') {
+                    if(hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
+                    else if(hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
+                    else if(hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
+                    else komenPrestasi = "Jangan putus asa, teruskan usaha! 💪";
+                } else {
+                    if(hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
+                    else if(hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
+                    else if(hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
+                    else komenPrestasi = "Don't give up, keep trying! 💪";
+                }
+                document.getElementById('dash-komen').innerText = komenPrestasi;
+            }
+        }
+
+        function tukarBahasa() {
+            lang = lang === 'ms' ? 'en' : 'ms';
+            kemasKiniUI();
+        }
+
         function kemaskiniNyawa() {
             let hStr = "";
             for (let i = 0; i < nyawa; i++) hStr += "❤️ ";
-            if (nyawa === 0) hStr = "💔 Game Over";
+            if (nyawa === 0) hStr = "💔 " + teksUI[lang].gameOver;
             document.getElementById("hearts-layer").innerText = hStr ? hStr.trim() : "💔";
         }
 
         function mulaKuiz() {
             let inputNama = document.getElementById("username").value.trim();
-            let namaFinal = inputNama ? inputNama : "SAINTIS CILIK";
+            let namaFinal = inputNama ? inputNama : "CILIK";
             
             namaFinal = namaFinal.replace(/🤖/g, '').trim();
             localStorage.setItem('namaMurid', namaFinal);
 
             let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerHTML = `🧪 Saintis: <span style="color:#e65100">${namaFinal.toUpperCase()}</span>`;
+            elemenNama.innerHTML = `🔬 ${teksUI[lang].saintisLabel}: <span style="color:#1b5e20">${namaFinal.toUpperCase()}</span>`;
             elemenNama.style.display = "block";
 
             document.getElementById("main-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
+            document.getElementById("ui-btn-keluar").style.display = "none";
             
-            // Rawakkan 50 soalan, ambil 20 sahaja
             kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random()).slice(0, JUMLAH_SOALAN);
             
             soalanSekarang = 0;
@@ -317,25 +477,55 @@
 
         function paparSoalan() {
             jawapanDipilih = null;
+            renderSoalanSemula();
+        }
+
+        function renderSoalanSemula() {
             let quizArea = document.getElementById("quiz-area");
             let data = kuizSoalan[soalanSekarang];
-            document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+            let ui = teksUI[lang];
+            
+            document.getElementById("progress-text").innerText = `${ui.soalan}: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+            document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
             
             quizArea.innerHTML = `
-                <div class="question-text">${data.q}</div>
+                <div class="question-text">${data.q[lang]}</div>
                 <div id="options-container"></div>
                 <div id="result-message"></div>
-                <button class="action-btn" id="next-btn" style="display:none;" onclick="keSoalanSeterusnya()">SETERUSNYA ➡️</button>
+                <button class="action-btn" id="next-btn" style="display:none;" onclick="keSoalanSeterusnya()">${ui.seterusnya}</button>
             `;
             
             let container = document.getElementById("options-container");
-            data.options.forEach((opt, index) => {
+            data.options[lang].forEach((opt, index) => {
                 let btn = document.createElement("button");
                 btn.className = "option-btn";
                 btn.innerText = opt;
-                btn.onclick = () => pilihJawapan(index, btn);
+                
+                if (jawapanDipilih !== null) {
+                    if (index === data.correct) {
+                        btn.style.backgroundColor = "#c8e6c9";
+                        btn.style.borderColor = "#4caf50";
+                    } else if (index === jawapanDipilih && jawapanDipilih !== data.correct) {
+                        btn.style.backgroundColor = "#ffcdd2";
+                        btn.style.borderColor = "#f44336";
+                    }
+                } else {
+                    btn.onclick = () => pilihJawapan(index, btn);
+                }
                 container.appendChild(btn);
             });
+
+            if (jawapanDipilih !== null) {
+                let msg = document.getElementById("result-message");
+                if (jawapanDipilih === data.correct) {
+                    msg.innerText = ui.betul;
+                    msg.style.color = "#2e7d32";
+                } else {
+                    msg.innerText = ui.salah;
+                    msg.style.color = "#c62828";
+                }
+                document.getElementById("next-btn").style.display = "block";
+            }
         }
 
         function pilihJawapan(index, element) {
@@ -345,20 +535,21 @@
             let data = kuizSoalan[soalanSekarang];
             let msg = document.getElementById("result-message");
             let buttons = document.querySelectorAll(".option-btn");
+            let ui = teksUI[lang];
             
             if (index === data.correct) {
                 element.style.backgroundColor = "#c8e6c9";
                 element.style.borderColor = "#4caf50";
-                msg.innerText = "🎉 BETUL! (+5 Markah) 🌟";
+                msg.innerText = ui.betul;
                 msg.style.color = "#2e7d32";
-                markah += 5; // 20 soalan * 5 markah = 100 markah penuh
-                document.getElementById("score-text").innerText = `Markah: ${markah}`;
+                markah += 5;
+                document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
             } else {
                 element.style.backgroundColor = "#ffcdd2";
                 element.style.borderColor = "#f44336";
                 buttons[data.correct].style.backgroundColor = "#c8e6c9";
                 buttons[data.correct].style.borderColor = "#4caf50";
-                msg.innerText = "❌ SALAH! Jawapan betul warna hijau. 😉";
+                msg.innerText = ui.salah;
                 msg.style.color = "#c62828";
                 nyawa--;
                 kemaskiniNyawa();
@@ -383,7 +574,9 @@
         function tamatKuiz(isGameOver) {
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
+            let ui = teksUI[lang];
             
+            // Simpanan menggunakan kunci kuiz1
             let totalMain = parseInt(localStorage.getItem('sains_kuiz1_total_main') || "0") + 1;
             let markahTertinggi = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
             if (markah > markahTertinggi) {
@@ -396,10 +589,10 @@
                 quizArea.innerHTML = `
                     <div style="text-align:center; padding:15px 0;">
                         <span style="font-size:4rem;">💥</span>
-                        <h3 style="color:#c62828; margin:10px 0;">GAME OVER!</h3>
-                        <p>Nyawa anda telah habis. Jangan putus asa, cuba lagi! 💪</p>
-                        <p style="font-size:1.1rem; font-weight:bold;">Markah Terkumpul: <span style="color:#c62828;">${markah}</span></p>
-                        <button onclick="location.reload()" class="action-btn">🔄 CUBA LAGI</button>
+                        <h3 id="end-title" style="color:#c62828; margin:10px 0;">${ui.gameOver}</h3>
+                        <p id="end-desc">${ui.nyawaHabis}</p>
+                        <p style="font-size:1.1rem; font-weight:bold;"><span id="end-score-label">${ui.markahTerkumpul}</span>: <span style="color:#c62828;">${markah}</span></p>
+                        <button onclick="location.reload()" class="action-btn">🔄 <span id="end-btn-text">${ui.cubaLagi}</span></button>
                     </div>
                 `;
             } else {
@@ -407,9 +600,9 @@
                 quizArea.innerHTML = `
                     <div style="text-align:center; padding:15px 0;">
                         <span style="font-size:4rem;">${piala}</span>
-                        <h3 style="color:#4caf50; margin:10px 0;">TAHNIAH KUIZ TAMAT!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Markah Latihan 1:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
-                        <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI</button>
+                        <h3 id="end-title" style="color:#4caf50; margin:10px 0;">${ui.tahniah}</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;"><span id="end-score-label">${ui.markah}</span>:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                        <button onclick="location.reload()" class="action-btn">🔄 <span id="end-btn-text">${ui.mainLagi}</span></button>
                     </div>
                 `;
             }
@@ -417,36 +610,53 @@
 
         function paparSistemPrestasi() {
             let quizArea = document.getElementById("quiz-area");
-            let namaAnak = localStorage.getItem('namaMurid') || "Belum Letak Nama";
+            let ui = teksUI[lang];
+            let namaAnak = localStorage.getItem('namaMurid') || "-";
             namaAnak = namaAnak.replace(/🤖/g, '').trim(); 
-            let hScore = localStorage.getItem('sains_kuiz1_high_score') || "0";
-            let tMain = localStorage.getItem('sains_kuiz1_total_main') || "0";
-            let lDate = localStorage.getItem('sains_kuiz1_last_date') || "Tiada Rekod";
             
-            let gred = "U (Perlu Latihan)";
-            if(hScore >= 80) gred = "A (Cemerlang) 🌟";
-            else if(hScore >= 60) gred = "B (Bagus) 👍";
-            else if(hScore >= 40) gred = "C (Lulus) 👌";
+            // Tarik rekod kuiz1
+            let hScore = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
+            let tMain = localStorage.getItem('sains_kuiz1_total_main') || "0";
+            let lDate = localStorage.getItem('sains_kuiz1_last_date') || "-";
+            
+            let komenPrestasi = "";
+            if (lang === 'ms') {
+                if(hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
+                else if(hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
+                else if(hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
+                else komenPrestasi = "Jangan putus asa, teruskan usaha! 💪";
+            } else {
+                if(hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
+                else if(hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
+                else if(hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
+                else komenPrestasi = "Don't give up, keep trying! 💪";
+            }
 
             quizArea.innerHTML = `
                 <div class="instruction-screen">
                     <div>
                         <span style="font-size: 3rem;">📊</span>
-                        <h3 style="color: #0288d1; margin: 5px 0;">Dashboard Ibu Bapa (Kuiz 1)</h3>
-                        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Semak perkembangan kuiz pengenalan anak anda.</p>
+                        <h3 id="dash-title" style="color: #0288d1; margin: 5px 0;">${ui.dashTajuk}</h3>
+                        <p id="dash-desc" style="font-size:0.85rem; color:#666; margin-bottom:10px;">${ui.dashDesc}</p>
                         
                         <div class="stats-card">
-                            <div class="stats-line"><b>Nama Anak:</b> <span>${namaAnak.toUpperCase()}</span></div>
-                            <div class="stats-line"><b>Markah Tertinggi:</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
-                            <div class="stats-line"><b>Gred Terbaik:</b> <span>${gred}</span></div>
-                            <div class="stats-line"><b>Jumlah Latihan:</b> <span>${tMain} Kali</span></div>
-                            <div class="stats-line"><b>Ujian Terakhir:</b> <span>${lDate}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-anak">${ui.lblAnak}</b> <span>${namaAnak.toUpperCase()}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-tertinggi">${ui.lblTertinggi}</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
+                            
+                            <div class="stats-line"><b id="dash-lbl-gred">${ui.lblGred}</b> <span id="dash-komen" style="color:#e65100; font-weight:bold; text-align:right; margin-left:10px;">${komenPrestasi}</span></div>
+                            
+                            <div class="stats-line"><b id="dash-lbl-latihan">${ui.lblLatihan}</b> <span>${tMain}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-ujian">${ui.lblUjian}</b> <span>${lDate}</span></div>
                         </div>
                     </div>
-                    <button class="action-btn" style="background-color:#757575; box-shadow:0 5px 0 #424242;" onclick="location.reload()">⬅️ KEMBALI</button>
+                    <button class="action-btn" style="background-color:#757575; box-shadow:0 5px 0 #424242;" onclick="location.reload()" id="dash-btn-kembali">${ui.btnKembali}</button>
                 </div>
             `;
         }
+
+        window.onload = function() {
+            kemasKiniUI();
+        };
     </script>
 </body>
 </html>
