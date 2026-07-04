@@ -15,7 +15,6 @@
             align-items: center;
             min-height: 100vh;
         }
-
         .phone-wrapper {
             width: 100%;
             max-width: 420px;
@@ -28,113 +27,78 @@
             padding: 40px 20px;
             box-sizing: border-box;
         }
-
         .avatar-main {
             font-size: 5rem;
             margin-top: 40px;
-            animation: bounce 2s infinite;
+            animation: bounce 2 s infinite;
         }
-
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-
-        h2 {
-            color: #004d40;
-            font-size: 1.8rem;
-            margin: 20px 0 10px 0;
-            text-align: center;
-        }
-
-        p {
-            color: #555;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 30px;
-        }
-
+        h2 { color: #004d40; font-size: 1.8rem; margin: 20px 0 10px 0; text-align: center; }
+        p { color: #555; text-align: center; font-size: 1rem; margin-bottom: 30px; }
+        
         .input-box {
             width: 100%;
             background: #f5f5f5;
             border: 2px solid #b2dfdb;
             border-radius: 15px;
-            padding: 20px;
-            box-sizing: border-box;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            color: #00796b;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            width: 90%;
-            padding: 12px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
+            padding: 15px;
             font-size: 1.1rem;
             text-align: center;
-            font-family: 'Comic Sans MS', sans-serif;
+            font-family: inherit;
+            margin-bottom: 25px;
+            box-sizing: border-box;
         }
-
-        .save-btn {
+        .menu-btn {
             width: 100%;
-            background-color: #00cc66;
-            color: white;
-            border: none;
             padding: 18px;
             font-size: 1.3rem;
             font-weight: bold;
+            color: white;
+            border: none;
             border-radius: 15px;
-            box-shadow: 0 5px 0 #00994d;
             cursor: pointer;
+            box-shadow: 0 6px 0 #004d40;
+            background-color: #00796b;
+            transition: 0.1s;
         }
-
-        .save-btn:active {
+        .menu-btn:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 #00994d;
-        }
-
-        .footer {
-            margin-top: auto;
-            font-size: 0.8rem;
-            color: #999;
+            box-shadow: 0 2px 0 #004d40;
         }
     </style>
 </head>
 <body>
 
     <div class="phone-wrapper">
-        <div class="avatar-main">🎒</div>
-        <h2>Daftar Profil Baru</h2>
-        <p>Masukkan namamu untuk memulakan pengembaraan Sains!</p>
-
-        <div class="input-box">
-            <label for="student-name">Nama Murid :</label>
-            <input type="text" id="student-name" placeholder="TULIS NAMA DI SINI..." required>
-        </div>
-
-        <button class="save-btn" onclick="simpanProfil()">Simpan Profil</button>
-
-        <div class="footer">
-            BIJAK SAINS TAHUN 1 • KSSR MALAYSIA
-        </div>
+        <div class="avatar-main">👧👦</div>
+        <h2>Profil Sains Tahun 1</h2>
+        <p>Sila masukkan nama anda sebelum memulakan kuiz!</p>
+        
+        <!-- Kotak Isi Nama -->
+        <input type="text" id="username" class="input-box" placeholder="✍️ Taip nama anda di sini...">
+        
+        <!-- Butang Mula Kuiz -->
+        <button class="menu-btn" onclick="simpanNamaDanMula()">MULA KUIZ SAINS 🚀</button>
     </div>
 
     <script>
-        function simpanProfil() {
-            let nama = document.getElementById('student-name').value;
-            if(nama.trim() === "") {
-                alert("Sila tulis nama anda dahulu kawan! 😊");
-            } else {
-                localStorage.setItem('namaMurid', nama);
-                window.location.href = "belajar1.html";
+        function simpanNamaDanMula() {
+            // 1. Ambil nama daripada kotak input di atas
+            let nama = document.getElementById("username").value.trim();
+            
+            // Jika kosong, letak nama backup
+            if (nama === "") {
+                nama = "Saintis Cilik";
             }
+            
+            // 2. SIMPAN NAMA DALAM MEMORI KOMPUTER (Penting!)
+            localStorage.setItem("namaMurid", nama);
+            
+            // 3. Lompat terus ke halaman kuiz belajar1.html
+            location.href = "belajar1.html";
         }
     </script>
 
