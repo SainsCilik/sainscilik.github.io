@@ -9,41 +9,41 @@
             font-family: 'Comic Sans MS', sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #fff9c4);
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        .phone-wrapper {
+        /* Bekas Utama: Di phone dia ikut saiz phone, di PC dia melebar automatik! */
+        .container-box {
             width: 100%;
-            max-width: 420px;
+            max-width: 900px; /* Lebar maksimum dinaikkan supaya gempak di PC */
             background: white;
-            min-height: 100vh;
+            padding: 40px 30px;
+            box-sizing: border-box;
+            border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 35px 20px;
-            box-sizing: border-box;
-            border-radius: 25px;
         }
 
         .header-animated {
-            font-size: 4.5rem;
-            margin-top: 20px;
+            font-size: 5rem;
             animation: bounce 2.5s ease-in-out infinite;
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.05); }
+            50% { transform: translateY(-12px) scale(1.05); }
         }
 
         h1 { 
             color: #0288d1; 
-            font-size: 2.4rem; 
+            font-size: 2.8rem; 
             margin: 10px 0 2px 0; 
             text-align: center;
             text-shadow: 2px 2px 0px #e0f2f1;
@@ -53,16 +53,16 @@
         .subtitle { 
             color: #ff9800; 
             font-weight: bold; 
-            font-size: 1.1rem; 
-            margin-bottom: 30px; 
+            font-size: 1.3rem; 
+            margin-bottom: 40px; 
             text-align: center;
         }
 
-        /* SUSUNAN GRID GEMPAK */
+        /* SUSUNAN GRID UTAMA (Standard PC: 3 Lajur Melintang) */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr); /* 3 Kotak Sebaris di PC */
+            gap: 20px;
             width: 100%;
             margin-bottom: 25px;
         }
@@ -72,9 +72,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 10px;
+            padding: 25px 15px;
             font-family: 'Comic Sans MS', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: white;
             border: none;
@@ -86,41 +86,51 @@
         }
 
         .grid-btn span {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
+            font-size: 3rem;
+            margin-bottom: 10px;
         }
 
-        /* WARNA INDIVIDU & BAYANG 3D */
-        .btn-t1 { background-color: #ff5252; box-shadow: 0 6px 0 #c62828; }
-        .btn-t2 { background-color: #ff9800; box-shadow: 0 6px 0 #ef6c00; }
-        .btn-t3 { background-color: #fbc02d; box-shadow: 0 6px 0 #f57f17; }
-        .btn-t4 { background-color: #4caf50; box-shadow: 0 6px 0 #2e7d32; }
-        .btn-t5 { background-color: #2196f3; box-shadow: 0 6px 0 #1565c0; }
-        .btn-t6 { background-color: #9c27b0; box-shadow: 0 6px 0 #6a1b9a; }
+        /* WARNA PREMIUM & BAYANG 3D */
+        .btn-t1 { background-color: #ff5252; box-shadow: 0 8px 0 #c62828; }
+        .btn-t2 { background-color: #ff9800; box-shadow: 0 8px 0 #ef6c00; }
+        .btn-t3 { background-color: #fbc02d; box-shadow: 0 8px 0 #f57f17; }
+        .btn-t4 { background-color: #4caf50; box-shadow: 0 8px 0 #2e7d32; }
+        .btn-t5 { background-color: #2196f3; box-shadow: 0 8px 0 #1565c0; }
+        .btn-t6 { background-color: #9c27b0; box-shadow: 0 8px 0 #6a1b9a; }
 
-        /* KESAN TEKAN BUTTON (POP EFFECT) */
         .grid-btn:active {
-            transform: translateY(4px);
+            transform: translateY(6px);
             box-shadow: 0 2px 0 inherit;
         }
 
         .footer {
-            margin-top: auto;
-            font-size: 0.85rem;
+            margin-top: 30px;
+            font-size: 0.95rem;
             color: #999;
             font-weight: bold;
-            padding-top: 25px;
+        }
+
+        /* 📱 MAGIS RESPONSIVE: Jika skrin kecil (Phone), tukar jadi 2 lajur automatik! */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr); /* Tukar jadi 2 kotak sebaris */
+                gap: 15px;
+            }
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1.1rem; }
+            .grid-btn { font-size: 1.1rem; padding: 20px 10px; }
+            .grid-btn span { font-size: 2.3rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-wrapper">
+    <div class="container-box">
         <div class="header-animated">🔬🚀</div>
         <h1>Sains Cilik</h1>
         <div class="subtitle">Belajar Sains Jadi Seronok! 🎉</div>
         
-        <!-- GRID UTAMA SEPERTI MENU GAME -->
+        <!-- GRID IKUT SAIZ SKRIN -->
         <div class="grid-container">
             <button class="grid-btn btn-t1" onclick="location.href='tahun1.html'">
                 <span>🎮</span>TAHUN 1
