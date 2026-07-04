@@ -39,6 +39,8 @@
             margin-bottom: 20px;
         }
 
+        .hearts { color: #ff5252; font-size: 1.2rem; }
+
         h1 { color: #ff9800; text-align: center; font-size: 1.6rem; margin: 10px 0; }
         
         .kuiz-box {
@@ -53,7 +55,7 @@
         }
 
         .input-group {
-            margin: 12px 0;
+            margin: 15px 0;
             text-align: left;
         }
 
@@ -61,8 +63,7 @@
             font-weight: bold;
             color: #e65100;
             display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
+            margin-bottom: 8px;
         }
 
         .name-input {
@@ -73,36 +74,6 @@
             border-radius: 10px;
             box-sizing: border-box;
             font-family: inherit;
-        }
-
-        .avatar-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 5px;
-        }
-
-        .avatar-option {
-            font-size: 1.8rem;
-            padding: 8px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            cursor: pointer;
-            background: white;
-            transition: 0.2s;
-            text-align: center;
-        }
-
-        .avatar-option span {
-            display: block;
-            font-size: 0.7rem;
-            color: #666;
-            margin-top: 2px;
-        }
-
-        .avatar-option.selected {
-            border-color: #ff9800;
-            background-color: #fff3e0;
-            transform: scale(1.05);
         }
 
         .instruction-screen {
@@ -116,12 +87,12 @@
         .instruction-box {
             background: #fff3e0;
             border-left: 5px solid #ff9800;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
             border-radius: 10px;
-            margin: 12px 0;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .question-text {
@@ -152,19 +123,19 @@
             background-color: #ff9800;
             color: white;
             border: none;
-            padding: 14px;
-            font-size: 1.1rem;
+            padding: 15px;
+            font-size: 1.2rem;
             font-weight: bold;
             border-radius: 15px;
             box-shadow: 0 5px 0 #e65100;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: auto;
         }
 
         .report-btn {
             background-color: #0288d1;
             box-shadow: 0 5px 0 #01579b;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .stats-card {
@@ -210,37 +181,29 @@
     <div class="phone-wrapper">
         <div class="quiz-header" id="header-bar" style="display: none;">
             <span id="progress-text">Soalan: 1/10</span>
-            <span class="hearts" id="hearts-layer">♾️ Mod Latihan</span>
+            <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
             <span id="score-text">Markah: 0</span>
         </div>
 
-        <h1 id="main-title">Latihan Sains Tahun 2 🎯</h1>
+        <h1 id="main-title">Latihan Sains TAHUN 2 🎯</h1>
         <div id="paparNama" style="text-align:center; font-weight:bold; color:#e65100; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
-            <!-- Skrin Utama / Pendaftaran Profil -->
+            <!-- Skrin Utama -->
             <div class="instruction-screen" id="main-screen">
                 <div>
-                    <span id="avatar-tayang" style="font-size: 3.5rem;">🧍‍♂️</span>
-                    <h2 style="color: #e65100; margin: 5px 0;">Profil Saintis</h2>
+                    <span style="font-size: 4rem;">🧪</span>
+                    <h2 style="color: #e65100; margin-top: 5px;">Profil Profil Saintis</h2>
                     
                     <div class="input-group">
                         <label>Nama Murid:</label>
                         <input type="text" id="username" class="name-input" placeholder="Masukkan nama..." autocomplete="off">
                     </div>
 
-                    <div class="input-group">
-                        <label>Pilih Tema Pembelajaran (Avatar):</label>
-                        <div class="avatar-container">
-                            <div class="avatar-option selected" onclick="pilihAvatar('🧍‍♂️', this)">🧍‍♂️<span>Biotik</span></div>
-                            <div class="avatar-option" onclick="pilihAvatar('🌱', this)">🌱<span>Botani</span></div>
-                            <div class="avatar-option" onclick="pilihAvatar('⚡', this)">⚡<span>Tenaga</span></div>
-                        </div>
-                    </div>
-
                     <div class="instruction-box">
                         🎯 Selesaikan <b>10 soalan</b> asas silibus Sains Tahun 2.<br>
-                        💪 Nyawa <b>Infiniti</b> (Sesuai untuk pengenalan topik & latihan santai).
+                        💯 Setiap jawapan betul memberikan <b>10 markah</b>.<br>
+                        ❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!
                     </div>
                 </div>
                 <div>
@@ -254,7 +217,6 @@
     </div>
 
     <script>
-        // 10 Soalan Asas Kuiz 1
         const bankSoalan = [
             { q: "Antara berikut, yang manakah merupakan keperluan asas manusia? 🍱", options: ["📱 Telefon pintar", "🍱 Makanan, air dan udara", "🧸 Mainan"], correct: 1 },
             { q: "Mengapakah manusia memerlukan udara? 💨", options: ["🏃 Untuk bernafas", "📈 Untuk membesar", "🚶 Untuk berjalan"], correct: 0 },
@@ -271,22 +233,20 @@
         let kuizSoalan = [];
         let soalanSekarang = 0;
         let markah = 0;
+        let nyawa = 3;
         let jawapanDipilih = null;
-        let emojiAvatar = "🧍‍♂️";
         const JUMLAH_SOALAN = 10;
 
-        // Muat nilai asal dari LocalStorage jika ada
         let namaDisimpan = localStorage.getItem('namaMurid') || "";
         if (namaDisimpan) {
             document.getElementById('username').value = namaDisimpan;
         }
 
-        function pilihAvatar(emoji, element) {
-            emojiAvatar = emoji;
-            document.getElementById('avatar-tayang').innerText = emoji;
-            let options = document.querySelectorAll('.avatar-option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
+        function kemaskiniNyawa() {
+            let hStr = "";
+            for (let i = 0; i < nyawa; i++) hStr += "❤️ ";
+            if (nyawa === 0) hStr = "💔 Game Over";
+            document.getElementById("hearts-layer").innerText = hStr ? hStr.trim() : "💔";
         }
 
         function mulaKuiz() {
@@ -296,17 +256,18 @@
             localStorage.setItem('namaMurid', namaFinal);
 
             let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerHTML = `${emojiAvatar} Saintis: <span style="color:#e65100">${namaFinal.toUpperCase()}</span>`;
+            elemenNama.innerHTML = `🧪 Saintis: <span style="color:#e65100">${namaFinal.toUpperCase()}</span>`;
             elemenNama.style.display = "block";
 
             document.getElementById("main-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
             
-            // Susun rawak soalan
             kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random());
             
             soalanSekarang = 0;
             markah = 0;
+            nyawa = 3;
+            kemaskiniNyawa();
             paparSoalan();
         }
 
@@ -355,25 +316,30 @@
                 buttons[data.correct].style.borderColor = "#4caf50";
                 msg.innerText = "❌ SALAH! Jawapan betul warna hijau. 😉";
                 msg.style.color = "#c62828";
+                nyawa--;
+                kemaskiniNyawa();
             }
             document.getElementById("next-btn").style.display = "block";
         }
 
         function keSoalanSeterusnya() {
+            if (nyawa <= 0) {
+                tamatKuiz(true);
+                return;
+            }
+            
             soalanSekarang++;
             if (soalanSekarang < JUMLAH_SOALAN) {
                 paparSoalan();
             } else {
-                tamatKuiz();
+                tamatKuiz(false);
             }
         }
 
-        function tamatKuiz() {
+        function tamatKuiz(isGameOver) {
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
-            let piala = markah >= 80 ? "🏆" : "🥈";
             
-            // Simpan data prestasi Kuiz 1 untuk ibu bapa
             let totalMain = parseInt(localStorage.getItem('sains_kuiz1_total_main') || "0") + 1;
             let markahTertinggi = parseInt(localStorage.getItem('sains_kuiz1_high_score') || "0");
             if (markah > markahTertinggi) {
@@ -382,15 +348,27 @@
             localStorage.setItem('sains_kuiz1_total_main', totalMain);
             localStorage.setItem('sains_kuiz1_last_date', new Date().toLocaleDateString('ms-MY'));
 
-            quizArea.innerHTML = `
-                <div style="text-align:center; padding:15px 0;">
-                    <span style="font-size:4rem;">${piala}</span>
-                    <h3 style="color:#4caf50; margin:10px 0;">TAHNIAH KUIZ TAMAT!</h3>
-                    <p style="font-size:1.1rem; font-weight:bold;">Markah Latihan 1:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
-                    <p>Rekod kuiz 1 anda telah disimpan! ❤️</p>
-                    <button onclick="location.reload()" class="action-btn">🔄 CUBA LAGI</button>
-                </div>
-            `;
+            if (isGameOver) {
+                quizArea.innerHTML = `
+                    <div style="text-align:center; padding:15px 0;">
+                        <span style="font-size:4rem;">💥</span>
+                        <h3 style="color:#c62828; margin:10px 0;">GAME OVER!</h3>
+                        <p>Nyawa anda telah habis. Jangan putus asa, cuba lagi! 💪</p>
+                        <p style="font-size:1.1rem; font-weight:bold;">Markah Terkumpul: <span style="color:#c62828;">${markah}</span></p>
+                        <button onclick="location.reload()" class="action-btn">🔄 CUBA LAGI</button>
+                    </div>
+                `;
+            } else {
+                let piala = markah >= 80 ? "🏆" : "🥈";
+                quizArea.innerHTML = `
+                    <div style="text-align:center; padding:15px 0;">
+                        <span style="font-size:4rem;">${piala}</span>
+                        <h3 style="color:#4caf50; margin:10px 0;">TAHNIAH KUIZ TAMAT!</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;">Markah Latihan 1:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                        <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI</button>
+                    </div>
+                `;
+            }
         }
 
         function paparSistemPrestasi() {
