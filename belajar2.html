@@ -262,7 +262,7 @@
                 dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
                 lblAnak: "Nama Anak:",
                 lblTertinggi: "Markah Tertinggi:",
-                lblGred: "Gred Terbaik:",
+                lblGred: "Status Pencapaian:",
                 lblLatihan: "Jumlah Latihan:",
                 lblUjian: "Ujian Terakhir:",
                 btnKembali: "⬅️ KEMBALI",
@@ -293,7 +293,7 @@
                 dashDesc: "Check your child's quiz progress here.",
                 lblAnak: "Child's Name:",
                 lblTertinggi: "High Score:",
-                lblGred: "Best Grade:",
+                lblGred: "Achievement Status:",
                 lblLatihan: "Total Attempts:",
                 lblUjian: "Last Test:",
                 btnKembali: "⬅️ BACK",
@@ -778,14 +778,23 @@
             let ui = teksUI[lang];
             let namaAnak = localStorage.getItem('namaMurid') || "-";
             namaAnak = namaAnak.replace(/🤖/g, '').trim(); 
-            let hScore = localStorage.getItem('sains_kuiz2_high_score') || "0";
+            let hScore = parseInt(localStorage.getItem('sains_kuiz2_high_score') || "0");
             let tMain = localStorage.getItem('sains_kuiz2_total_main') || "0";
             let lDate = localStorage.getItem('sains_kuiz2_last_date') || "-";
             
-            let gred = "U";
-            if(hScore >= 80) gred = "A 🌟";
-            else if(hScore >= 60) gred = "B 👍";
-            else if(hScore >= 40) gred = "C 👌";
+            // Logik Ayat Motivasi (Dwi-Bahasa)
+            let komenPrestasi = "";
+            if (lang === 'ms') {
+                if(hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
+                else if(hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
+                else if(hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
+                else komenPrestasi = "Jangan putus asa, teruskan usaha! 💪";
+            } else {
+                if(hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
+                else if(hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
+                else if(hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
+                else komenPrestasi = "Don't give up, keep trying! 💪";
+            }
 
             quizArea.innerHTML = `
                 <div class="instruction-screen">
@@ -797,8 +806,13 @@
                         <div class="stats-card">
                             <div class="stats-line"><b>${ui.lblAnak}</b> <span>${namaAnak.toUpperCase()}</span></div>
                             <div class="stats-line"><b>${ui.lblTertinggi}</b> <span style="color:#4caf50; font-weight:bold;">${hScore}/100</span></div>
-                            <div class="stats-line"><b>${ui.lblGred}</b> <span>${gred}</span></div>
-                            <div class="stats-line"><b>${ui.lblLatihan}</b> <span>${tMain}</span></div>
+                            
+                            <div class="stats-line" style="flex-direction: column; align-items: flex-start; padding-top: 10px; border-bottom: none;">
+                                <b style="margin-bottom: 5px;">${ui.lblGred}</b> 
+                                <span style="color:#e65100; font-weight:bold;">${komenPrestasi}</span>
+                            </div>
+                            
+                            <div class="stats-line" style="border-top: 1px dashed #e0e0e0; padding-top: 8px;"><b>${ui.lblLatihan}</b> <span>${tMain}</span></div>
                             <div class="stats-line"><b>${ui.lblUjian}</b> <span>${lDate}</span></div>
                         </div>
                     </div>
