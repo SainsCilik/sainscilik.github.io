@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik Tahun 2 - Kuiz Latihan 1</title>
+    <title>Sains Cilik Tahun 1 - Kuiz Latihan 1</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
@@ -185,7 +185,7 @@
             <span id="score-text">Markah: 0</span>
         </div>
 
-        <h1 id="main-title">Latihan Sains TAHUN 2 🎯</h1>
+        <h1 id="main-title">Latihan Sains TAHUN 1 🎯</h1>
         <div id="paparNama" style="text-align:center; font-weight:bold; color:#e65100; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
@@ -193,7 +193,7 @@
             <div class="instruction-screen" id="main-screen">
                 <div>
                     <span style="font-size: 4rem;">🧪</span>
-                    <h2 style="color: #e65100; margin-top: 5px;">Profil Profil Saintis</h2>
+                    <h2 style="color: #e65100; margin-top: 5px;">Profil Saintis</h2>
                     
                     <div class="input-group">
                         <label>Nama Murid:</label>
@@ -201,7 +201,7 @@
                     </div>
 
                     <div class="instruction-box">
-                        🎯 Selesaikan <b>10 soalan</b> asas silibus Sains Tahun 2.<br>
+                        🎯 Selesaikan <b>10 soalan</b> asas silibus Sains Tahun 1.<br>
                         💯 Setiap jawapan betul memberikan <b>10 markah</b>.<br>
                         ❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!
                     </div>
@@ -213,21 +213,21 @@
             </div>
         </div>
 
-        <a href="tahun2.html" class="back-btn">⬅️ Keluar</a>
+        <a href="tahun1.html" class="back-btn">⬅️ Keluar</a>
     </div>
 
     <script>
         const bankSoalan = [
-            { q: "Antara berikut, yang manakah merupakan keperluan asas manusia? 🍱", options: ["📱 Telefon pintar", "🍱 Makanan, air dan udara", "🧸 Mainan"], correct: 1 },
-            { q: "Mengapakah manusia memerlukan udara? 💨", options: ["🏃 Untuk bernafas", "📈 Untuk membesar", "🚶 Untuk berjalan"], correct: 0 },
-            { q: "Apakah yang berlaku kepada saiz badan kita apabila kita membesar? 👨‍🦱", options: ["📉 Menjadi kecil", "📈 Menjadi besar", "❌ Tidak berubah"], correct: 1 },
-            { q: "Tumbesaran manusia melibatkan pertambahan saiz, berat dan... 📐", options: ["🏃 Kepantasan", "📐 Tinggi", "🧥 Warna baju"], correct: 1 },
-            { q: "Ciri-ciri fizikal seperti warna anak mata diwarisi daripada... 👪", options: ["🏫 Guru", "👪 Ibu bapa atau keturunan", "🎨 Kawan-kawan"], correct: 1 },
-            { q: "Haiwan manakah yang menyusukan anaknya? 🐈", options: ["🐔 Ayam", "🐋 Paus atau Kucing", "🐸 Katak"], correct: 1 },
-            { q: "Manakah antara haiwan berikut bertelur dengan banyak? 🐸", options: ["🐢 Tenggiling", "🐸 Katak atau Penyu", "🐒 Monyet"], correct: 1 },
-            { q: "Apakah keperluan asas bagi anak benih untuk bercambah? 🌱", options: ["🧪 Baja, tanah dan pasu", "💧 Air, udara dan kehangatan", "☀️ Cahaya matahari sahaja"], correct: 1 },
-            { q: "Apakah sumber cahaya semula jadi yang utama pada waktu siang? ☀️", options: ["💡 Mentol", "🔥 Lilin", "☀️ Matahari"], correct: 2 },
-            { q: "Bilakah bayang-bayang terbentuk? 👤", options: ["👤 Apabila cahaya dihalang oleh objek", "💡 Apabila lampu ditutup", "🌙 Waktu malam sahaja"], correct: 0 }
+            { q: "Antara berikut, yang manakah merupakan benda hidup? 🐈", options: ["🧸 Patung mainan", "🐈 Kucing", "🚗 Kereta"], correct: 1 },
+            { q: "Apakah keperluan asas bagi benda hidup untuk hidup? 💧", options: ["📱 Telefon pintar dan TV", "🍱 Makanan, air dan udara", "👕 Baju baru"], correct: 1 },
+            { q: "Antara berikut, yang manakah benda bukan hidup? 🤖", options: ["🌱 Pokok betik", "🤖 Robot mainan", "🐦 Burung"], correct: 1 },
+            { q: "Apakah deria yang digunakan untuk melihat pelangi yang berwarna-warni? 👁️", options: ["👂 Deria pendengaran", "👁️ Deria penglihatan", "👃 Deria bau"], correct: 1 },
+            { q: "Kita menggunakan deria sentuhan melalui anggota badan yang mana? ✋", options: ["👃 Hidung", "👅 Lidah", "✋ Kulit / Tangan"], correct: 2 },
+            { q: "Bahagian tumbuhan yang manakah berfungsi menyerap air dari dalam tanah? 🪵", options: ["🍃 Daun", "🌺 Bunga", "🪵 Akar"], correct: 2 },
+            { q: "Apakah yang akan berlaku jika dua kutub magnet yang SAMA didekatkan? 🧲", options: ["🤝 Menarik antara satu sama lain", "🛑 Menolak antara satu sama lain", "❌ Tiada apa-apa berlaku"], correct: 1 },
+            { q: "Objek manakah yang boleh ditarik oleh magnet? 📎", options: ["📎 Klip kertas logam", "✏️ Pemadam plastik", "🪵 Pembaris kayu"], correct: 0 },
+            { q: "Antara bahan berikut, yang manakah boleh menyerap air? 🧻", options: ["🥤 Gelas plastik", "🧻 Tuala kertas / Kain", "🪙 Syiling besi"], correct: 1 },
+            { q: "Mengapakah kita menggunakan payung semasa hari hujan? 🌧️", options: ["🧱 Kerana payung kalis air", "🧻 Kerana payung menyerap air", "🌱 Kerana payung boleh membesar"], correct: 0 }
         ];
 
         let kuizSoalan = [];
@@ -239,6 +239,7 @@
 
         let namaDisimpan = localStorage.getItem('namaMurid') || "";
         if (namaDisimpan) {
+            namaDisimpan = namaDisimpan.replace(/🤖/g, '').trim(); 
             document.getElementById('username').value = namaDisimpan;
         }
 
@@ -253,6 +254,7 @@
             let inputNama = document.getElementById("username").value.trim();
             let namaFinal = inputNama ? inputNama : "SAINTIS CILIK";
             
+            namaFinal = namaFinal.replace(/🤖/g, '').trim();
             localStorage.setItem('namaMurid', namaFinal);
 
             let elemenNama = document.getElementById('paparNama');
@@ -374,6 +376,7 @@
         function paparSistemPrestasi() {
             let quizArea = document.getElementById("quiz-area");
             let namaAnak = localStorage.getItem('namaMurid') || "Belum Letak Nama";
+            namaAnak = namaAnak.replace(/🤖/g, '').trim(); 
             let hScore = localStorage.getItem('sains_kuiz1_high_score') || "0";
             let tMain = localStorage.getItem('sains_kuiz1_total_main') || "0";
             let lDate = localStorage.getItem('sains_kuiz1_last_date') || "Tiada Rekod";
