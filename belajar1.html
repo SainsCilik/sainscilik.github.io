@@ -130,7 +130,7 @@
 <body>
 
     <div class="phone-wrapper">
-        <!-- Header Kuiz (Akan disembunyikan semasa skrin arahan) -->
+        <!-- Header Kuiz -->
         <div class="quiz-header" id="header-bar" style="display: none;">
             <span id="progress-text">Soalan: 1/20</span>
             <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
@@ -138,6 +138,7 @@
         </div>
 
         <h1 id="title-banner">Cabaran Sains Cilik 🧠</h1>
+        <div id="paparNama" style="text-align:center; font-weight:bold; color:#3f51b5; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
             <!-- SKRIN ARAHAN SEBELUM MULA -->
@@ -145,7 +146,7 @@
                 <span style="font-size: 4rem;">📜</span>
                 <h2 style="color: #0288d1; margin-top: 10px;">Arahan Kuiz</h2>
                 <div class="instruction-box">
-                    👋 Hai Saintis Cilik! Sila baca peraturan sebelum menjawab:<br><br>
+                    👋 Hai <span id="namaArahan">Saintis Cilik</span>! Sila baca peraturan sebelum menjawab:<br><br>
                     🎯 Ada <b>20 soalan</b> rawak perlu dijawab.<br>
                     💯 Setiap jawapan betul dapat <b>5 markah</b> (Maksimum: 100 markah).<br>
                     ❤️ Anda diberi <b>3 nyawa</b>. Sila jawab dengan berhati-hati!<br>
@@ -192,7 +193,7 @@
             { q: "Apakah deria yang digunakan untuk membezakan warna merah dan biru?", options: ["👁️ Deria Penglihatan", "👂 Deria Pendengaran", "👅 Deria Rasa"], correct: 0 },
             { q: "Apakah rasa garam dapur?", options: ["🍬 Manis", "🧂 Masin", "🍋 Masam"], correct: 1 },
             { q: "Antara haiwan berikut, yang manakah berkaki dua?", options: ["🐈 Kucing", "🦆 Itik", "🕷️ Labah-labah"], correct: 1 },
-            { q: "Pokok pisang melahirkan anak atau membiar melalui anak benih?", options: ["🌱 Anak pokok", "🥚 Bertelur", "Melompat"], correct: 0 },
+            { q: "Pokok pisang membiak melalui apa?", options: ["🌱 Anak pokok", "🥚 Bertelur", "Melompat"], correct: 0 },
             { q: "Benda hidup membesar daripada saiz kecil menjadi...", options: ["❌ Hilang", "📈 Besar", "📉 Makin kecil"], correct: 1 },
             { q: "Apakah bau sampah yang membusuk?", options: ["🌸 Wangi", "🤢 Busuk", "🍬 Manis"], correct: 1 },
             { q: "Manakah haiwan yang tiada kaki?", options: ["🐛 Cacing", "🐕 Anjing", "🐔 Ayam"], correct: 0 },
@@ -220,16 +221,22 @@
         let jawapanDipilih = null;
         const JUMLAH_SOALAN_PER_SESI = 20; 
 
+        // Fungsi panggil nama dari profil
+        let namaDisimpan = localStorage.getItem('namaMurid');
+        if(namaDisimpan) {
+            let elemenNama = document.getElementById('paparNama');
+            elemenNama.innerText = "Saintis: " + namaDisimpan.toUpperCase() + " 🚀";
+            elemenNama.style.display = "block";
+            document.getElementById('namaArahan').innerText = namaDisimpan.toUpperCase();
+        }
+
         function mulaKuizSebenar() {
-            // Sembunyikan skrin arahan, tunjuk top bar kuiz
             document.getElementById("instruction-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
             
-            // Pilih 20 soalan secara rawak dari 50 bank soalan
             let shuffled = bankSoalan50.sort(() => 0.5 - Math.random());
             soalanKuiz = shuffled.slice(0, JUMLAH_SOALAN_PER_SESI);
             
-            // Reset pembolehubah
             soalanSekarang = 0;
             markah = 0;
             nyawa = 3;
@@ -250,7 +257,6 @@
         function paparSoalan() {
             jawapanDipilih = null;
             let quizArea = document.getElementById("quiz-area");
-            
             let data = soalanKuiz[soalanSekarang];
             document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${JUMLAH_SOALAN_PER_SESI}`;
             
@@ -298,7 +304,6 @@
                 kemaskiniNyawaUI();
             }
             
-            // Check kalau nyawa dah habis
             if (nyawa <= 0) {
                 document.getElementById("next-btn").innerText = "LIHAT KEPUTUSAN 🏁";
             }
@@ -319,7 +324,7 @@
             }
         }
 
-       function tamatKuiz(isWin) {
+        function tamatKuiz(isWin) {
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
             
@@ -328,8 +333,7 @@
                     <div style="text-align:center; padding:20px 0;">
                         <span style="font-size:4rem;">💥</span>
                         <h3 style="color:#c62828; font-size:1.5rem; margin:15px 0;">NYAWA HABIS!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Cuba lagi kawan! Markah terkumpul anda:<br><span style="color:#ff9800; font-size:2rem;">💯 ${markah}/100</span></p>
-                        <!-- Tukar onclick di bawah supaya reload page dengan bersih -->
+                        <p style="font-size:1.1rem; font-weight:bold;">Cuba lagi kawan! Markah anda:<br><span style="color:#ff9800; font-size:2rem;">💯 ${markah}/100</span></p>
                         <button onclick="location.reload()" class="action-btn" style="background:#ff9800; box-shadow:0 5px 0 #e65100;">🔄 CUBA LAGI</button>
                     </div>
                 `;
