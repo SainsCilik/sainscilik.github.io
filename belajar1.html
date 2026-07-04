@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sains Cilik Tahun 1 - Belajar & Kuiz</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #fff9c4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-wrapper {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 20px;
+            box-sizing: border-box;
+        }
+
+        h1 { color: #ff5722; text-align: center; font-size: 1.8rem; margin-bottom: 5px; }
+        
+        .welcome-msg {
+            text-align: center;
+            font-weight: bold;
+            color: #3f51b5;
+            margin-bottom: 15px;
+            background: #e8eaf6;
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        h2 { color: #009688; font-size: 1.3rem; border-bottom: 3px dashed #009688; padding-bottom: 5px; margin-top: 25px; }
+
+        /* Gaya Nota */
+        .nota-box {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .nota-box ul { margin: 5px 0; padding-left: 20px; }
+
+        /* Gaya Kuiz */
+        .kuiz-container {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            background-color: white;
+            border: 2px solid #ccc;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            font-weight: bold;
+            transition: 0.1s;
+        }
+        .option-btn:hover { background-color: #f0f0f0; }
+        
+        #result {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .back-btn {
+            text-align: center;
+            display: block;
+            background-color: #757575;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        <h1>Benda Hidup & Bukan Hidup</h1>
+        
+        <!-- Papar Nama Murid Yang Disimpan -->
+        <div id="paparNama" class="welcome-msg">Hai, Saintis Cilik! 👋</div>
+        
+        <!-- BAHAGIAN NOTA -->
+        <h2>1. Nota Ringkas 📚</h2>
+        <div class="nota-box">
+            <strong>🌱 Benda Hidup:</strong>
+            <ul>
+                <li>Memerlukan air dan makanan</li>
+                <li>Bernafas, Bergerak & Membesar</li>
+                <li>Contoh: Manusia, Kucing, Pokok</li>
+            </ul>
+        </div>
+        <div class="nota-box" style="background-color: #ffe0b2; border-left-color: #ff9800;">
+            <strong>🪨 Benda Bukan Hidup:</strong>
+            <ul>
+                <li>❌ Tidak bernafas</li>
+                <li>❌ Tidak memerlukan makanan & air</li>
+                <li>Contoh: Batu, Kereta, Rumah</li>
+            </ul>
+        </div>
+
+        <!-- BAHAGIAN KUIZ INTERAKTIF -->
+        <h2>2. Jawab Kuiz Mini 🎮</h2>
+        <div class="kuiz-container">
+            <p><strong>Soalan:</strong> Antara berikut, yang manakah merupakan <u>Benda Hidup</u>?</p>
+            <button class="option-btn" onclick="semakJawapan(false, this)">🪨 Batu Jalan</button>
+            <button class="option-btn" onclick="semakJawapan(true, this)">🐱 Kucing Comel</button>
+            <button class="option-btn" onclick="semakJawapan(false, this)">🧸 Anak Patung</button>
+            
+            <div id="result"></div>
+        </div>
+
+        <a href="index.html" class="back-btn">⬅️ Menu Utama</a>
+    </div>
+
+    <script>
+        // Ambil nama murid dari memori browser dan paparkan
+        let namaDisimpan = localStorage.getItem('namaMurid');
+        if(namaDisimpan) {
+            document.getElementById('paparNama').innerText = "Jom Belajar, " + namaDisimpan + "! 🚀";
+        }
+
+        // Fungsi semak jawapan kuiz
+        function semakJawapan(isCorrect, element) {
+            let buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.style.backgroundColor = "white");
+
+            let resultDiv = document.getElementById('result');
+            
+            if(isCorrect) {
+                element.style.backgroundColor = "#c8e6c9"; 
+                resultDiv.innerHTML = "🎉 JAWAPAN BETUL! Hebatnya kamu! 🌟";
+                resultDiv.style.color = "#2e7d32";
+            } else {
+                element.style.backgroundColor = "#ffcdd2"; 
+                resultDiv.innerHTML = "❌ Cuba Lagi, Kawan! Anda pasti boleh! 💪";
+                resultDiv.style.color = "#c62828";
+            }
+        }
+    </script>
+
+</body>
+</html>
