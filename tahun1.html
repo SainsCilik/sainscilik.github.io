@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik Tahun 1 - Daftar Profil</title>
+    <title>Sains Cilik Tahun 1 - Daftar Profil Gempak</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background-color: #e0f2f1;
+            background: linear-gradient(135deg, #ffe082, #b2dfdb);
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,92 +15,207 @@
             align-items: center;
             min-height: 100vh;
         }
+
         .phone-wrapper {
             width: 100%;
             max-width: 420px;
             background: white;
             min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
+            border-radius: 20px;
         }
-        .avatar-main {
-            font-size: 5rem;
-            margin-top: 40px;
-            animation: bounce 2 s infinite;
+
+        .logo-area {
+            font-size: 4rem;
+            margin-top: 20px;
+            animation: float 3s ease-in-out infinite;
         }
-        @keyframes bounce {
+
+        @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
-        h2 { color: #004d40; font-size: 1.8rem; margin: 20px 0 10px 0; text-align: center; }
-        p { color: #555; text-align: center; font-size: 1rem; margin-bottom: 30px; }
-        
-        .input-box {
-            width: 100%;
-            background: #f5f5f5;
-            border: 2px solid #b2dfdb;
-            border-radius: 15px;
-            padding: 15px;
-            font-size: 1.1rem;
+
+        h2 { 
+            color: #00796b; 
+            font-size: 1.8rem; 
+            margin: 15px 0 5px 0; 
             text-align: center;
-            font-family: inherit;
-            margin-bottom: 25px;
-            box-sizing: border-box;
+            text-shadow: 1px 1px 0px #e0f2f1;
         }
-        .menu-btn {
-            width: 100%;
-            padding: 18px;
-            font-size: 1.3rem;
+
+        p { color: #666; text-align: center; font-size: 0.95rem; margin-bottom: 25px; }
+        
+        /* Bahagian Pilih Avatar */
+        .avatar-label {
             font-weight: bold;
-            color: white;
-            border: none;
+            color: #004d40;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .avatar-box {
+            font-size: 2.2rem;
+            background: #f5f5f5;
+            border: 3px solid #e0e0e0;
+            padding: 10px;
             border-radius: 15px;
             cursor: pointer;
-            box-shadow: 0 6px 0 #004d40;
-            background-color: #00796b;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 0 #e0e0e0;
+        }
+
+        .avatar-box:hover { transform: scale(1.05); }
+
+        .avatar-box.selected {
+            background: #e0f2f1;
+            border-color: #00cc66;
+            box-shadow: 0 4px 0 #00994d;
+            transform: scale(1.1);
+        }
+
+        /* Kotak Input */
+        .input-container {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #00796b;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid #b2dfdb;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+            font-family: 'Comic Sans MS', sans-serif;
+            box-sizing: border-box;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        input[type="text"]:focus {
+            border-color: #00796b;
+            outline: none;
+            background-color: #fff;
+        }
+
+        /* Butang Mula Gempak */
+        .save-btn {
+            width: 100%;
+            background: linear-gradient(to bottom, #00cc66, #00994d);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 6px 0 #006633;
+            cursor: pointer;
             transition: 0.1s;
         }
-        .menu-btn:active {
+
+        .save-btn:active {
             transform: translateY(4px);
-            box-shadow: 0 2px 0 #004d40;
+            box-shadow: 0 2px 0 #006633;
+        }
+
+        .footer {
+            margin-top: auto;
+            font-size: 0.8rem;
+            color: #bbb;
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="phone-wrapper">
-        <div class="avatar-main">👧👦</div>
+        <div class="logo-area" id="avatar-pantulan">🎒</div>
         <h2>Profil Sains Tahun 1</h2>
-        <p>Sila masukkan nama anda sebelum memulakan kuiz!</p>
+        <p>Cipta watak anda sebelum meneroka kuiz mega!</p>
+
+        <!-- PILIHAN AVATAR GAME -->
+        <div class="avatar-label">🎯 Pilih Avatar Anda:</div>
+        <div class="avatar-grid">
+            <div class="avatar-box selected" onclick="pilihAvatar('🎒', this)">🎒</div>
+            <div class="avatar-box" onclick="pilihAvatar('🤖', this)">🤖</div>
+            <div class="avatar-box" onclick="pilihAvatar('👨‍🚀', this)">👨‍🚀</div>
+            <div class="avatar-box" onclick="pilihAvatar('🐱', this)">🐱</div>
+            <div class="avatar-box" onclick="pilihAvatar('🦄', this)">🦄</div>
+            <div class="avatar-box" onclick="pilihAvatar('🦁', this)">🦁</div>
+            <div class="avatar-box" onclick="pilihAvatar('🦖', this)">🦖</div>
+            <div class="avatar-box" onclick="pilihAvatar('🦊', this)">🦊</div>
+        </div>
         
-        <!-- Kotak Isi Nama -->
-        <input type="text" id="username" class="input-box" placeholder="✍️ Taip nama anda di sini...">
-        
-        <!-- Butang Mula Kuiz -->
-        <button class="menu-btn" onclick="simpanNamaDanMula()">MULA KUIZ SAINS 🚀</button>
+        <!-- KOTAK INPUT NAMA -->
+        <div class="input-container">
+            <label for="student-name">✍️ Nama Anda :</label>
+            <input type="text" id="student-name" placeholder="TAIP NAMA DI SINI..." required>
+        </div>
+
+        <!-- BUTANG DIARAHKAN KE KUIZ -->
+        <button class="save-btn" onclick="simpanProfil()">SIMPAN & MULA 🚀</button>
+
+        <div class="footer">
+            BIJAK SAINS TAHUN 1 • KSSR MALAYSIA
+        </div>
     </div>
 
     <script>
-        function simpanNamaDanMula() {
-            // 1. Ambil nama daripada kotak input di atas
-            let nama = document.getElementById("username").value.trim();
+        let avatarDipilih = "🎒";
+
+        function pilihAvatar(emoji, elemen) {
+            // Buang kelas 'selected' daripada mana-mana kotak avatar lama
+            document.querySelectorAll('.avatar-box').forEach(box => {
+                box.classList.remove('selected');
+            });
+            // Tambah kelas 'selected' pada avatar yang baru diklik
+            elemen.classList.add('selected');
+            avatarDipilih = emoji;
             
-            // Jika kosong, letak nama backup
-            if (nama === "") {
-                nama = "Saintis Cilik";
+            // Tukar ikon beg besar kat atas ikut emoji yang dipilih!
+            document.getElementById('avatar-pantulan').innerText = emoji;
+        }
+
+        function simpanProfil() {
+            let nama = document.getElementById('student-name').value.trim();
+            
+            if(nama === "") {
+                alert("Alamak! Sila tulis nama anda dahulu kawan! 😊");
+                return;
             }
             
-            // 2. SIMPAN NAMA DALAM MEMORI KOMPUTER (Penting!)
-            localStorage.setItem("namaMurid", nama);
+            // Gabungkan Emoji Avatar dengan Nama Murid (Contoh: "🤖 FARA")
+            let namaLengkap = avatarDipilih + " " + nama;
             
-            // 3. Lompat terus ke halaman kuiz belajar1.html
-            location.href = "belajar1.html";
+            // Simpan nama berserta emoji ke dalam sistem memori browser
+            localStorage.setItem('namaMurid', namaLengkap);
+            
+            // Pindah terus ke kuiz belajar1.html
+            window.location.href = "belajar1.html";
         }
     </script>
-
 </body>
 </html>
