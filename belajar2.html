@@ -3,344 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik Tahun 2 - Cabaran Mega 100 Markah</title>
+    <title>Sains Cilik Tahun 2</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
             background-color: #fff3e0;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-
-        .phone-wrapper {
+        .wrapper {
             width: 100%;
             max-width: 420px;
             background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            padding: 25px 20px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
             box-sizing: border-box;
         }
-
-        .quiz-header {
+        .header-bar {
             display: flex;
             justify-content: space-between;
             background: #ffe0b2;
-            padding: 10px 15px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 10px;
             font-weight: bold;
             color: #e65100;
             margin-bottom: 20px;
         }
-
-        .hearts { color: #ff5252; font-size: 1.2rem; }
-
-        h1 { color: #ff9800; text-align: center; font-size: 1.6rem; margin: 10px 0; }
-        
-        .kuiz-box {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 20px;
-            border: 2px solid #e0e0e0;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .instruction-screen {
-            text-align: center;
-        }
-        .instruction-box {
-            background: #fff3e0;
-            border-left: 5px solid #ff9800;
-            padding: 15px;
-            text-align: left;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        .option-btn {
+        .btn {
             display: block;
             width: 100%;
-            background-color: white;
+            background: white;
             border: 3px solid #e0e0e0;
             padding: 14px;
-            margin: 8px 0;
-            border-radius: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
             font-size: 1rem;
             cursor: pointer;
-            text-align: left;
             font-weight: bold;
-            box-shadow: 0 4px 0 #e0e0e0;
+            box-sizing: border-box;
+            text-align: left;
         }
-
         .action-btn {
             width: 100%;
-            background-color: #ff9800;
+            background: #ff9800;
             color: white;
             border: none;
             padding: 15px;
             font-size: 1.2rem;
             font-weight: bold;
-            border-radius: 15px;
-            box-shadow: 0 5px 0 #e65100;
+            border-radius: 12px;
             cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #result-message {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
-        .back-btn {
-            text-align: center;
-            display: block;
-            background-color: #757575;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-wrapper">
-        <div class="quiz-header" id="header-bar" style="display: none;">
-            <span id="progress-text">Soalan: 1/20</span>
-            <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
-            <span id="score-text">Markah: 0</span>
+    <div class="wrapper">
+        <div class="header-bar" id="header" style="display:none;">
+            <span id="prog">Soalan: 1/20</span>
+            <span id="score">Markah: 0</span>
         </div>
 
-        <h1>Cabaran Sains T2 🏆</h1>
-        <div id="paparNama" style="text-align:center; font-weight:bold; color:#e65100; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
+        <h2 style="color:#ff9800;">Sains Tahun 2 🏆</h2>
         
-        <div class="kuiz-box" id="quiz-area">
-            <div class="instruction-screen" id="instruction-screen">
-                <span style="font-size: 4rem;">🧬</span>
-                <h2 style="color: #e65100; margin-top: 10px;">Mula Cabaran</h2>
-                <div class="instruction-box">
-                    👋 Hai <span id="namaArahan">Saintis Cilik</span>!<br><br>
-                    🎯 Selesaikan <b>20 soalan</b> silibus Tahun 2.<br>
-                    💯 Setiap jawapan betul memberikan <b>5 markah</b>.<br>
-                    ❤️ Anda mempunyai <b>3 nyawa</b>. Jawab dengan bijak!
-                </div>
-                <button class="action-btn" onclick="mulaKuizSebenar()">MULA SEKARANG 🚀</button>
-            </div>
+        <div id="box">
+            <p>Sedia untuk mulakan cabaran 20 soalan rawak daripada bank 50 soalan?</p>
+            <button class="action-btn" onclick="mula()">MULA SEKARANG 🚀</button>
         </div>
-
-        <a href="tahun2.html" class="back-btn">⬅️ Keluar</a>
+        
+        <a href="tahun2.html" style="display:block; margin-top:20px; color:#757575; text-decoration:none; font-weight:bold;">⬅️ Keluar</a>
     </div>
 
     <script>
-        // BANK 50 SOALAN MEGA SAINS TAHUN 2 (DAH DIPATUHI)
-        const bankSoalan50 = [
-            { q: "Antara berikut, yang manakah merupakan keperluan asas manusia?", options: ["📱 Telefon pintar", "🍱 Makanan, air dan udara", "🧸 Mainan"], correct: 1 },
-            { q: "Mengapakah manusia memerlukan udara?", options: ["Untuk bernafas", "Untuk membesar", "Untuk berjalan"], correct: 0 },
-            { q: "Apakah yang berlaku kepada saiz badan kita apabila kita membesar?", options: ["📉 Menjadi kecil", "📈 Menjadi besar", "❌ Tidak berubah"], correct: 1 },
-            { q: "Tumbesaran manusia melibatkan pertambahan saiz, berat dan...", options: ["🏃 Kepantasan", "📐 Tinggi", "🧥 Warna baju"], correct: 1 },
-            { q: "Ciri-ciri fizikal seperti warna anak mata diwarisi daripada...", options: ["🏫 Guru", "👪 Ibu bapa atau keturunan", "🎨 Kawan-kawan"], correct: 1 },
-            { q: "Haiwan manakah yang menyusukan anaknya?", options: ["🐔 Ayam", "🐋 Paus / Kucing", "🐸 Katak"], correct: 1 },
-            { q: "Manakah antara haiwan berikut bertelur dengan banyak?", options: ["🐢 Tenggiling", "🐸 Katak / Penyu", "🐒 Monyet"], correct: 1 },
-            { q: "Apakah keperluan asas bagi anak benih untuk bercambah?", options: ["🧪 Baja, tanah dan pasu", "💧 Air, udara dan kehangatan", "☀️ Cahaya matahari sahaja"], correct: 1 },
-            { q: "Apakah sumber cahaya semula jadi yang utama pada waktu siang?", options: ["💡 Mentol", "🔥 Lilin", "☀️ Matahari"], correct: 2 },
-            { q: "Bilakah bayang-bayang terbentuk?", options: ["Apabila cahaya dihalang oleh objek", "Apabila lampu ditutup", "Waktu malam sahaja"], correct: 0 },
-            { q: "Antara berikut, yang manakah komponen dalam set permainan elektrik?", options: ["🔋 Sel kering, mentol, suis", "📎 Klip kertas, magnet", "🪞 Cermin, pembaris"], correct: 0 },
-            { q: "Apakah fungsi suis dalam litar elektrik?", options: ["Membekalkan tenaga", "💡 Menyala", "🔌 Menyambung & memutuskan litar"], correct: 2 },
-            { q: "Mengapakah mentol tidak menyala walaupun suis telah ditutup (disambung)?", options: ["🔋 Sel kering kehabisan tenaga / mentol rosak", "Wayar terlalu panjang", "Sebab hari siang"], correct: 0 },
-            { q: "Bahan yang membenarkan arus elektrik mengalir melaluinya dipanggil...", options: ["🛑 Penebat elektrik", "⚡ Konduktor elektrik", "🧲 Magnet"], correct: 1 },
-            { q: "Antara berikut, objek manakah ialah penebat elektrik?", options: ["🔑 Kunci besi", "🪠 Pemadam / Pembaris plastik", "🪙 Syiling"], correct: 1 },
-            { q: "Apakah bahan utama untuk membuat botol plastik?", options: ["🪵 Kayu", "🛢️ Plastik", "🌾 Pasir"], correct: 1 },
-            { q: "Antara berikut, yang manakah boleh larut di dalam air?", options: ["🧂 Garam / Gula", "🪨 Batu batan", "🪵 Serbuk kayu"], correct: 0 },
-            { q: "Bagaimanakah cara untuk melarutkan gula dengan lebih cepat?", options: ["Gunakan air sejuk", "🥄 Menggunakan air panas & dikacau", "Biar sahaja tanpa kacau"], correct: 1 },
-            { q: "Apakah komponen tanah yang mengandungi sisa tumbuhan dan haiwan mati?", options: ["🌾 Pasir", "🍂 Humus", "🪨 Batu"], correct: 1 },
-            { q: "Tanah manakah yang paling sesuai untuk menanam pokok padi?", options: ["🏖️ Tanah pasir", "🪴 Tanah liat", "🪹 Tanah kebun"], correct: 1 },
-            { q: "Haiwan manakah yang menyerupai induknya sejak lahir?", options: ["🦋 Rama-rama", "🐈 Kucing", "🐸 Katak"], correct: 1 },
-            { q: "Apakah tabiat makan bagi seekor kambing?", options: ["🥩 Makan daging", "🌿 Makan tumbuhan (Herbivor)", "🍕 Makan semua"], correct: 1 },
-            { q: "Antara berikut, yang manakah haiwan Omnivor (makan tumbuhan & haiwan)?", options: ["🐄 Lembu", "🐅 Harimau", "🐔 Ayam / Beruang"], correct: 2 },
-            { q: "Apakah deria yang tiada pada orang yang buta?", options: ["👂 Pendengaran", "👁️ Penglihatan", "👃 Bau"], correct: 1 },
-            { q: "Mengapakah aktiviti membaca di tempat gelap tidak digalakkan?", options: ["Boleh merosakkan mata", "Buku akan hilang", "Sebab mengantuk"], correct: 0 },
-            { q: "Apakah yang membekalkan tenaga elektrik dalam litar kuiz?", options: ["Suis", "🔋 Sel kering (Bateri)", "💡 Mentol"], correct: 1 },
-            { q: "Objek manakah yang menghasilkan bayang-bayang paling jelas?", options: ["🪟 Cermin lutsinar", "🪵 Objek legap (cth: kadbod/kayu)", "Plastik jernih"], correct: 1 },
-            { q: "Apakah contoh haiwan yang hidup di dalam tanah kebun?", options: ["🐛 Cacing tanah", "🐠 Ikan", "🦅 Burung"], correct: 0 },
-            { q: "Tanah pasir mengandungi banyak...", options: ["🍂 Humus", "🏖️ Butir pasir & batu kecil", "🪴 Tanah liat"], correct: 1 },
-            { q: "Apakah kepentingan cahaya kepada manusia?", options: ["Membantu kita melihat dalam gelap", "Untuk mendengar bunyi", "Untuk membuat makanan"], correct: 0 },
-            { q: "Ulat beluncas adalah peringkat anak bagi haiwan apa?", options: ["🐸 Katak", "🦋 Rama-rama", "🦟 Nyamuk"], correct: 1 },
-            { q: "Adakah pokok memerlukan cahaya matahari untuk membuat makanan?", options: ["Ya, betul", "Tidak perlu", "Hanya waktu malam"], correct: 0 },
-            { q: "Apakah fungsi utama daun pada tumbuhan?", options: ["🍃 Membuat makanan", "🪵 Menyerap air", "🍎 Menghasilkan biji benih"], correct: 0 },
-            { q: "Antara objek berikut, yang manakah sejenis konduktor elektrik?", options: ["✏️ Pemadam", "📎 Klip kertas logam", "🪵 Pembaris kayu"], correct: 1 },
-            { q: "Apakah rasa air laut?", options: ["🍬 Manis", "🧂 Masin", "🍋 Masam"], correct: 1 },
-            { q: "Mengapakah kita perlu makan setiap hari?", options: ["Untuk mendapatkan tenaga & membesar", "Untuk jadi gemuk", "Sebab bosan"], correct: 0 },
-            { q: "Manakah antara berikut haiwan Karnivor?", options: ["🐇 Arnab", "🦁 Singa", "🐑 Biri-biri"], correct: 1 },
-            { q: "Anak katak yang hidup di dalam air dipanggil...", options: ["🐛 Beluncas", "🐟 Berudu", "🐣 Anak ayam"], correct: 1 },
-            { q: "Apakah yang akan terjadi kepada pokok jika tidak disiram air?", options: ["Makin subur", "🥀 Layu dan mati", "Bertukar warna biru"], correct: 1 },
-            { q: "Bahan manakah yang TIDAK boleh larut dalam air?", options: ["🍬 Gula", "🪨 Pasir", "🧂 Garam"], correct: 1 },
-            { q: "Apakah yang digunakan untuk menyambungkan komponen elektrik?", options: ["🧵 Benang", "🔌 Wayar penyambung", "🎗️ Reben"], correct: 1 },
-            { q: "Suis terbuka menyebabkan mentol...", options: ["💡 Menyala", "❌ Tidak menyala", "💥 Meletup"], correct: 1 },
-            { q: "Apakah objek yang diletakkan pada litar untuk menguji konduktor?", options: ["🪙 Syiling kuprum", "🧵 Tali leher", "✏️ Pensel kayu"], correct: 0 },
-            { q: "Manakah antara berikut merupakan sumber cahaya buatan manusia?", options: ["⭐ Bintang", "🔦 Lampu suluh / Mentol", "☀️ Matahari"], correct: 1 },
-            { q: "Bayang-bayang menjadi lebih besar jika objek...", options: ["🏃 Dijauhkan dari lampu", "🤝 Dekat dengan sumber cahaya", "Dikecilkan"], correct: 1 },
-            { q: "Berudu bernafas menggunakan apa?", options: ["🫁 Peparu", "🐟 Insang", "👃 Hidung"], correct: 1 },
-            { q: "Pokok bunga kebangsaan Malaysia ialah Pokok...", options: ["🌻 Matahari", "🌺 Bunga Raya", "🌹 Ros"], correct: 1 },
-            { q: "Haiwan manakah yang menjaga anaknya di dalam poket perut?", options: ["🦘 Kanggaru", "🐒 Monyet", "🐕 Anjing"], correct: 0 },
-            { q: "Apakah bau bangkai haiwan?", options: ["🌸 Wangi", "🤢 Busuk", "🍬 Manis"], correct: 1 },
-            { q: "Tanah liat mempunyai tekstur yang...", options: ["🪨 Kasar", "🪴 Halus dan melekit", "🏖️ Berpasir"], correct: 1 }
+        const bank = [
+            { q: "Antara berikut, yang manakah merupakan keperluan asas manusia?", o: ["Telefon pintar", "Makanan, air dan udara", "Mainan"], c: 1 },
+            { q: "Mengapakah manusia memerlukan udara?", o: ["Untuk bernafas", "Untuk membesar", "Untuk berjalan"], c: 0 },
+            { q: "Apakah yang berlaku kepada saiz badan kita apabila kita membesar?", o: ["Menjadi kecil", "Menjadi besar", "Tidak berubah"], c: 1 },
+            { q: "Tumbesaran manusia melibatkan pertambahan saiz, berat dan...", o: ["Kepantasan", "Tinggi", "Warna baju"], c: 1 },
+            { q: "Ciri-ciri fizikal seperti warna anak mata diwarisi daripada...", o: ["Guru", "Ibu bapa atau keturunan", "Kawan-kawan"], c: 1 },
+            { q: "Haiwan manakah yang menyusukan anaknya?", o: ["Ayam", "Paus atau Kucing", "Katak"], c: 1 },
+            { q: "Manakah antara haiwan berikut bertelur dengan banyak?", o: ["Tenggiling", "Katak atau Penyu", "Monyet"], c: 1 },
+            { q: "Apakah keperluan asas bagi anak benih untuk bercambah?", o: ["Baja, tanah dan pasu", "Air, udara dan kehangatan", "Cahaya matahari sahaja"], c: 1 },
+            { q: "Apakah sumber cahaya semula jadi yang utama pada waktu siang?", o: ["Mentol", "Lilin", "Matahari"], c: 2 },
+            { q: "Bilakah bayang-bayang terbentuk?", o: ["Apabila cahaya dihalang oleh objek", "Apabila lampu ditutup", "Waktu malam sahaja"], c: 0 },
+            { q: "Antara berikut, yang manakah komponen dalam set permainan elektrik?", o: ["Sel kering, mentol, suis", "Klip kertas, magnet", "Cermin, pembaris"], c: 0 },
+            { q: "Apakah fungsi suis dalam litar elektrik?", o: ["Membekalkan tenaga", "Menyala", "Menyambung dan memutuskan litar"], c: 2 },
+            { q: "Mengapakah mentol tidak menyala walaupun suis telah ditutup?", o: ["Bateri habis atau mentol rosak", "Wayar terlalu panjang", "Sebab hari siang"], c: 0 },
+            { q: "Bahan yang membenarkan arus elektrik mengalir melaluinya dipanggil...", o: ["Penebat elektrik", "Konduktor elektrik", "Magnet"], c: 1 },
+            { q: "Antara berikut, objek manakah ialah penebat elektrik?", o: ["Kunci besi", "Pemadam atau Pembaris plastik", "Syiling"], c: 1 },
+            { q: "Apakah bahan utama untuk membuat botol plastik?", o: ["Kayu", "Plastik", "Pasir"], c: 1 },
+            { q: "Antara berikut, yang manakah boleh larut di dalam air?", o: ["Garam atau Gula", "Batu batan", "Serbuk kayu"], c: 0 },
+            { q: "Bagaimanakah cara untuk melarutkan gula dengan lebih cepat?", o: ["Gunakan air sejuk", "Menggunakan air panas dan dikacau", "Biar sahaja tanpa kacau"], c: 1 },
+            { q: "Apakah komponen tanah yang mengandungi sisa tumbuhan dan haiwan mati?", o: ["Pasir", "Humus", "Batu"], c: 1 },
+            { q: "Tanah manakah yang paling sesuai untuk menanam pokok padi?", o: ["Tanah pasir", "Tanah liat", "Tanah kebun"], c: 1 },
+            { q: "Haiwan manakah yang menyerupai induknya sejak lahir?", o: ["Rama-rama", "Kucing", "Katak"], c: 1 },
+            { q: "Apakah tabiat makan bagi seekor kambing?", o: ["Makan daging", "Makan tumbuhan", "Makan semua"], c: 1 },
+            { q: "Antara berikut, yang manakah haiwan Omnivor?", o: ["Lembu", "Harimau", "Ayam atau Beruang"], c: 2 },
+            { q: "Apakah deria yang tiada pada orang yang buta?", o: ["Pendengaran", "Penglihatan", "Bau"], c: 1 },
+            { q: "Mengapakah aktiviti membaca di tempat gelap tidak digalakkan?", o: ["Boleh merosakkan mata", "Buku akan hilang", "Sebab mengantuk"], c: 0 },
+            { q: "Apakah yang membekalkan tenaga elektrik dalam litar kuiz?", o: ["Suis", "Sel kering atau Bateri", "Mentol"], c: 1 },
+            { q: "Objek manakah yang menghasilkan bayang-bayang paling jelas?", o: ["Cermin lutsinar", "Objek legap", "Plastik jernih"], c: 1 },
+            { q: "Apakah contoh haiwan yang hidup di dalam tanah kebun?", o: ["Cacing tanah", "Ikan", "Burung"], c: 0 },
+            { q: "Tanah pasir mengandungi banyak...", o: ["Humus", "Butir pasir dan batu kecil", "Tanah liat"], c: 1 },
+            { q: "Apakah kepentingan cahaya kepada manusia?", o: ["Membantu kita melihat dalam gelap", "Untuk mendengar bunyi", "Untuk membuat makanan"], c: 0 },
+            { q: "Ulat beluncas adalah peringkat anak bagi haiwan apa?", o: ["Katak", "Rama-rama", "Nyamuk"], c: 1 },
+            { q: "Adakah pokok memerlukan cahaya matahari untuk membuat makanan?", o: ["Ya, betul", "Tidak perlu", "Hanya waktu malam"], c: 0 },
+            { q: "Apakah fungsi utama daun pada tumbuhan?", o: ["Membuat makanan", "Menyerap air", "Menghasilkan biji benih"], c: 0 },
+            { q: "Antara objek berikut, yang manakah sejenis konduktor elektrik?", o: ["Pemadam", "Klip kertas logam", "Pembaris kayu"], c: 1 },
+            { q: "Apakah rasa air laut?", o: ["Manis", "Masin", "Masam"], c: 1 },
+            { q: "Mengapakah kita perlu makan setiap hari?", o: ["Untuk mendapatkan tenaga", "Untuk jadi gemuk", "Sebab bosan"], c: 0 },
+            { q: "Manakah antara berikut haiwan Karnivor?", o: ["Arnab", "Singa", "Biri-biri"], c: 1 },
+            { q: "Anak katak yang hidup di dalam air dipanggil...", o: ["Beluncas", "Berudu", "Anak ayam"], c: 1 },
+            { q: "Apakah yang akan terjadi kepada pokok jika tidak disiram air?", o: ["Makin subur", "Layu dan mati", "Bertukar warna biru"], c: 1 },
+            { q: "Bahan manakah yang tidak boleh larut dalam air?", o: ["Gula", "Pasir", "Garam"], c: 1 },
+            { q: "Apakah yang digunakan untuk menyambungkan komponen elektrik?", o: ["Benang", "Wayar penyambung", "Reben"], c: 1 },
+            { q: "Suis terbuka menyebabkan mentol...", o: ["Menyala", "Tidak menyala", "Meletup"], c: 1 },
+            { q: "Apakah objek yang diletakkan pada litar untuk menguji konduktor?", o: ["Syiling kuprum", "Tali leher", "Pensel kayu"], c: 0 },
+            { q: "Manakah antara berikut merupakan sumber cahaya buatan manusia?", o: ["Bintang", "Lampu suluh atau Mentol", "Matahari"], c: 1 },
+            { q: "Bayang-bayang menjadi lebih besar jika objek...", o: ["Dijauhkan dari lampu", "Dekat dengan sumber cahaya", "Dikecilkan"], c: 1 },
+            { q: "Berudu bernafas menggunakan apa?", o: ["Peparu", "Insang", "Hidung"], c: 1 },
+            { q: "Pokok bunga kebangsaan Malaysia ialah Pokok...", o: ["Matahari", "Bunga Raya", "Ros"], c: 1 },
+            { q: "Haiwan manakah yang menjaga anaknya di dalam poket perut?", o: ["Kanggaru", "Monyet", "Anjing"], c: 0 },
+            { q: "Apakah bau bangkai haiwan?", o: ["Wangi", "Busuk", "Manis"], c: 1 },
+            { q: "Tanah liat mempunyai tekstur yang...", o: ["Kasar", "Halus dan melekit", "Berpasir"], c: 1 }
         ];
 
-        let soalanKuiz = [];
-        let soalanSekarang = 0;
+        let kuizSoalan = [];
+        let idx = 0;
         let markah = 0;
-        let nyawa = 3;
-        let jawapanDipilih = null;
-        const JUMLAH_SOALAN_PER_SESI = 20; 
 
-        let namaDisimpan = localStorage.getItem('namaMurid');
-        if(namaDisimpan) {
-            let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerText = "Saintis: " + namaDisimpan.toUpperCase() + " 🚀";
-            elemenNama.style.display = "block";
-            document.getElementById('namaArahan').innerText = namaDisimpan.toUpperCase();
-        }
-
-        function mulaKuizSebenar() {
-            document.getElementById("instruction-screen").style.display = "none";
-            document.getElementById("header-bar").style.display = "flex";
-            
-            let shuffled = bankSoalan50.sort(() => 0.5 - Math.random());
-            soalanKuiz = shuffled.slice(0, JUMLAH_SOALAN_PER_SESI);
-            
-            soalanSekarang = 0;
+        function mula() {
+            document.getElementById("header").style.display = "flex";
+            // Ambil 20 soalan secara rawak daripada 50 soalan
+            kuizSoalan = bank.sort(() => 0.5 - Math.random()).slice(0, 20);
+            idx = 0;
             markah = 0;
-            nyawa = 3;
-            
-            kemaskiniNyawaUI();
-            paparSoalan();
+            papar();
         }
 
-        function kemaskiniNyawaUI() {
-            let heartString = "";
-            for(let i=0; i<nyawa; i++) {
-                heartString += "❤️ ";
-            }
-            if(nyawa === 0) heartString = "💀 GAME OVER";
-            document.getElementById("hearts-layer").innerText = heartString;
-        }
-
-        function paparSoalan() {
-            jawapanDipilih = null;
-            let quizArea = document.getElementById("quiz-area");
-            let data = soalanKuiz[soalanSekarang];
-            document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${JUMLAH_SOALAN_PER_SESI}`;
+        function papar() {
+            let data = kuizSoalan[idx];
+            document.getElementById("prog").innerText = "Soalan: " + (idx + 1) + "/20";
             
-            quizArea.innerHTML = `
-                <div class="question-text">${data.q}</div>
-                <div id="options-container"></div>
-                <div id="result-message"></div>
-                <button class="action-btn" id="next-btn" style="display:none; background:#ff9800; box-shadow:0 5px 0 #e65100;" onclick="keSoalanSeterusnya()">SETERUSNYA ➡️</button>
-            `;
-            
-            let container = document.getElementById("options-container");
-            data.options.forEach((opt, index) => {
-                let btn = document.createElement("button");
-                btn.className = "option-btn";
-                btn.innerText = opt;
-                btn.onclick = () => pilihJawapan(index, btn);
-                container.appendChild(btn);
+            let html = `<p style="font-weight:bold; font-size:1.1rem; text-align:left;">${data.q}</p>`;
+            data.o.forEach((pilihan, i) => {
+                html += `<button class="btn" onclick="pilih(${i})">${pilihan}</button>`;
             });
+            
+            document.getElementById("box").innerHTML = html;
         }
 
-        function pilihJawapan(index, element) {
-            if (jawapanDipilih !== null) return;
-            
-            jawapanDipilih = index;
-            let data = soalanKuiz[soalanSekarang];
-            let msg = document.getElementById("result-message");
-            let buttons = document.querySelectorAll(".option-btn");
-            
-            if (index === data.correct) {
-                element.style.backgroundColor = "#c8e6c9";
-                element.style.borderColor = "#4caf50";
-                msg.innerText = "🎉 BETUL! (+5 Markah) 🌟";
-                msg.style.color = "#2e7d32";
+        function pilih(i) {
+            let data = kuizSoalan[idx];
+            if(i === data.c) {
                 markah += 5;
-                document.getElementById("score-text").innerText = `Markah: ${markah}`;
+                document.getElementById("score").innerText = "Markah: " + markah;
+                alert("🎉 BETUL!");
             } else {
-                element.style.backgroundColor = "#ffcdd2";
-                element.style.borderColor = "#f44336";
-                buttons[data.correct].style.backgroundColor = "#c8e6c9";
-                buttons[data.correct].style.borderColor = "#4caf50";
-                msg.innerText = "❌ SALAH! Nyawa berkurang 1 😢";
-                msg.style.color = "#c62828";
-                
-                nyawa--;
-                kemaskiniNyawaUI();
+                alert("❌ SALAH!");
             }
             
-            if (nyawa <= 0) {
-                document.getElementById("next-btn").innerText = "LIHAT KEPUTUSAN 🏁";
-            }
-            document.getElementById("next-btn").style.display = "block";
-        }
-
-        function keSoalanSeterusnya() {
-            if (nyawa <= 0) {
-                tamatKuiz(false);
-                return;
-            }
-            
-            soalanSekarang++;
-            if (soalanSekarang < JUMLAH_SOALAN_PER_SESI) {
-                paparSoalan();
+            idx++;
+            if(idx < 20) {
+                papar();
             } else {
-                tamatKuiz(true);
-            }
-        }
-
-        function tamatKuiz(isWin) {
-            document.getElementById("header-bar").style.display = "none";
-            let quizArea = document.getElementById("quiz-area");
-            
-            if (!isWin && nyawa <= 0) {
-                quizArea.innerHTML = `
-                    <div style="text-align:center; padding:20px 0;">
-                        <span style="font-size:4rem;">💥</span>
-                        <h3 style="color:#c62828; font-size:1.5rem; margin:15px 0;">NYAWA HABIS!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Cuba lagi kawan! Markah anda:<br><span style="color:#ff9800; font-size:2rem;">💯 ${markah}/100</span></p>
-                        <button onclick="location.reload()" class="action-btn" style="background:#ff9800; box-shadow:0 5px 0 #e65100;">🔄 CUBA LAGI</button>
-                    </div>
-                `;
-            } else {
-                let piala = markah >= 80 ? "🏆" : "🥈";
-                quizArea.innerHTML = `
-                    <div style="text-align:center; padding:20px 0;">
-                        <span style="font-size:4rem;">${piala}</span>
-                        <h3 style="color:#4caf50; font-size:1.5rem; margin:15px 0;">TAHNIAH KUIZ TAMAT!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Jumlah markah keseluruhan anda:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
-                        <p>Hebat betul pemikiran saintis cilik kita! 😍</p>
-                        <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI (SOALAN BARU)</button>
-                    </div>
+                document.getElementById("header").style.display = "none";
+                document.getElementById("box").innerHTML = `
+                    <h3>Tahniah! Kuiz Selesai</h3>
+                    <p style="font-size:1.5rem; font-weight:bold; color:#4caf50;">Markah Anda: ${markah}/100</p>
+                    <button class="action-btn" onclick="mula()">MAIN LAGI 🔄</button>
                 `;
             }
         }
