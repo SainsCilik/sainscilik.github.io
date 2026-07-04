@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik - Kuiz Interaktif</title>
+    <title>Sains Cilik - Cabaran Mega 100 Markah</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
@@ -28,7 +28,7 @@
             box-sizing: border-box;
         }
 
-        /* Top Bar Markah */
+        /* Top Bar Markah & Nyawa */
         .quiz-header {
             display: flex;
             justify-content: space-between;
@@ -40,9 +40,10 @@
             margin-bottom: 20px;
         }
 
+        .hearts { color: #ff5252; font-size: 1.2rem; }
+
         h1 { color: #ff5722; text-align: center; font-size: 1.6rem; margin: 10px 0; }
         
-        /* Kotak Soalan */
         .kuiz-box {
             background-color: #f5f5f5;
             padding: 20px;
@@ -51,6 +52,22 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Skrin Arahan */
+        .instruction-screen {
+            text-align: center;
+        }
+        .instruction-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            text-align: left;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .question-text {
@@ -58,6 +75,7 @@
             font-weight: bold;
             margin-bottom: 20px;
             color: #333;
+            line-height: 1.5;
         }
 
         .option-btn {
@@ -75,25 +93,18 @@
             box-shadow: 0 4px 0 #e0e0e0;
         }
 
-        .option-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #e0e0e0;
-        }
-
-        /* Butang Aksi */
         .action-btn {
             width: 100%;
-            background-color: #2196f3;
+            background-color: #00cc66;
             color: white;
             border: none;
             padding: 15px;
             font-size: 1.2rem;
             font-weight: bold;
             border-radius: 15px;
-            box-shadow: 0 5px 0 #0b7dda;
+            box-shadow: 0 5px 0 #00994d;
             cursor: pointer;
             margin-top: 20px;
-            display: none; /* Sembunyi dulu, keluar lepas pilih jawapan */
         }
 
         #result-message {
@@ -119,61 +130,138 @@
 <body>
 
     <div class="phone-wrapper">
-        <!-- Header Kuiz -->
-        <div class="quiz-header">
-            <span id="progress-text">Soalan: 1/3</span>
-            <span id="score-text">⭐ Markah: 0</span>
+        <!-- Header Kuiz (Akan disembunyikan semasa skrin arahan) -->
+        <div class="quiz-header" id="header-bar" style="display: none;">
+            <span id="progress-text">Soalan: 1/20</span>
+            <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
+            <span id="score-text">Markah: 0</span>
         </div>
 
-        <h1>Cabaran Benda Hidup 🧬</h1>
+        <h1 id="title-banner">Cabaran Sains Cilik 🧠</h1>
         
-        <!-- Kotak Kuiz Dinamik -->
         <div class="kuiz-box" id="quiz-area">
-            <div class="question-text" id="question">Memuatkan soalan...</div>
-            <div id="options-container"></div>
-            <div id="result-message"></div>
-            <button class="action-btn" id="next-btn" onclick="keSoalanSeterusnya()">SETERUSNYA ➡️</button>
+            <!-- SKRIN ARAHAN SEBELUM MULA -->
+            <div class="instruction-screen" id="instruction-screen">
+                <span style="font-size: 4rem;">📜</span>
+                <h2 style="color: #0288d1; margin-top: 10px;">Arahan Kuiz</h2>
+                <div class="instruction-box">
+                    👋 Hai Saintis Cilik! Sila baca peraturan sebelum menjawab:<br><br>
+                    🎯 Ada <b>20 soalan</b> rawak perlu dijawab.<br>
+                    💯 Setiap jawapan betul dapat <b>5 markah</b> (Maksimum: 100 markah).<br>
+                    ❤️ Anda diberi <b>3 nyawa</b>. Sila jawab dengan berhati-hati!<br>
+                    ❌ Jika salah jawab, nyawa akan ditolak 1. Kuiz tamat jika nyawa habis.
+                </div>
+                <button class="action-btn" onclick="mulaKuizSebenar()">MULA SEKARANG 🚀</button>
+            </div>
         </div>
 
-        <a href="tahun1.html" class="back-btn">⬅️ Keluar Kuiz</a>
+        <a href="tahun1.html" class="back-btn">⬅️ Keluar</a>
     </div>
 
     <script>
-        // Bank Soalan (Boleh tambah lagi di sini nanti)
-        const soalanSains = [
-            {
-                q: "Antara berikut, yang manakah merupakan BENDA HIDUP?",
-                options: ["🪨 Batu Jalan", "🐱 Kucing Comel", "🧸 Anak Patung"],
-                correct: 1
-            },
-            {
-                q: "Kenapa pokok bunga dianggap sebagai benda hidup?",
-                options: ["Sebab ia berwarna-warni", "Sebab ia memerlukan air & membesar", "Sebab ia boleh berjalan"],
-                correct: 1
-            },
-            {
-                q: "Manakah antara berikut BENDA BUKAN HIDUP yang boleh bergerak sendiri?",
-                options: ["🚗 Kereta", "🌳 Pokok Kelapa", "🐦 Burung Pipit"],
-                correct: 0
-            }
+        // BANK 50 SOALAN MEGA
+        const bankSoalan50 = [
+            { q: "Antara berikut, yang manakah BENDA HIDUP?", options: ["🪨 Batu", "🐱 Kucing", "🧸 Anak Patung"], correct: 1 },
+            { q: "Mengapakah pokok memerlukan air?", options: ["Untuk membesar & hidup", "Untuk bertukar warna", "Untuk melompat"], correct: 0 },
+            { q: "Manakah benda BUKAN HIDUP yang boleh bergerak?", options: ["🚗 Kereta", "🌳 Pokok Kelapa", "🐦 Burung Pipit"], correct: 0 },
+            { q: "Apakah deria yang kita gunakan untuk mendengar guruh?", options: ["👁️ Penglihatan", "👃 Bau", "👂 Pendengaran"], correct: 2 },
+            { q: "Kita rasa ais krim menggunakan organ apa?", options: ["👅 Lidah", "👃 Hidung", "🖐️ Tangan"], correct: 0 },
+            { q: "Haiwan manakah yang melahirkan anak?", options: ["🐸 Katak", "🐄 Lembu", "🦅 Burung Helang"], correct: 1 },
+            { q: "Apakah bahagian tumbuhan yang menyerap air dari tanah?", options: ["🍃 Daun", "🌹 Bunga", "🪵 Akar"], correct: 2 },
+            { q: "Antara haiwan berikut, yang manakah mempunyai cengkerang?", options: ["🐢 Kura-kura", "🦋 Rama-rama", "🐍 Ular"], correct: 0 },
+            { q: "Apakah fungsi utama mata kita?", options: ["Untuk mendengar lagu", "Untuk melihat", "Untuk menghidu"], correct: 1 },
+            { q: "Benda bukan hidup tidak memerlukan...", options: ["Makanan & air", "Ruang simpanan", "Nama timangan"], correct: 0 },
+            { q: "Manakah antara berikut adalah bahagian utama pokok?", options: ["🚗 Roda", "🍃 Daun", "👕 Baju"], correct: 1 },
+            { q: "Apakah deria yang digunakan untuk menghidu bau minyak wangi?", options: ["👃 Deria Bau", "👅 Deria Rasa", "👁️ Deria Penglihatan"], correct: 0 },
+            { q: "Haiwan manakah yang bertelur?", options: ["🐕 Anjing", "🐔 Ayam", "🐒 Monyet"], correct: 1 },
+            { q: "Adakah komputer sebuah benda hidup?", options: ["Ya, sebab ada skrin", "Tidak, kerana tidak bernafas", "Ya, sebab ada bunyi"], correct: 1 },
+            { q: "Apakah yang akan terjadi kepada manusia jika tiada udara?", options: ["Makin tinggi", "Tidak boleh bernafas & mati", "Bertukar jadi robot"], correct: 1 },
+            { q: "Antara berikut, yang manakah benda bukan hidup?", options: ["🐟 Ikan Emas", "✏️ Pensel Warna", "🌻 Pokok Matahari"], correct: 1 },
+            { q: "Haiwan manakah yang terbang di udara?", options: ["🐘 Gajah", "🦅 Burung", "🐊 Buaya"], correct: 1 },
+            { q: "Manakah deria yang digunakan untuk merasa cili pedas?", options: ["👅 Deria Rasa", "👂 Deria Pendengaran", "👃 Deria Bau"], correct: 0 },
+            { q: "Pokok semalu akan menguncup apabila disentuh. Ini membuktikan benda hidup...", options: ["Boleh membesar", "Bergerak balas terhadap rangsangan", "Memerlukan makanan"], correct: 1 },
+            { q: "Manakah haiwan yang mempunyai kepak?", options: ["🦋 Rama-rama", "🐍 Ular", "🐅 Harimau"], correct: 0 },
+            { q: "Apakah rasa buah lemon?", options: ["🍬 Manis", "🍋 Masam", "☕ Pahit"], correct: 1 },
+            { q: "Antara berikut, objek manakah yang ditarik oleh magnet?", options: ["✏️ Pensel kayu", "📎 Klip kertas besi", "🧴 Botol plastik"], correct: 1 },
+            { q: "Ular bergerak dengan cara apa?", options: ["🏃 Berlari", "🦅 Terbang", "🐍 Menyusur"], correct: 2 },
+            { q: "Apakah organ deria bagi penglihatan?", options: ["👁️ Mata", "👂 Telinga", "👃 Hidung"], correct: 0 },
+            { q: "Batu, pasir dan cermin mata ialah...", options: ["Benda hidup", "Benda bukan hidup", "Tumbuhan"], correct: 1 },
+            { q: "Kucing mengeluarkan suara dengan bunyi...", options: ["🐕 Woof woof", "🐱 Meow meow", "🐔 Moo moo"], correct: 1 },
+            { q: "Apakah yang diperlukan oleh haiwan untuk minum?", options: ["💧 Air", "🍔 Burger", "🧴 Minyak"], correct: 0 },
+            { q: "Manakah haiwan yang hidup di dalam air?", options: ["🐒 Monyet", "🐟 Ikan", "🐇 Arnab"], correct: 1 },
+            { q: "Apakah deria yang digunakan untuk membezakan warna merah dan biru?", options: ["👁️ Deria Penglihatan", "👂 Deria Pendengaran", "👅 Deria Rasa"], correct: 0 },
+            { q: "Apakah rasa garam dapur?", options: ["🍬 Manis", "🧂 Masin", "🍋 Masam"], correct: 1 },
+            { q: "Antara haiwan berikut, yang manakah berkaki dua?", options: ["🐈 Kucing", "🦆 Itik", "🕷️ Labah-labah"], correct: 1 },
+            { q: "Pokok pisang melahirkan anak atau membiar melalui anak benih?", options: ["🌱 Anak pokok", "🥚 Bertelur", "Melompat"], correct: 0 },
+            { q: "Benda hidup membesar daripada saiz kecil menjadi...", options: ["❌ Hilang", "📈 Besar", "📉 Makin kecil"], correct: 1 },
+            { q: "Apakah bau sampah yang membusuk?", options: ["🌸 Wangi", "🤢 Busuk", "🍬 Manis"], correct: 1 },
+            { q: "Manakah haiwan yang tiada kaki?", options: ["🐛 Cacing", "🐕 Anjing", "🐔 Ayam"], correct: 0 },
+            { q: "Adakah tuala mandi boleh menyerap air?", options: ["Ya, tuala menyerap air", "Tidak menyerap air", "Hanya serap batu"], correct: 0 },
+            { q: "Antara berikut, objek manakah TIDAK boleh menyerap air?", options: ["🧽 Spons", "👕 Baju kain", "Plastik pembalut"], correct: 2 },
+            { q: "Apakah objek yang digunakan untuk mengelap air yang tumpah?", options: ["🧽 Kain lap atau spons", "🪵 Kayu kering", "🪨 Batu batan"], correct: 0 },
+            { q: "Magnet mempunyai berapa kutub?", options: ["1 kutub", "2 kutub (Utara & Selatan)", "4 kutub"], correct: 1 },
+            { q: "Adakah klip kertas plastik akan melekat pada magnet?", options: ["Ya melekat", "Tidak melekat", "Magnet akan pecah"], correct: 1 },
+            { q: "Dua magnet yang mempunyai kutub yang SAMA jenis apabila didekatkan akan...", options: ["🧲 Menolak antara satu sama lain", "🤝 Menarik bersama", "Bertukar jadi air"], correct: 0 },
+            { q: "Dua magnet yang BERLAINAN kutub apabila didekatkan akan...", options: ["🧲 Menolak", "🤝 Menarik dan melekat", "Hilang"], correct: 1 },
+            { q: "Apakah bentuk magnet yang rupa seperti huruf 'U'?", options: ["🧲 Magnet ladam / Magnet U", "🟢 Magnet bar", "🟡 Magnet bulat"], correct: 0 },
+            { q: "Sains membantu kita memahami...", options: ["Cara tidur lama", "Alam semula jadi", "Cara main game sahaja"], correct: 1 },
+            { q: "Di manakah kita patut melakukan eksperimen sains di sekolah?", options: ["🏪 Kantin", "🥽 Bilik Sains / Makmal", "⚽ Padang bola"], correct: 1 },
+            { q: "Bolehkah kita berlari dan bermain di dalam Bilik Sains?", options: ["Ya, boleh", "❌ Tidak boleh, merbahaya", "Boleh jika cikgu tidur"], correct: 1 },
+            { q: "Sebelum keluar dari Bilik Sains, kita mestilah...", options: ["Tinggalkan sampah", "🧹 Membersihkan & mengemas bilik", "Tutup mata"], correct: 1 },
+            { q: "Apakah haiwan yang mempunyai leher paling panjang?", options: ["🦒 Zirafah", "🐘 Gajah", "🦁 Singa"], correct: 0 },
+            { q: "Manakah tumbuhan yang mempunyai duri tajam pada batangnya?", options: ["🌹 Pokok Bunga Ros / Kaktus", "🍌 Pokok Pisang", "🌿 Pokok Keladi"], correct: 0 },
+            { q: "Manusia bernafas menggunakan organ apa?", options: ["🫁 Peparu", "🫀 Jantung", "🧠 Otak"], correct: 0 }
         ];
 
+        let soalanKuiz = [];
         let soalanSekarang = 0;
         let markah = 0;
+        let nyawa = 3;
         let jawapanDipilih = null;
+        const JUMLAH_SOALAN_PER_SESI = 20; 
+
+        function mulaKuizSebenar() {
+            // Sembunyikan skrin arahan, tunjuk top bar kuiz
+            document.getElementById("instruction-screen").style.display = "none";
+            document.getElementById("header-bar").style.display = "flex";
+            
+            // Pilih 20 soalan secara rawak dari 50 bank soalan
+            let shuffled = bankSoalan50.sort(() => 0.5 - Math.random());
+            soalanKuiz = shuffled.slice(0, JUMLAH_SOALAN_PER_SESI);
+            
+            // Reset pembolehubah
+            soalanSekarang = 0;
+            markah = 0;
+            nyawa = 3;
+            
+            kemaskiniNyawaUI();
+            paparSoalan();
+        }
+
+        function kemaskiniNyawaUI() {
+            let heartString = "";
+            for(let i=0; i<nyawa; i++) {
+                heartString += "❤️ ";
+            }
+            if(nyawa === 0) heartString = "💀 GAME OVER";
+            document.getElementById("hearts-layer").innerText = heartString;
+        }
 
         function paparSoalan() {
             jawapanDipilih = null;
-            document.getElementById("result-message").innerText = "";
-            document.getElementById("next-btn").style.display = "none";
+            let quizArea = document.getElementById("quiz-area");
             
-            let data = soalanSains[soalanSekarang];
-            document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${soalanSains.length}`;
-            document.getElementById("question").innerText = data.q;
+            let data = soalanKuiz[soalanSekarang];
+            document.getElementById("progress-text").innerText = `Soalan: ${soalanSekarang + 1}/${JUMLAH_SOALAN_PER_SESI}`;
+            
+            quizArea.innerHTML = `
+                <div class="question-text">${data.q}</div>
+                <div id="options-container"></div>
+                <div id="result-message"></div>
+                <button class="action-btn" id="next-btn" style="display:none; background:#2196f3; box-shadow:0 5px 0 #0b7dda;" onclick="keSoalanSeterusnya()">SETERUSNYA ➡️</button>
+            `;
             
             let container = document.getElementById("options-container");
-            container.innerHTML = "";
-            
             data.options.forEach((opt, index) => {
                 let btn = document.createElement("button");
                 btn.className = "option-btn";
@@ -184,51 +272,79 @@
         }
 
         function pilihJawapan(index, element) {
-            if (jawapanDipilih !== null) return; // Kunci jawapan
+            if (jawapanDipilih !== null) return;
             
             jawapanDipilih = index;
-            let data = soalanSains[soalanSekarang];
+            let data = soalanKuiz[soalanSekarang];
             let msg = document.getElementById("result-message");
             let buttons = document.querySelectorAll(".option-btn");
             
             if (index === data.correct) {
-                element.style.backgroundColor = "#c8e6c9"; // Hijau
+                element.style.backgroundColor = "#c8e6c9";
                 element.style.borderColor = "#4caf50";
-                msg.innerText = "🎉 BETUL! Hebatlah kamu! 🌟";
+                msg.innerText = "🎉 BETUL! (+5 Markah) 🌟";
                 msg.style.color = "#2e7d32";
-                markah += 10;
-                document.getElementById("score-text").innerText = `⭐ Markah: ${markah}`;
+                markah += 5;
+                document.getElementById("score-text").innerText = `Markah: ${markah}`;
             } else {
-                element.style.backgroundColor = "#ffcdd2"; // Merah
+                element.style.backgroundColor = "#ffcdd2";
                 element.style.borderColor = "#f44336";
-                buttons[data.correct].style.backgroundColor = "#c8e6c9"; // Tunjuk yang betul
+                buttons[data.correct].style.backgroundColor = "#c8e6c9";
                 buttons[data.correct].style.borderColor = "#4caf50";
-                msg.innerText = "❌ Alahai, salah... Cuba lagi!";
+                msg.innerText = "❌ SALAH! Nyawa berkurang 1 😢";
                 msg.style.color = "#c62828";
+                
+                nyawa--;
+                kemaskiniNyawaUI();
             }
             
-            // Keluarkan butang "SETERUSNYA" lepas klik jawapan
+            // Check kalau nyawa dah habis
+            if (nyawa <= 0) {
+                document.getElementById("next-btn").innerText = "LIHAT KEPUTUSAN 🏁";
+            }
             document.getElementById("next-btn").style.display = "block";
         }
 
         function keSoalanSeterusnya() {
+            if (nyawa <= 0) {
+                tamatKuiz(false);
+                return;
+            }
+            
             soalanSekarang++;
-            if (soalanSekarang < soalanSains.length) {
+            if (soalanSekarang < JUMLAH_SOALAN_PER_SESI) {
                 paparSoalan();
             } else {
-                // Skrin Keputusan Akhir
-                document.getElementById("quiz-area").innerHTML = `
-                    <div style="text-align:center; padding:30px 10px;">
-                        <span style="font-size:4rem;">🏆</span>
-                        <h3 style="color:#4caf50; font-size:1.5rem; margin:15px 0 5px 0;">KUIZ TAMAT!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Kamu berjaya mengumpul <br><span style="color:#ff9800; font-size:1.6rem;">⭐ ${markah} Bintang!</span></p>
-                        <p>Hebatlah bakal saintis kita ni! 😍</p>
+                tamatKuiz(true);
+            }
+        }
+
+        function tamatKuiz(isWin) {
+            document.getElementById("header-bar").style.display = "none";
+            let quizArea = document.getElementById("quiz-area");
+            
+            if (!isWin && nyawa <= 0) {
+                quizArea.innerHTML = `
+                    <div style="text-align:center; padding:20px 0;">
+                        <span style="font-size:4rem;">💥</span>
+                        <h3 style="color:#c62828; font-size:1.5rem; margin:15px 0;">NYAWA HABIS!</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;">Cuba lagi kawan! Markah terkumpul anda:<br><span style="color:#ff9800; font-size:2rem;">💯 ${markah}/100</span></p>
+                        <button onclick="mulaKuizSebenar()" class="action-btn" style="background:#ff9800; box-shadow:0 5px 0 #e65100;">🔄 CUBA LAGI</button>
+                    </div>
+                `;
+            } else {
+                let piala = markah >= 80 ? "🏆" : "🥈";
+                quizArea.innerHTML = `
+                    <div style="text-align:center; padding:20px 0;">
+                        <span style="font-size:4rem;">${piala}</span>
+                        <h3 style="color:#4caf50; font-size:1.5rem; margin:15px 0;">TAHNIAH KUIZ TAMAT!</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;">Jumlah markah keseluruhan anda:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                        <p>Hebat betul pemikiran saintis cilik kita! 😍</p>
+                        <button onclick="mulaKuizSebenar()" class="action-btn">🔄 MAIN LAGI (SOALAN BARU)</button>
                     </div>
                 `;
             }
         }
-
-        paparSoalan();
     </script>
 </body>
 </html>
