@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sains Cilik Tahun 2 - Cabaran Mega 100 Markah</title>
+    <title>Sains Cilik Tahun 2 - Kuiz Latihan 2</title>
     <style>
         body {
             font-family: 'Comic Sans MS', sans-serif;
-            background-color: #fff3e0;
+            background-color: #e8f5e9;
             margin: 0;
             padding: 0;
             display: flex;
@@ -31,17 +31,17 @@
         .quiz-header {
             display: flex;
             justify-content: space-between;
-            background: #ffe0b2;
+            background: #c8e6c9;
             padding: 10px 15px;
             border-radius: 12px;
             font-weight: bold;
-            color: #e65100;
+            color: #1b5e20;
             margin-bottom: 20px;
         }
 
         .hearts { color: #ff5252; font-size: 1.2rem; }
 
-        h1 { color: #ff9800; text-align: center; font-size: 1.6rem; margin: 10px 0; }
+        h1 { color: #2e7d32; text-align: center; font-size: 1.6rem; margin: 10px 0; }
         
         .kuiz-box {
             background-color: #f5f5f5;
@@ -61,7 +61,7 @@
 
         .input-group label {
             font-weight: bold;
-            color: #e65100;
+            color: #2e7d32;
             display: block;
             margin-bottom: 8px;
         }
@@ -70,7 +70,7 @@
             width: 100%;
             padding: 12px;
             font-size: 1rem;
-            border: 2px solid #ff9800;
+            border: 2px solid #4caf50;
             border-radius: 10px;
             box-sizing: border-box;
             font-family: inherit;
@@ -85,8 +85,8 @@
         }
         
         .instruction-box {
-            background: #fff3e0;
-            border-left: 5px solid #ff9800;
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
             padding: 15px;
             text-align: left;
             border-radius: 10px;
@@ -120,14 +120,14 @@
 
         .action-btn {
             width: 100%;
-            background-color: #ff9800;
+            background-color: #4caf50;
             color: white;
             border: none;
             padding: 15px;
             font-size: 1.2rem;
             font-weight: bold;
             border-radius: 15px;
-            box-shadow: 0 5px 0 #e65100;
+            box-shadow: 0 5px 0 #1b5e20;
             cursor: pointer;
             margin-top: auto;
         }
@@ -185,15 +185,15 @@
             <span id="score-text">Markah: 0</span>
         </div>
 
-        <h1 id="main-title">Cabaran Sains TAHUN 2 🏆</h1>
-        <div id="paparNama" style="text-align:center; font-weight:bold; color:#e65100; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
+        <h1 id="main-title">Latihan Sains TAHUN 2 🎯</h1>
+        <div id="paparNama" style="text-align:center; font-weight:bold; color:#1b5e20; margin-bottom:15px; font-size:1.1rem; display:none;"></div>
         
         <div class="kuiz-box" id="quiz-area">
             <!-- Skrin Utama -->
             <div class="instruction-screen" id="main-screen">
                 <div>
                     <span style="font-size: 4rem;">🔬</span>
-                    <h2 style="color: #e65100; margin-top: 5px;">Profil Saintis</h2>
+                    <h2 style="color: #1b5e20; margin-top: 5px;">Profil Saintis</h2>
                     
                     <div class="input-group">
                         <label>Nama Murid:</label>
@@ -201,8 +201,8 @@
                     </div>
 
                     <div class="instruction-box">
-                        🎯 Selesaikan <b>20 soalan</b> rawak silibus Sains Tahun 2.<br>
-                        💯 Setiap jawapan betul memberikan <b>5 markah</b>.<br>
+                        🎯 Selesaikan <b>20 soalan</b> rawak daripada bank soalan.<br>
+                        💯 Setiap jawapan betul memberikan <b>5 markah</b> (Maksimum 100).<br>
                         ❤️ Anda mempunyai <b>3 nyawa</b> sahaja. Berhati-hati menjawab!
                     </div>
                 </div>
@@ -217,57 +217,58 @@
     </div>
 
     <script>
+        // BANK 50 SOALAN TAHUN 2 - 100% BERSIH TANPA SEBARANG EMOJI DI SOALAN/JAWAPAN
         const bankSoalan = [
-            { q: "Antara berikut, yang manakah merupakan keperluan asas manusia? 🍱", options: ["📱 Telefon pintar", "🍱 Makanan, air dan udara", "🧸 Mainan"], correct: 1 },
-            { q: "Mengapakah manusia memerlukan udara? 💨", options: ["🏃 Untuk bernafas", "📈 Untuk membesar", "🚶 Untuk berjalan"], correct: 0 },
-            { q: "Apakah yang berlaku kepada saiz badan kita apabila kita membesar? 👨‍🦱", options: ["📉 Menjadi kecil", "📈 Menjadi besar", "❌ Tidak berubah"], correct: 1 },
-            { q: "Tumbesaran manusia melibatkan pertambahan saiz, berat dan... 📐", options: ["🏃 Kepantasan", "📐 Tinggi", "🧥 Warna baju"], correct: 1 },
-            { q: "Ciri-ciri fizikal seperti warna anak mata diwarisi daripada... 👪", options: ["🏫 Guru", "👪 Ibu bapa atau keturunan", "🎨 Kawan-kawan"], correct: 1 },
-            { q: "Haiwan manakah yang menyusukan anaknya? 🐈", options: ["🐔 Ayam", "🐋 Paus atau Kucing", "🐸 Katak"], correct: 1 },
-            { q: "Manakah antara haiwan berikut bertelur dengan banyak? 🐸", options: ["🐢 Tenggiling", "🐸 Katak atau Penyu", "🐒 Monyet"], correct: 1 },
-            { q: "Apakah keperluan asas bagi anak benih untuk bercambah? 🌱", options: ["🧪 Baja, tanah dan pasu", "💧 Air, udara dan kehangatan", "☀️ Cahaya matahari sahaja"], correct: 1 },
-            { q: "Apakah sumber cahaya semula jadi yang utama pada waktu siang? ☀️", options: ["💡 Mentol", "🔥 Lilin", "☀️ Matahari"], correct: 2 },
-            { q: "Bilakah bayang-bayang terbentuk? 👤", options: ["👤 Apabila cahaya dihalang oleh objek", "💡 Apabila lampu ditutup", "🌙 Waktu malam sahaja"], correct: 0 },
-            { q: "Antara berikut, yang manakah komponen dalam set permainan elektrik? ⚡", options: ["🔋 Sel kering, mentol, suis", "📎 Klip kertas, magnet", "🪞 Cermin, pembaris"], correct: 0 },
-            { q: "Apakah fungsi suis dalam litar elektrik? 🔌", options: ["🔋 Membekalkan tenaga", "💡 Menyala", "🔌 Menyambung dan memutuskan litar"], correct: 2 },
-            { q: "Mengapakah mentol tidak menyala walaupun suis telah ditutup? 💡", options: ["🔋 Bateri habis atau mentol rosak", "🔌 Wayar terlalu panjang", "☀️ Sebab hari siang"], correct: 0 },
-            { q: "Bahan yang membenarkan arus elektrik mengalir melaluinya dipanggil... ⚡", options: ["🛑 Penebat elektrik", "⚡ Konduktor elektrik", "🧲 Magnet"], correct: 1 },
-            { q: "Antara berikut, objek manakah ialah penebat elektrik? 🧮", options: ["🔑 Kunci besi", "🪠 Pemadam atau Pembaris plastik", "🪙 Syiling"], correct: 1 },
-            { q: "Apakah bahan utama untuk membuat botol plastik? 🛢️", options: ["🪵 Kayu", "🛢️ Plastik", "🌾 Pasir"], correct: 1 },
-            { q: "Antara berikut, yang manakah boleh larut di dalam air? 🧂", options: ["🧂 Garam atau Gula", "🪨 Batu batan", "🪵 Serbuk kayu"], correct: 0 },
-            { q: "Bagaimanakah cara untuk melarutkan gula dengan lebih cepat? 🥄", options: ["❄️ Gunakan air sejuk", "🔥 Menggunakan air panas dan dikacau", "⏳ Biar sahaja tanpa kacau"], correct: 1 },
-            { q: "Apakah komponen tanah yang mengandungi sisa tumbuhan dan haiwan mati? 🍂", options: ["🌾 Pasir", "🍂 Humus", "🪨 Batu"], correct: 1 },
-            { q: "Tanah manakah yang paling sesuai untuk menanam pokok padi? 🪴", options: ["🏖️ Tanah pasir", "🪴 Tanah liat", "🪹 Tanah kebun"], correct: 1 },
-            { q: "Haiwan manakah yang menyerupai induknya sejak lahir? 🐈", options: ["🦋 Rama-rama", "🐈 Kucing", "🐸 Katak"], correct: 1 },
-            { q: "Apakah tabiat makan bagi seekor kambing? 🌿", options: ["🥩 Makan daging", "🌿 Makan tumbuhan", "🍕 Makan semua"], correct: 1 },
-            { q: "Antara berikut, yang manakah haiwan Omnivor? 🐻", options: ["🐄 Lembu", "🐅 Harimau", "🐔 Ayam atau Beruang"], correct: 2 },
-            { q: "Apakah deria yang tiada pada orang yang buta? 👁️", options: ["👂 Pendengaran", "👁️ Penglihatan", "👃 Bau"], correct: 1 },
-            { q: "Mengapakah aktiviti membaca di tempat gelap tidak digalakkan? 🕶️", options: ["👁️ Boleh merosakkan mata", "📖 Buku akan hilang", "🥱 Sebab mengantuk"], correct: 0 },
-            { q: "Apakah yang membekalkan tenaga elektrik dalam litar kuiz? 🔋", options: ["🔌 Suis", "🔋 Sel kering atau Bateri", "💡 Mentol"], correct: 1 },
-            { q: "Objek manakah yang ghost-shadow paling jelas? 🪵", options: ["🪟 Cermin lutsinar", "🪵 Objek legap", "🥤 Plastik jernih"], correct: 1 },
-            { q: "Apakah contoh haiwan yang hidup di dalam tanah kebun? 🐛", options: ["🐛 Cacing tanah", "🐠 Ikan", "🦅 Burung"], correct: 0 },
-            { q: "Tanah pasir mengandungi banyak... 🏖️", options: ["🍂 Humus", "🏖️ Butir pasir dan batu kecil", "🪴 Tanah liat"], correct: 1 },
-            { q: "Apakah kepentingan cahaya kepada manusia? 💡", options: ["👁️ Membantu kita melihat dalam gelap", "👂 Untuk mendengar bunyi", "🌱 Untuk membuat makanan"], correct: 0 },
-            { q: "Ulat beluncas adalah peringkat anak bagi haiwan apa? 🦋", options: ["🐸 Katak", "🦋 Rama-rama", "🦟 Nyamuk"], correct: 1 },
-            { q: "Adakah pokok memerlukan cahaya matahari untuk membuat makanan? ☀️", options: ["👍 Ya, betul", "👎 Tidak perlu", "🌙 Hanya waktu malam"], correct: 0 },
-            { q: "Apakah fungsi utama daun pada tumbuhan? 🍃", options: ["🍃 Membuat makanan", "🪵 Menyerap air", "🍎 Menghasilkan biji benih"], correct: 0 },
-            { q: "Antara objek berikut, yang manakah sejenis konduktor elektrik? 📎", options: ["✏️ Pemadam", "📎 Klip kertas logam", "🪵 Pembaris kayu"], correct: 1 },
-            { q: "Apakah rasa air laut? 🌊", options: ["🍬 Manis", "🧂 Masin", "🍋 Masam"], correct: 1 },
-            { q: "Mengapakah kita perlu makan setiap hari? 💪", options: ["💪 Untuk mendapatkan tenaga", "🍔 Untuk jadi gemuk", "🥱 Sebab bosan"], correct: 0 },
-            { q: "Manakah antara berikut haiwan Karnivor? 🦁", options: ["🐇 Arnab", "🦁 Singa", "🐑 Biri-biri"], correct: 1 },
-            { q: "Anak katak yang hidup di dalam air dipanggil... 🐟", options: ["🐛 Beluncas", "🐟 Berudu", "🐣 Anak ayam"], correct: 1 },
-            { q: "Apakah yang akan terjadi kepada pokok jika tidak disiram air? 🥀", options: ["🌻 Makin subur", "🥀 Layu dan mati", "🔵 Bertukar warna biru"], correct: 1 },
-            { q: "Bahan manakah yang tidak boleh larut dalam air? 🪨", options: ["🍬 Gula", "🪨 Pasir", "🧂 Garam"], correct: 1 },
-            { q: "Apakah yang digunakan untuk menyambungkan komponen elektrik? 🔌", options: ["🧵 Benang", "🔌 Wayar penyambung", "🎗️ Reben"], correct: 1 },
-            { q: "Suis terbuka menyebabkan mentol... ❌", options: ["💡 Menyala", "❌ Tidak menyala", "💥 Meletup"], correct: 1 },
-            { q: "Apakah objek yang diletakkan pada litar untuk menguji konduktor? 🪙", options: ["🪙 Syiling kuprum", "👔 Tali leher", "✏️ Pensel kayu"], correct: 0 },
-            { q: "Manakah antara berikut merupakan sumber cahaya buatan manusia? 🔦", options: ["⭐ Bintang", "🔦 Lampu suluh atau Mentol", "☀️ Matahari"], correct: 1 },
-            { q: "Bayang-bayang menjadi lebih besar jika objek... 👤", options: ["🏃 Dijauhkan dari lampu", "🤝 Dekat dengan sumber cahaya", "🔎 Dikecilkan"], correct: 1 },
-            { q: "Berudu bernafas menggunakan apa? 🐟", options: ["🫁 Peparu", "🐟 Insang", "👃 Hidung"], correct: 1 },
-            { q: "Pokok bunga kebangsaan Malaysia ialah Pokok... 🌺", options: ["🌻 Matahari", "🌺 Bunga Raya", "🌹 Ros"], correct: 1 },
-            { q: "Haiwan manakah yang menjaga anaknya di dalam poket perut? 🦘", options: ["🦘 Kanggaru", "🐒 Monyet", "🐕 Anjing"], correct: 0 },
-            { q: "Apakah bau bangkai haiwan? 🤢", options: ["🌸 Wangi", "🤢 Busuk", "🍬 Manis"], correct: 1 },
-            { q: "Tanah liat mempunyai tekstur yang... 🪴", options: ["🪨 Kasar", "🪴 Halus dan melekit", "🏖️ Berpasir"], correct: 1 }
+            { q: "Apakah keperluan asas manusia untuk mendapatkan tenaga?", options: ["Pakaian", "Makanan", "Rumah"], correct: 1 },
+            { q: "Mengapakah manusia memerlukan tempat perlindungan?", options: ["Untuk membesar dengan cepat", "Untuk berlindung daripada bahaya dan cuaca buruk", "Untuk menyimpan makanan"], correct: 1 },
+            { q: "Antara berikut, yang manakah merupakan tabiat hidup yang sihat?", options: ["Tidur lewat setiap hari", "Makan makanan seimbang", "Bermain permainan video tanpa henti"], correct: 1 },
+            { q: "Haiwan yang manakah melahirkan anak?", options: ["Katil", "Kucing", "Ayam"], correct: 1 },
+            { q: "Haiwan manakah yang bertelur dengan jumlah yang sangat banyak?", options: ["Burung merpati", "Katak", "Ayam"], correct: 1 },
+            { q: "Apakah yang berlaku kepada saiz badan kita semasa proses tumbesaran?", options: ["Semakin mengecil", "Semakin bertambah dan membesar", "Kekal sama"], correct: 1 },
+            { q: "Anak harimau menyerupai rupa bentuk siapa?", options: ["Induknya atau ibunya", "Bapanya sahaja", "Haiwan lain"], correct: 0 },
+            { q: "Tumbuhan memerlukan perkara berikut untuk tumbesaran, kecuali?", options: ["Air", "Cahaya matahari", "Susu formula"], correct: 2 },
+            { q: "Apakah sumber cahaya utama pada waktu siang?", options: ["Lampu suluh", "Matahari", "Lilin"], correct: 1 },
+            { q: "Bilakah bayang-bayang akan terbentuk?", options: ["Apabila cahaya dihalang oleh objek legap", "Apabila keadaan terlalu gelap", "Apabila lampu dipadamkan"], correct: 0 },
+            { q: "Antara berikut, aktiviti manakah yang lebih mudah dilakukan dalam keadaan terang?", options: ["Tidur", "Membaca buku", "Menonton wayang"], correct: 1 },
+            { q: "Apakah fungsi utama sel kering di dalam sesebuah litar elektrik?", options: ["Menghasilkan cahaya", "Membekalkan tenaga elektrik", "Menyambungkan litar"], correct: 1 },
+            { q: "Apakah komponen litar yang berfungsi untuk menyalakan cahaya?", options: ["Mentol", "Suis", "Wayar penyambung"], correct: 0 },
+            { q: "Apakah tugas utama suis di dalam satu litar elektrik?", options: ["Membekalkan arus elektrik", "Menyambung dan memutuskan litar", "Membuat mentol menjadi berwarna"], correct: 1 },
+            { q: "Bahan yang membenarkan arus elektrik mengalir melaluinya dikenali sebagai?", options: ["Konduktor", "Penebat", "Plastik"], correct: 0 },
+            { q: "Antara objek berikut, yang manakah merupakan contoh penebat elektrik?", options: ["Paku besi", "Pembaris plastik", "Sudu logam"], correct: 1 },
+            { q: "Bagaimanakah cara terbaik untuk mengasingkan campuran pasir dan klip kertas besi?", options: ["Menggunakan magnet", "Menggunakan penapis", "Menggunakan air"], correct: 0 },
+            { q: "Kaedah mengayak sesuai digunakan untuk mengasingkan campuran apa?", options: ["Bahan yang berbeza saiz", "Bahan yang boleh larut dalam air", "Dua jenis cecair"], correct: 0 },
+            { q: "Apakah cara untuk melarutkan gula dengan lebih cepat di dalam air?", options: ["Menggunakan air sejuk", "Menggunakan air panas dan mengacaunya", "Membiarkannya tanpa dikacau"], correct: 1 },
+            { q: "Bahan manakah yang tidak boleh larut di dalam air walaupun dikacau?", options: ["Gula pasir", "Garam halus", "Batu kerikil"], correct: 2 },
+            { q: "Apakah sumber cahaya semulajadi pada waktu malam jika langit cerah?", options: ["Lampu jalan", "Bintang dan bulan", "Api lilin"], correct: 1 },
+            { q: "Haiwan manakah yang menjaga anaknya selepas dilahirkan?", options: ["Kanggaru", "Penyu", "Katak"], correct: 0 },
+            { q: "Antara berikut, yang manakah merupakan urutan tumbesaran manusia yang betul?", options: ["Bayi ke Kanak-kanak ke Dewasa", "Dewasa ke Bayi ke Remaja", "Kanak-kanak ke Bayi ke Dewasa"], correct: 0 },
+            { q: "Mengapakah mentol tidak menyala dalam litar elektrik yang lengkap?", options: ["Kerana suis ditutup", "Kerana sel kering telah kehabisan tenaga", "Kerana wayar terlalu panjang"], correct: 1 },
+            { q: "Sudu besi ialah contoh konduktor elektrik kerana ia diperbuat daripada?", options: ["Kayu", "Logam", "Kain"], correct: 1 },
+            { q: "Apakah yang akan terjadi jika kita membaca buku dalam keadaan yang terlalu gelap?", options: ["Mata akan menjadi rosak atau sakit", "Tulisan menjadi lebih besar", "Membaca menjadi lebih cepat"], correct: 0 },
+            { q: "Apakah fungsi akar bagi tumbesaran pokok?", options: ["Menyerap air dan nutrien dari tanah", "Membuat makanan menggunakan cahaya matahari", "Menghasilkan bau wangi"], correct: 0 },
+            { q: "Haiwan manakah yang bertelur tetapi menjaga dan mengeramkan telurnya?", options: ["Penyu", "Ayam", "Ikan"], correct: 1 },
+            { q: "Apakah bahan utama yang digunakan untuk membuat set binaan mengikut manual?", options: ["Batu bata", "Komponen blok pelbagai bentuk", "Tanah liat"], correct: 1 },
+            { q: "Di manakah kita boleh merujuk untuk memasang komponen set binaan dengan betul?", options: ["Buku cerita", "Manual panduan pemasangan", "Surat khabar"], correct: 1 },
+            { q: "Apakah keperluan asas untuk biji benih mula bercambah?", options: ["Air, udara dan suhu yang sesuai", "Cahaya matahari sahaja", "Baja yang mahal"], correct: 0 },
+            { q: "Apakah perubahan yang dapat dilihat apabila sebatang pokok semakin membesar?", options: ["Bilangan daun bertambah dan batang menjadi tinggi", "Warna batang bertukar merah", "Pokok menjadi semakin pendek"], correct: 0 },
+            { q: "Apakah rupa bentuk fizikal anak katak yang baru menetas?", options: ["Mempunyai empat kaki", "Berbentuk berudu dan mempunyai ekor", "Sama rupa dengan katak dewasa"], correct: 1 },
+            { q: "Antara haiwan berikut, yang manakah melahirkan anak yang sedikit pada satu-satu masa?", options: ["Gajah", "Kucing", "Tikus"], correct: 0 },
+            { q: "Objek legap akan menghasilkan bayang-bayang yang bagaimana?", options: ["Sangat jelas dan gelap", "Kabur", "Tidak kelihatan langsung"], correct: 0 },
+            { q: "Wayar penyambung di dalam litar elektrik biasanya diperbuat daripada apa?", options: ["Tali plastik", "Kuprum atau logam", "Benang kain"], correct: 1 },
+            { q: "Apakah contoh objek yang menggunakan sel kering untuk berfungsi?", options: ["Jam dinding", "Sudu makan", "Pintu kayu"], correct: 0 },
+            { q: "Apakah kaedah terbaik untuk memisahkan daun teh daripada air teh?", options: ["Menggunakan kaedah menapis", "Menggunakan magnet", "Menggunakan kaedah mengayak"], correct: 0 },
+            { q: "Apakah yang dimaksudkan dengan bahan larut?", options: ["Bahan yang hilang dan bercampur sekata di dalam air", "Bahan yang terapung di atas air", "Bahan yang tenggelam di dasar air"], correct: 0 },
+            { q: "Mengapakah serbuk milo larut lebih cepat jika dikacau?", options: ["Kerana kacauan mempercepatkan proses pelarutan", "Kerana sudu bertukar warna", "Kerana air menjadi sejuk"], correct: 0 },
+            { q: "Mengapakah kita perlu mengasingkan sampah mengikut jenis?", options: ["Untuk memudahkan proses kitar semula", "Untuk mencantikkan kawasan", "Saja-saja mengisi masa lapang"], correct: 0 },
+            { q: "Apakah kegunaan utama cermin mata dalam membantu deria penglihatan?", options: ["Membantu melihat objek dengan lebih jelas", "Melindungi mata daripada air", "Menukar warna objek"], correct: 0 },
+            { q: "Haiwan manakah yang mengalami perubahan rupa yang sangat berbeza dari peringkat anak ke dewasa?", options: ["Kucing", "Rama-rama", "Lembu"], correct: 1 },
+            { q: "Apakah fungsi daun pada tumbuhan?", options: ["Menyerap air dari tanah", "Membuat makanan untuk tumbuhan", "Menyokong ranting"], correct: 1 },
+            { q: "Antara bahan berikut, yang manakah boleh mengalirkan arus elektrik?", options: ["Pemeris plastik", "Pemadam getah", "Kunci besi"], correct: 2 },
+            { q: "Lampu suluh mengeluarkan cahaya yang bersumberkan daripada?", options: ["Tenaga elektrik sel kering", "Cahaya matahari", "Lilin bakar"], correct: 0 },
+            { q: "Apakah yang berlaku apabila suis dalam litar elektrik dibuka?", options: ["Mentol menyala lebih terang", "Arus elektrik terputus dan mentol padam", "Sel kering menjadi panas"], correct: 1 },
+            { q: "Apakah kaedah mengapung sesuai digunakan?", options: ["Mengasingkan bahan yang boleh terapung daripada bahan yang tenggelam", "Mengasingkan besi", "Melarutkan garam"], correct: 0 },
+            { q: "Garam halus lebih cepat larut berbanding garam kasar kerana?", options: ["Saiz saiz zarahnya yang lebih kecil", "Warnanya yang lebih putih", "Rasianya yang kurang masin"], correct: 0 },
+            { q: "Selepas selesai memasang set binaan, apakah langkah yang perlu dilakukan?", options: ["Membiarkannya bersepah", "Membuka komponen dan menyimpannya semula ke dalam kotak", "Membuangnya ke dalam tong sampah"], correct: 1 }
         ];
 
         let kuizSoalan = [];
@@ -279,6 +280,7 @@
 
         let namaDisimpan = localStorage.getItem('namaMurid') || "";
         if (namaDisimpan) {
+            namaDisimpan = namaDisimpan.replace(/🤖/g, '').trim(); 
             document.getElementById('username').value = namaDisimpan;
         }
 
@@ -293,17 +295,17 @@
             let inputNama = document.getElementById("username").value.trim();
             let namaFinal = inputNama ? inputNama : "SAINTIS CILIK";
             
+            namaFinal = namaFinal.replace(/🤖/g, '').trim();
             localStorage.setItem('namaMurid', namaFinal);
 
             let elemenNama = document.getElementById('paparNama');
-            elemenNama.innerHTML = `🔬 Saintis: <span style="color:#e65100">${namaFinal.toUpperCase()}</span>`;
+            elemenNama.innerHTML = `🔬 Saintis: <span style="color:#1b5e20">${namaFinal.toUpperCase()}</span>`;
             elemenNama.style.display = "block";
 
             document.getElementById("main-screen").style.display = "none";
             document.getElementById("header-bar").style.display = "flex";
             
-            let shuffled = bankSoalan.sort(() => 0.5 - Math.random());
-            kuizSoalan = shuffled.slice(0, JUMLAH_SOALAN);
+            kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random()).slice(0, JUMLAH_SOALAN);
             
             soalanSekarang = 0;
             markah = 0;
@@ -381,13 +383,13 @@
             document.getElementById("header-bar").style.display = "none";
             let quizArea = document.getElementById("quiz-area");
             
-            let totalMain = parseInt(localStorage.getItem('sains_total_main') || "0") + 1;
-            let markahTertinggi = parseInt(localStorage.getItem('sains_high_score') || "0");
+            let totalMain = parseInt(localStorage.getItem('sains_kuiz2_total_main') || "0") + 1;
+            let markahTertinggi = parseInt(localStorage.getItem('sains_kuiz2_high_score') || "0");
             if (markah > markahTertinggi) {
-                localStorage.setItem('sains_high_score', markah);
+                localStorage.setItem('sains_kuiz2_high_score', markah);
             }
-            localStorage.setItem('sains_total_main', totalMain);
-            localStorage.setItem('sains_last_date', new Date().toLocaleDateString('ms-MY'));
+            localStorage.setItem('sains_kuiz2_total_main', totalMain);
+            localStorage.setItem('sains_kuiz2_last_date', new Date().toLocaleDateString('ms-MY'));
 
             if (isGameOver) {
                 quizArea.innerHTML = `
@@ -405,7 +407,7 @@
                     <div style="text-align:center; padding:15px 0;">
                         <span style="font-size:4rem;">${piala}</span>
                         <h3 style="color:#4caf50; margin:10px 0;">TAHNIAH KUIZ TAMAT!</h3>
-                        <p style="font-size:1.1rem; font-weight:bold;">Markah Anda:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                        <p style="font-size:1.1rem; font-weight:bold;">Markah Latihan 2:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
                         <button onclick="location.reload()" class="action-btn">🔄 MAIN LAGI</button>
                     </div>
                 `;
@@ -415,9 +417,10 @@
         function paparSistemPrestasi() {
             let quizArea = document.getElementById("quiz-area");
             let namaAnak = localStorage.getItem('namaMurid') || "Belum Letak Nama";
-            let hScore = localStorage.getItem('sains_high_score') || "0";
-            let tMain = localStorage.getItem('sains_total_main') || "0";
-            let lDate = localStorage.getItem('sains_last_date') || "Tiada Rekod";
+            namaAnak = namaAnak.replace(/🤖/g, '').trim(); 
+            let hScore = localStorage.getItem('sains_kuiz2_high_score') || "0";
+            let tMain = localStorage.getItem('sains_kuiz2_total_main') || "0";
+            let lDate = localStorage.getItem('sains_kuiz2_last_date') || "Tiada Rekod";
             
             let gred = "U (Perlu Latihan)";
             if(hScore >= 80) gred = "A (Cemerlang) 🌟";
@@ -428,8 +431,8 @@
                 <div class="instruction-screen">
                     <div>
                         <span style="font-size: 3rem;">📊</span>
-                        <h3 style="color: #0288d1; margin: 5px 0;">Dashboard Ibu Bapa</h3>
-                        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Semak perkembangan subjek Sains anak anda di sini.</p>
+                        <h3 style="color: #0288d1; margin: 5px 0;">Dashboard Ibu Bapa (Kuiz 2)</h3>
+                        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Semak perkembangan kuiz pengenalan anak anda.</p>
                         
                         <div class="stats-card">
                             <div class="stats-line"><b>Nama Anak:</b> <span>${namaAnak.toUpperCase()}</span></div>
