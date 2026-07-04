@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sains Cilik - Kuasai Sains dengan Ceria!</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Kotak Bingkai Ala Handphone di Tengah Skrin */
+        .phone-wrapper {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .logo-area {
+            font-size: 5rem;
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #0288d1;
+            font-size: 2.2rem;
+            margin: 10px 0 5px 0;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #4caf50;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        /* Gaya Butang Menu */
+        .menu-grid {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            display: block;
+            text-align: center;
+            padding: 18px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 15px;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+            transition: transform 0.1s;
+        }
+
+        .menu-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+        }
+
+        /* Warna Butang Ikut Tahun */
+        .t1 { background-color: #ff5252; }
+        .t2 { background-color: #ff9800; }
+        .t3 { background-color: #fbc02d; }
+        .t4 { background-color: #4caf50; }
+        .t5 { background-color: #2196f3; }
+        .t6 { background-color: #9c27b0; }
+
+        .footer {
+            margin-top: auto;
+            font-size: 0.8rem;
+            color: #888;
+            padding-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        <div class="logo-area">🔬🚀</div>
+        <h1>Sains Cilik</h1>
+        <div class="subtitle">Belajar Sains Jadi Seronok!</div>
+
+        <div class="menu-grid">
+            <!-- Pautan ke halaman tahun1.html -->
+            <a href="tahun1.html" class="menu-btn t1">TAHUN 1 JOM MAIN! 🎮</a>
+            <a href="#" class="menu-btn t2">TAHUN 2 MULA KUIZ 🏆</a>
+            <a href="#" class="menu-btn t3">TAHUN 3 TEROKA ⚡</a>
+            <a href="#" class="menu-btn t4">TAHUN 4 CABARAN 🗺️</a>
+            <a href="#" class="menu-btn t5">TAHUN 5 GENIUS 🧠</a>
+            <a href="#" class="menu-btn t4">TAHUN 6 JAGUH 🥇</a>
+        </div>
+
+        <div class="footer">
+            © 2026 Sains Cilik • KSSR Malaysia
+        </div>
+    </div>
+
+</body>
+</html>
