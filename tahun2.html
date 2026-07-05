@@ -1,11 +1,15 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sains Cilik Tahun 2</title>
     <style>
+        /* KOD ANTI-CURI: Halang Highlight Teks */
         body {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             font-family: 'Comic Sans MS', sans-serif;
             background-color: #e8f5e9;
             margin: 0;
@@ -14,6 +18,12 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+        }
+        /* Kecualikan input supaya budak masih boleh taip nama */
+        input {
+            -webkit-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         .app-wrapper {
@@ -98,6 +108,10 @@
         .kuiz-box { background-color: #f5f5f5; padding: 20px; border-radius: 20px; border: 2px solid #e0e0e0; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 15px; }
         .question-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.5; }
         .option-btn { display: block; width: 100%; background-color: white; border: 3px solid #e0e0e0; padding: 14px; margin: 8px 0; border-radius: 15px; font-size: 1rem; cursor: pointer; text-align: left; font-weight: bold; box-shadow: 0 4px 0 #e0e0e0; }
+        
+        /* Highlight huruf A, B, C, D */
+        .opt-letter { display: inline-block; width: 28px; color: #1b5e20; font-weight: 900; }
+        
         #result-message { text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 15px; margin-bottom: 15px; }
         
         .back-btn { text-align: center; display: block; background-color: #757575; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-family: inherit; font-size: 1.1rem; width: 100%; }
@@ -175,6 +189,18 @@
     </div>
 
     <script>
+        // ================= KOD ANTI-CURI =================
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12') { e.preventDefault(); }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a' || 
+                e.key === 'U' || e.key === 'C' || e.key === 'S' || e.key === 'A')) {
+                e.preventDefault();
+            }
+        });
+        // ==================================================
+
         // TETAPAN ASAS
         let lang = 'ms';
         const senaraiAvatar = ['🧑‍🔬', '🕵️', '🚀', '🦉', '🐸', '🐢', '🦖', '💡'];
@@ -222,7 +248,7 @@
                 btnKembali: "⬅️ Kembali ke Menu Utama",
                 
                 dashTajuk: "Dashboard Ibu Bapa",
-                dashDesc: "Semak perkembangan kuiz pengenalan anak anda.",
+                dashDesc: "Semak perkembangan rekod kuiz anak anda.",
                 lblAnak: "Nama Anak:",
                 lblTertinggi: "Markah Tertinggi:",
                 lblGred: "Status Pencapaian:",
@@ -242,7 +268,7 @@
                 menuTajuk: "Main Menu",
                 selamatDatang: "Welcome,",
                 markahTertinggi: "Highest Score:",
-                btnMula: "🚀 START PRACTICE 2",
+                btnMula: "🚀 START PRACTICE",
                 btnRekod: "📊 PERFORMANCE RECORD",
                 btnPadam: "🚪 SWITCH PROFILE / LOG OUT",
 
@@ -271,58 +297,58 @@
             }
         };
 
-        // BANK 50 SOALAN TAHUN 2 KSSR (BILINGUAL)
+        // BANK 50 SOALAN TAHUN 2 KSSR (4 PILIHAN JAWAPAN A, B, C, D)
         const bankSoalan = [
-            { q: { ms: "Apakah keperluan asas manusia untuk mendapatkan tenaga?", en: "What is the basic human need to get energy?" }, options: { ms: ["Pakaian", "Makanan", "Rumah"], en: ["Clothes", "Food", "Shelter"] }, correct: 1 },
-            { q: { ms: "Mengapakah manusia memerlukan tempat perlindungan?", en: "Why do humans need shelter?" }, options: { ms: ["Untuk membesar dengan cepat", "Untuk berlindung daripada bahaya dan cuaca buruk", "Untuk menyimpan makanan"], en: ["To grow faster", "To protect from danger and bad weather", "To store food"] }, correct: 1 },
-            { q: { ms: "Antara berikut, yang manakah merupakan tabiat hidup yang sihat?", en: "Which of the following is a healthy lifestyle habit?" }, options: { ms: ["Tidur lewat setiap hari", "Makan makanan seimbang", "Bermain permainan video tanpa henti"], en: ["Sleeping late every day", "Eating a balanced diet", "Playing video games non-stop"] }, correct: 1 },
-            { q: { ms: "Haiwan yang manakah melahirkan anak?", en: "Which animal gives birth to its young?" }, options: { ms: ["Katak", "Kucing", "Ayam"], en: ["Frog", "Cat", "Chicken"] }, correct: 1 },
-            { q: { ms: "Haiwan manakah yang bertelur dengan jumlah yang sangat banyak?", en: "Which animal lays eggs in very large numbers?" }, options: { ms: ["Burung merpati", "Katak", "Ayam"], en: ["Pigeon", "Frog", "Chicken"] }, correct: 1 },
-            { q: { ms: "Apakah yang berlaku kepada saiz badan kita semasa proses tumbesaran?", en: "What happens to our body size during the growth process?" }, options: { ms: ["Semakin mengecil", "Semakin bertambah dan membesar", "Kekal sama"], en: ["It gets smaller", "It increases and grows bigger", "It remains the same"] }, correct: 1 },
-            { q: { ms: "Anak harimau menyerupai rupa bentuk siapa?", en: "A tiger cub resembles the appearance of who?" }, options: { ms: ["Induknya atau ibunya", "Bapanya sahaja", "Haiwan lain"], en: ["Its parent or mother", "Its father only", "Other animals"] }, correct: 0 },
-            { q: { ms: "Tumbuhan memerlukan perkara berikut untuk tumbesaran, kecuali?", en: "Plants need the following for growth, EXCEPT?" }, options: { ms: ["Air", "Cahaya matahari", "Susu formula"], en: ["Water", "Sunlight", "Formula milk"] }, correct: 2 },
-            { q: { ms: "Apakah sumber cahaya utama pada waktu siang?", en: "What is the main source of light during the day?" }, options: { ms: ["Lampu suluh", "Matahari", "Lilin"], en: ["Flashlight", "The Sun", "Candle"] }, correct: 1 },
-            { q: { ms: "Bilakah bayang-bayang akan terbentuk?", en: "When is a shadow formed?" }, options: { ms: ["Apabila cahaya dihalang oleh objek legap", "Apabila keadaan terlalu gelap", "Apabila lampu dipadamkan"], en: ["When light is blocked by an opaque object", "When it is too dark", "When the lights are turned off"] }, correct: 0 },
-            { q: { ms: "Antara berikut, aktiviti manakah yang lebih mudah dilakukan dalam keadaan terang?", en: "Which of the following activities is easier to do in a bright environment?" }, options: { ms: ["Tidur", "Membaca buku", "Menonton wayang"], en: ["Sleeping", "Reading a book", "Watching a movie"] }, correct: 1 },
-            { q: { ms: "Apakah fungsi utama sel kering di dalam sesebuah litar elektrik?", en: "What is the main function of a dry cell in an electrical circuit?" }, options: { ms: ["Menghasilkan cahaya", "Membekalkan tenaga elektrik", "Menyambungkan litar"], en: ["To produce light", "To supply electrical energy", "To connect the circuit"] }, correct: 1 },
-            { q: { ms: "Apakah komponen litar yang berfungsi untuk menyalakan cahaya?", en: "Which circuit component functions to light up?" }, options: { ms: ["Mentol", "Suis", "Wayar penyambung"], en: ["Bulb", "Switch", "Connecting wire"] }, correct: 0 },
-            { q: { ms: "Apakah tugas utama suis di dalam satu litar elektrik?", en: "What is the main task of a switch in an electrical circuit?" }, options: { ms: ["Membekalkan arus elektrik", "Menyambung dan memutuskan litar", "Membuat mentol menjadi berwarna"], en: ["To supply electric current", "To connect and disconnect the circuit", "To make the bulb colorful"] }, correct: 1 },
-            { q: { ms: "Bahan yang membenarkan arus elektrik mengalir melaluinya dikenali sebagai?", en: "Materials that allow electric current to flow through them are known as?" }, options: { ms: ["Konduktor", "Penebat", "Plastik"], en: ["Conductors", "Insulators", "Plastic"] }, correct: 0 },
-            { q: { ms: "Antara objek berikut, yang manakah merupakan contoh penebat elektrik?", en: "Which of the following objects is an example of an electrical insulator?" }, options: { ms: ["Paku besi", "Pembaris plastik", "Sudu logam"], en: ["Iron nail", "Plastic ruler", "Metal spoon"] }, correct: 1 },
-            { q: { ms: "Bagaimanakah cara terbaik untuk mengasingkan campuran pasir dan klip kertas besi?", en: "What is the best way to separate a mixture of sand and metal paper clips?" }, options: { ms: ["Menggunakan magnet", "Menggunakan penapis", "Menggunakan air"], en: ["Using a magnet", "Using a filter", "Using water"] }, correct: 0 },
-            { q: { ms: "Kaedah mengayak sesuai digunakan untuk mengasingkan campuran apa?", en: "The sieving method is suitable for separating what kind of mixture?" }, options: { ms: ["Bahan yang berbeza saiz", "Bahan yang boleh larut dalam air", "Dua jenis cecair"], en: ["Materials of different sizes", "Materials that dissolve in water", "Two types of liquids"] }, correct: 0 },
-            { q: { ms: "Apakah cara untuk melarutkan gula dengan lebih cepat di dalam air?", en: "What is the way to dissolve sugar faster in water?" }, options: { ms: ["Menggunakan air sejuk", "Menggunakan air panas dan mengacaunya", "Membiarkannya tanpa dikacau"], en: ["Use cold water", "Use hot water and stir", "Leave it without stirring"] }, correct: 1 },
-            { q: { ms: "Bahan manakah yang tidak boleh larut di dalam air walaupun dikacau?", en: "Which material cannot dissolve in water even if stirred?" }, options: { ms: ["Gula pasir", "Garam halus", "Batu kerikil"], en: ["Sugar", "Fine salt", "Gravel"] }, correct: 2 },
-            { q: { ms: "Apakah sumber cahaya semulajadi pada waktu malam jika langit cerah?", en: "What is the natural light source at night if the sky is clear?" }, options: { ms: ["Lampu jalan", "Bintang dan bulan", "Api lilin"], en: ["Street lamp", "Stars and moon", "Candle fire"] }, correct: 1 },
-            { q: { ms: "Haiwan manakah yang menjaga anaknya selepas dilahirkan?", en: "Which animal takes care of its young after birth?" }, options: { ms: ["Kanggaru", "Penyu", "Katak"], en: ["Kangaroo", "Turtle", "Frog"] }, correct: 0 },
-            { q: { ms: "Antara berikut, yang manakah merupakan urutan tumbesaran manusia yang betul?", en: "Which of the following is the correct sequence of human growth?" }, options: { ms: ["Bayi ke Kanak-kanak ke Dewasa", "Dewasa ke Bayi ke Remaja", "Kanak-kanak ke Bayi ke Dewasa"], en: ["Baby to Child to Adult", "Adult to Baby to Teenager", "Child to Baby to Adult"] }, correct: 0 },
-            { q: { ms: "Mengapakah mentol tidak menyala dalam litar elektrik yang lengkap?", en: "Why does a bulb not light up in a complete electrical circuit?" }, options: { ms: ["Kerana suis dibuka (off)", "Kerana sel kering telah kehabisan tenaga", "Kerana wayar terlalu panjang"], en: ["Because the switch is opened (off)", "Because the dry cell has run out of energy", "Because the wire is too long"] }, correct: 1 },
-            { q: { ms: "Sudu besi ialah contoh konduktor elektrik kerana ia diperbuat daripada?", en: "An iron spoon is an example of an electrical conductor because it is made of?" }, options: { ms: ["Kayu", "Logam", "Kain"], en: ["Wood", "Metal", "Fabric"] }, correct: 1 },
-            { q: { ms: "Apakah yang akan terjadi jika kita membaca buku dalam keadaan yang terlalu gelap?", en: "What will happen if we read a book in an environment that is too dark?" }, options: { ms: ["Mata akan menjadi rosak atau sakit", "Tulisan menjadi lebih besar", "Membaca menjadi lebih cepat"], en: ["Eyes will get damaged or hurt", "The writing becomes bigger", "Reading becomes faster"] }, correct: 0 },
-            { q: { ms: "Apakah fungsi akar bagi tumbesaran pokok?", en: "What is the function of roots for plant growth?" }, options: { ms: ["Menyerap air dan nutrien dari tanah", "Membuat makanan menggunakan cahaya matahari", "Menghasilkan bau wangi"], en: ["To absorb water and nutrients from the soil", "To make food using sunlight", "To produce a fragrant smell"] }, correct: 0 },
-            { q: { ms: "Haiwan manakah yang bertelur tetapi menjaga dan mengeramkan telurnya?", en: "Which animal lays eggs but takes care of and incubates them?" }, options: { ms: ["Penyu", "Ayam", "Ikan"], en: ["Turtle", "Chicken", "Fish"] }, correct: 1 },
-            { q: { ms: "Apakah bahan utama yang digunakan untuk membuat set binaan mengikut manual?", en: "What is the main material used to build a construction set according to the manual?" }, options: { ms: ["Batu bata", "Komponen blok pelbagai bentuk", "Tanah liat"], en: ["Bricks", "Multi-shaped block components", "Clay"] }, correct: 1 },
-            { q: { ms: "Di manakah kita boleh merujuk untuk memasang komponen set binaan dengan betul?", en: "Where can we refer to assemble construction set components correctly?" }, options: { ms: ["Buku cerita", "Manual panduan pemasangan", "Surat khabar"], en: ["Storybook", "Installation manual", "Newspaper"] }, correct: 1 },
-            { q: { ms: "Apakah keperluan asas untuk biji benih mula bercambah?", en: "What are the basic needs for seeds to start germinating?" }, options: { ms: ["Air, udara dan suhu yang sesuai", "Cahaya matahari sahaja", "Baja yang mahal"], en: ["Water, air, and suitable temperature", "Sunlight only", "Expensive fertilizer"] }, correct: 0 },
-            { q: { ms: "Apakah perubahan yang dapat dilihat apabila sebatang pokok semakin membesar?", en: "What changes can be seen when a plant grows bigger?" }, options: { ms: ["Bilangan daun bertambah dan batang menjadi tinggi", "Warna batang bertukar merah", "Pokok menjadi semakin pendek"], en: ["Number of leaves increases and stem grows taller", "Stem color turns red", "Plant becomes shorter"] }, correct: 0 },
-            { q: { ms: "Apakah rupa bentuk fizikal anak katak yang baru menetas?", en: "What is the physical appearance of a newly hatched froglet?" }, options: { ms: ["Mempunyai empat kaki", "Berbentuk berudu dan mempunyai ekor", "Sama rupa dengan katak dewasa"], en: ["Has four legs", "Tadpole shaped and has a tail", "Looks identical to an adult frog"] }, correct: 1 },
-            { q: { ms: "Antara haiwan berikut, yang manakah melahirkan anak yang sedikit pada satu-satu masa?", en: "Which of the following animals gives birth to only a few young at a time?" }, options: { ms: ["Gajah", "Katak", "Nyamuk"], en: ["Elephant", "Frog", "Mosquito"] }, correct: 0 },
-            { q: { ms: "Objek legap akan menghasilkan bayang-bayang yang bagaimana?", en: "What kind of shadow will an opaque object produce?" }, options: { ms: ["Sangat jelas dan gelap", "Kabur", "Tidak kelihatan langsung"], en: ["Very clear and dark", "Blurry", "Not visible at all"] }, correct: 0 },
-            { q: { ms: "Wayar penyambung di dalam litar elektrik biasanya diperbuat daripada apa?", en: "Connecting wires in electrical circuits are usually made of what?" }, options: { ms: ["Tali plastik", "Kuprum atau logam", "Benang kain"], en: ["Plastic rope", "Copper or metal", "Fabric thread"] }, correct: 1 },
-            { q: { ms: "Apakah contoh objek yang menggunakan sel kering untuk berfungsi?", en: "What is an example of an object that uses a dry cell to function?" }, options: { ms: ["Jam dinding", "Sudu makan", "Pintu kayu"], en: ["Wall clock", "Eating spoon", "Wooden door"] }, correct: 0 },
-            { q: { ms: "Apakah kaedah terbaik untuk memisahkan daun teh daripada air teh?", en: "What is the best method to separate tea leaves from tea?" }, options: { ms: ["Menggunakan kaedah menapis", "Menggunakan magnet", "Menggunakan kaedah mengayak"], en: ["Using the filtration method", "Using a magnet", "Using the sieving method"] }, correct: 0 },
-            { q: { ms: "Apakah yang dimaksudkan dengan bahan larut?", en: "What is meant by a soluble material?" }, options: { ms: ["Bahan yang hilang dan bercampur sekata di dalam air", "Bahan yang terapung di atas air", "Bahan yang tenggelam di dasar air"], en: ["Material that dissolves and mixes evenly in water", "Material that floats on water", "Material that sinks to the bottom"] }, correct: 0 },
-            { q: { ms: "Mengapakah serbuk milo larut lebih cepat jika dikacau?", en: "Why does Milo powder dissolve faster if stirred?" }, options: { ms: ["Kerana kacauan mempercepatkan proses pelarutan", "Kerana sudu bertukar warna", "Kerana air menjadi sejuk"], en: ["Because stirring speeds up the dissolving process", "Because the spoon changes color", "Because the water gets cold"] }, correct: 0 },
-            { q: { ms: "Apakah yang perlu kita pakai untuk melindungi mata semasa melihat cahaya terlalu terang?", en: "What should we wear to protect our eyes when looking at light that is too bright?" }, options: { ms: ["Cermin mata gelap (sunglasses)", "Kanta pembesar", "Tudung saji"], en: ["Sunglasses", "Magnifying glass", "Food cover"] }, correct: 0 },
-            { q: { ms: "Mengapakah pokok memerlukan daun?", en: "Why do plants need leaves?" }, options: { ms: ["Untuk membuat makanan sendiri", "Untuk menyerap air dari tanah", "Untuk menakutkan haiwan perosak"], en: ["To make its own food", "To absorb water from the soil", "To scare away pests"] }, correct: 0 },
-            { q: { ms: "Haiwan manakah yang mengalami perubahan rupa yang sangat berbeza dari peringkat anak ke dewasa?", en: "Which animal undergoes a very different physical change from young to adult?" }, options: { ms: ["Kucing", "Rama-rama", "Lembu"], en: ["Cat", "Butterfly", "Cow"] }, correct: 1 },
-            { q: { ms: "Apakah yang membekalkan tenaga elektrik yang paling besar di rumah kita?", en: "What supplies the largest amount of electrical energy in our homes?" }, options: { ms: ["Bateri jam", "Punca utama elektrik dari tiang elektrik", "Powerbank telefon"], en: ["Clock battery", "Main electrical source from the power grid", "Phone powerbank"] }, correct: 1 },
-            { q: { ms: "Antara bahan berikut, yang manakah boleh mengalirkan arus elektrik?", en: "Which of the following materials can conduct electricity?" }, options: { ms: ["Pembaris plastik", "Pemadam getah", "Klip kertas keluli"], en: ["Plastic ruler", "Rubber eraser", "Steel paper clip"] }, correct: 2 },
-            { q: { ms: "Lampu suluh mengeluarkan cahaya yang bersumberkan daripada?", en: "A flashlight emits light sourced from?" }, options: { ms: ["Tenaga elektrik sel kering", "Cahaya matahari", "Lilin bakar"], en: ["Electrical energy of a dry cell", "Sunlight", "Burning candle"] }, correct: 0 },
-            { q: { ms: "Apakah yang berlaku apabila suis dalam litar elektrik dibuka (OFF)?", en: "What happens when a switch in an electrical circuit is opened (OFF)?" }, options: { ms: ["Mentol menyala lebih terang", "Arus elektrik terputus dan mentol padam", "Sel kering menjadi panas"], en: ["The bulb shines brighter", "Electric current is disconnected and bulb turns off", "Dry cell becomes hot"] }, correct: 1 },
-            { q: { ms: "Apakah kaedah mengapung sesuai digunakan?", en: "What is the floatation method suitable for?" }, options: { ms: ["Mengasingkan bahan yang boleh terapung daripada bahan yang tenggelam", "Mengasingkan besi", "Melarutkan garam"], en: ["Separating floating materials from sinking materials", "Separating iron", "Dissolving salt"] }, correct: 0 },
-            { q: { ms: "Garam halus lebih cepat larut berbanding garam kasar kerana?", en: "Fine salt dissolves faster than coarse salt because?" }, options: { ms: ["Saiz zarahnya yang lebih kecil", "Warnanya yang lebih putih", "Rasanya yang kurang masin"], en: ["Its smaller particle size", "Its whiter color", "Its less salty taste"] }, correct: 0 },
-            { q: { ms: "Selepas selesai memasang set binaan, apakah langkah yang perlu dilakukan?", en: "After finishing building the construction set, what step should be taken?" }, options: { ms: ["Membiarkannya bersepah", "Membuka komponen dan menyimpannya semula ke dalam kotak", "Membuangnya ke dalam tong sampah"], en: ["Leave it messy", "Disassemble components and store them back in the box", "Throw it in the trash can"] }, correct: 1 }
+            { q: { ms: "Apakah keperluan asas manusia untuk mendapatkan tenaga?", en: "What is the basic human need to get energy?" }, options: { ms: ["Pakaian", "Makanan", "Rumah", "Mainan"], en: ["Clothes", "Food", "Shelter", "Toys"] }, correct: 1 },
+            { q: { ms: "Mengapakah manusia memerlukan tempat perlindungan?", en: "Why do humans need shelter?" }, options: { ms: ["Untuk membesar dengan cepat", "Untuk berlindung daripada bahaya dan cuaca buruk", "Untuk menyimpan makanan", "Untuk bermain bersama rakan"], en: ["To grow faster", "To protect from danger and bad weather", "To store food", "To play with friends"] }, correct: 1 },
+            { q: { ms: "Antara berikut, yang manakah merupakan tabiat hidup yang sihat?", en: "Which of the following is a healthy lifestyle habit?" }, options: { ms: ["Tidur lewat setiap hari", "Makan makanan seimbang", "Bermain permainan video tanpa henti", "Tidak mencuci tangan sebelum makan"], en: ["Sleeping late every day", "Eating a balanced diet", "Playing video games non-stop", "Not washing hands before eating"] }, correct: 1 },
+            { q: { ms: "Haiwan yang manakah melahirkan anak?", en: "Which animal gives birth to its young?" }, options: { ms: ["Katak", "Kucing", "Ayam", "Burung"], en: ["Frog", "Cat", "Chicken", "Bird"] }, correct: 1 },
+            { q: { ms: "Haiwan manakah yang bertelur dengan jumlah yang sangat banyak?", en: "Which animal lays eggs in very large numbers?" }, options: { ms: ["Burung merpati", "Katak", "Ayam", "Kucing"], en: ["Pigeon", "Frog", "Chicken", "Cat"] }, correct: 1 },
+            { q: { ms: "Apakah yang berlaku kepada saiz badan kita semasa proses tumbesaran?", en: "What happens to our body size during the growth process?" }, options: { ms: ["Semakin mengecil", "Semakin bertambah dan membesar", "Kekal sama", "Berubah warna"], en: ["It gets smaller", "It increases and grows bigger", "It remains the same", "Changes color"] }, correct: 1 },
+            { q: { ms: "Anak harimau menyerupai rupa bentuk siapa?", en: "A tiger cub resembles the appearance of who?" }, options: { ms: ["Induknya atau ibunya", "Bapanya sahaja", "Haiwan lain", "Tumbuh-tumbuhan"], en: ["Its parent or mother", "Its father only", "Other animals", "Plants"] }, correct: 0 },
+            { q: { ms: "Tumbuhan memerlukan perkara berikut untuk tumbesaran, KECUALI?", en: "Plants need the following for growth, EXCEPT?" }, options: { ms: ["Air", "Cahaya matahari", "Susu formula", "Udara"], en: ["Water", "Sunlight", "Formula milk", "Air"] }, correct: 2 },
+            { q: { ms: "Apakah sumber cahaya utama pada waktu siang?", en: "What is the main source of light during the day?" }, options: { ms: ["Lampu suluh", "Matahari", "Lilin", "Bulan"], en: ["Flashlight", "The Sun", "Candle", "The Moon"] }, correct: 1 },
+            { q: { ms: "Bilakah bayang-bayang akan terbentuk?", en: "When is a shadow formed?" }, options: { ms: ["Apabila cahaya dihalang oleh objek legap", "Apabila keadaan terlalu gelap", "Apabila lampu dipadamkan", "Apabila hujan turun"], en: ["When light is blocked by an opaque object", "When it is too dark", "When the lights are turned off", "When it rains"] }, correct: 0 },
+            { q: { ms: "Antara berikut, aktiviti manakah yang lebih mudah dilakukan dalam keadaan terang?", en: "Which of the following activities is easier to do in a bright environment?" }, options: { ms: ["Tidur", "Membaca buku", "Menonton wayang", "Bermain sorok-sorok"], en: ["Sleeping", "Reading a book", "Watching a movie", "Playing hide and seek"] }, correct: 1 },
+            { q: { ms: "Apakah fungsi utama sel kering di dalam sesebuah litar elektrik?", en: "What is the main function of a dry cell in an electrical circuit?" }, options: { ms: ["Menghasilkan bunyi", "Membekalkan tenaga elektrik", "Menyambungkan litar", "Memutuskan litar"], en: ["To produce sound", "To supply electrical energy", "To connect the circuit", "To disconnect the circuit"] }, correct: 1 },
+            { q: { ms: "Apakah komponen litar yang berfungsi untuk mengeluarkan cahaya?", en: "Which circuit component functions to emit light?" }, options: { ms: ["Mentol", "Suis", "Wayar penyambung", "Sel kering"], en: ["Bulb", "Switch", "Connecting wire", "Dry cell"] }, correct: 0 },
+            { q: { ms: "Apakah tugas utama suis di dalam satu litar elektrik?", en: "What is the main task of a switch in an electrical circuit?" }, options: { ms: ["Membekalkan arus elektrik", "Menyambung dan memutuskan litar", "Membuat mentol menjadi berwarna", "Menghasilkan haba"], en: ["To supply electric current", "To connect and disconnect the circuit", "To make the bulb colorful", "To produce heat"] }, correct: 1 },
+            { q: { ms: "Bahan yang membenarkan arus elektrik mengalir melaluinya dikenali sebagai?", en: "Materials that allow electric current to flow through them are known as?" }, options: { ms: ["Konduktor", "Penebat", "Plastik", "Kain"], en: ["Conductors", "Insulators", "Plastic", "Fabric"] }, correct: 0 },
+            { q: { ms: "Antara objek berikut, yang manakah merupakan contoh penebat elektrik?", en: "Which of the following objects is an example of an electrical insulator?" }, options: { ms: ["Paku besi", "Pembaris plastik", "Sudu logam", "Duit syiling"], en: ["Iron nail", "Plastic ruler", "Metal spoon", "Coin"] }, correct: 1 },
+            { q: { ms: "Bagaimanakah cara terbaik untuk mengasingkan campuran pasir dan klip kertas besi?", en: "What is the best way to separate a mixture of sand and metal paper clips?" }, options: { ms: ["Menggunakan magnet", "Menggunakan penapis", "Menggunakan air", "Menggunakan tangan"], en: ["Using a magnet", "Using a filter", "Using water", "Using hands"] }, correct: 0 },
+            { q: { ms: "Kaedah mengayak sesuai digunakan untuk mengasingkan campuran apa?", en: "The sieving method is suitable for separating what kind of mixture?" }, options: { ms: ["Bahan yang berbeza saiz", "Bahan yang boleh larut dalam air", "Dua jenis cecair", "Bahan yang terapung"], en: ["Materials of different sizes", "Materials that dissolve in water", "Two types of liquids", "Floating materials"] }, correct: 0 },
+            { q: { ms: "Apakah cara untuk melarutkan gula dengan lebih cepat di dalam air?", en: "What is the way to dissolve sugar faster in water?" }, options: { ms: ["Menggunakan air sejuk", "Menggunakan air panas dan mengacaunya", "Membiarkannya tanpa dikacau", "Menambah kiub ais"], en: ["Use cold water", "Use hot water and stir", "Leave it without stirring", "Add ice cubes"] }, correct: 1 },
+            { q: { ms: "Bahan manakah yang TIDAK boleh larut di dalam air walaupun dikacau?", en: "Which material CANNOT dissolve in water even if stirred?" }, options: { ms: ["Gula pasir", "Garam halus", "Batu kerikil", "Serbuk kopi 3-in-1"], en: ["Sugar", "Fine salt", "Gravel", "3-in-1 coffee powder"] }, correct: 2 },
+            { q: { ms: "Apakah sumber cahaya semulajadi pada waktu malam jika langit cerah?", en: "What is the natural light source at night if the sky is clear?" }, options: { ms: ["Lampu jalan", "Bintang dan bulan", "Api lilin", "Lampu kereta"], en: ["Street lamp", "Stars and moon", "Candle fire", "Car lights"] }, correct: 1 },
+            { q: { ms: "Haiwan manakah yang menjaga anaknya selepas dilahirkan?", en: "Which animal takes care of its young after birth?" }, options: { ms: ["Kanggaru", "Penyu", "Katak", "Nyamuk"], en: ["Kangaroo", "Turtle", "Frog", "Mosquito"] }, correct: 0 },
+            { q: { ms: "Antara berikut, yang manakah merupakan urutan tumbesaran manusia yang betul?", en: "Which of the following is the correct sequence of human growth?" }, options: { ms: ["Bayi ke Kanak-kanak ke Dewasa", "Dewasa ke Bayi ke Remaja", "Kanak-kanak ke Bayi ke Dewasa", "Remaja ke Bayi ke Dewasa"], en: ["Baby to Child to Adult", "Adult to Baby to Teenager", "Child to Baby to Adult", "Teenager to Baby to Adult"] }, correct: 0 },
+            { q: { ms: "Mengapakah mentol tidak menyala dalam litar elektrik yang lengkap?", en: "Why does a bulb not light up in a complete electrical circuit?" }, options: { ms: ["Kerana suis dihidupkan", "Kerana sel kering telah kehabisan tenaga", "Kerana wayar terlalu panjang", "Kerana mentol baru dibeli"], en: ["Because the switch is turned on", "Because the dry cell has run out of energy", "Because the wire is too long", "Because the bulb is new"] }, correct: 1 },
+            { q: { ms: "Sudu besi ialah contoh konduktor elektrik kerana ia diperbuat daripada?", en: "An iron spoon is an example of an electrical conductor because it is made of?" }, options: { ms: ["Kayu", "Logam", "Kain", "Plastik"], en: ["Wood", "Metal", "Fabric", "Plastic"] }, correct: 1 },
+            { q: { ms: "Apakah yang akan terjadi jika kita membaca buku dalam keadaan yang terlalu gelap?", en: "What will happen if we read a book in an environment that is too dark?" }, options: { ms: ["Mata akan menjadi rosak atau sakit", "Tulisan menjadi lebih besar", "Membaca menjadi lebih cepat", "Buku menjadi lebih terang"], en: ["Eyes will get damaged or hurt", "The writing becomes bigger", "Reading becomes faster", "The book becomes brighter"] }, correct: 0 },
+            { q: { ms: "Apakah fungsi akar bagi tumbesaran pokok?", en: "What is the function of roots for plant growth?" }, options: { ms: ["Menyerap air dan nutrien dari tanah", "Membuat makanan menggunakan cahaya matahari", "Menghasilkan bau wangi", "Mempunyai warna hijau"], en: ["To absorb water and nutrients from the soil", "To make food using sunlight", "To produce a fragrant smell", "To have a green color"] }, correct: 0 },
+            { q: { ms: "Haiwan manakah yang bertelur tetapi menjaga dan mengeramkan telurnya?", en: "Which animal lays eggs but takes care of and incubates them?" }, options: { ms: ["Penyu", "Ayam", "Ikan", "Katak"], en: ["Turtle", "Chicken", "Fish", "Frog"] }, correct: 1 },
+            { q: { ms: "Apakah bahan utama yang digunakan untuk membuat set binaan mengikut manual?", en: "What is the main material used to build a construction set according to the manual?" }, options: { ms: ["Batu bata", "Komponen blok pelbagai bentuk", "Tanah liat", "Pasir"], en: ["Bricks", "Multi-shaped block components", "Clay", "Sand"] }, correct: 1 },
+            { q: { ms: "Di manakah kita boleh merujuk untuk memasang komponen set binaan dengan betul?", en: "Where can we refer to assemble construction set components correctly?" }, options: { ms: ["Buku cerita", "Manual panduan pemasangan", "Surat khabar", "Majalah"], en: ["Storybook", "Installation manual", "Newspaper", "Magazine"] }, correct: 1 },
+            { q: { ms: "Apakah keperluan asas untuk biji benih mula bercambah?", en: "What are the basic needs for seeds to start germinating?" }, options: { ms: ["Air, udara dan suhu yang sesuai", "Cahaya matahari sahaja", "Baja yang mahal", "Tanah yang kering"], en: ["Water, air, and suitable temperature", "Sunlight only", "Expensive fertilizer", "Dry soil"] }, correct: 0 },
+            { q: { ms: "Apakah perubahan yang dapat dilihat apabila sebatang pokok semakin membesar?", en: "What changes can be seen when a plant grows bigger?" }, options: { ms: ["Bilangan daun bertambah dan batang menjadi tinggi", "Warna batang bertukar merah", "Pokok menjadi semakin pendek", "Akar akan hilang"], en: ["Number of leaves increases and stem grows taller", "Stem color turns red", "Plant becomes shorter", "Roots will disappear"] }, correct: 0 },
+            { q: { ms: "Apakah rupa bentuk fizikal anak katak yang baru menetas?", en: "What is the physical appearance of a newly hatched froglet?" }, options: { ms: ["Mempunyai empat kaki", "Berbentuk berudu dan mempunyai ekor", "Sama rupa dengan katak dewasa", "Mempunyai cengkerang"], en: ["Has four legs", "Tadpole shaped and has a tail", "Looks identical to an adult frog", "Has a shell"] }, correct: 1 },
+            { q: { ms: "Antara haiwan berikut, yang manakah melahirkan anak yang sedikit pada satu-satu masa?", en: "Which of the following animals gives birth to only a few young at a time?" }, options: { ms: ["Gajah", "Katak", "Nyamuk", "Ikan"], en: ["Elephant", "Frog", "Mosquito", "Fish"] }, correct: 0 },
+            { q: { ms: "Objek legap akan menghasilkan bayang-bayang yang bagaimana?", en: "What kind of shadow will an opaque object produce?" }, options: { ms: ["Sangat jelas dan gelap", "Kabur", "Tidak kelihatan langsung", "Berwarna-warni"], en: ["Very clear and dark", "Blurry", "Not visible at all", "Colorful"] }, correct: 0 },
+            { q: { ms: "Wayar penyambung di dalam litar elektrik biasanya diperbuat daripada apa?", en: "Connecting wires in electrical circuits are usually made of what?" }, options: { ms: ["Tali plastik", "Kuprum atau logam", "Benang kain", "Kertas"], en: ["Plastic rope", "Copper or metal", "Fabric thread", "Paper"] }, correct: 1 },
+            { q: { ms: "Apakah contoh objek yang menggunakan sel kering untuk berfungsi?", en: "What is an example of an object that uses a dry cell to function?" }, options: { ms: ["Jam dinding", "Sudu makan", "Pintu kayu", "Buku tulis"], en: ["Wall clock", "Eating spoon", "Wooden door", "Notebook"] }, correct: 0 },
+            { q: { ms: "Apakah kaedah terbaik untuk memisahkan daun teh daripada air teh?", en: "What is the best method to separate tea leaves from tea?" }, options: { ms: ["Menggunakan kaedah menapis", "Menggunakan magnet", "Menggunakan kaedah mengayak", "Menggunakan tangan"], en: ["Using the filtration method", "Using a magnet", "Using the sieving method", "Using hands"] }, correct: 0 },
+            { q: { ms: "Apakah yang dimaksudkan dengan bahan larut?", en: "What is meant by a soluble material?" }, options: { ms: ["Bahan yang hilang dan bercampur sekata di dalam air", "Bahan yang terapung di atas air", "Bahan yang tenggelam di dasar air", "Bahan yang bertukar warna"], en: ["Material that dissolves and mixes evenly in water", "Material that floats on water", "Material that sinks to the bottom", "Material that changes color"] }, correct: 0 },
+            { q: { ms: "Mengapakah serbuk milo larut lebih cepat jika dikacau?", en: "Why does Milo powder dissolve faster if stirred?" }, options: { ms: ["Kerana kacauan mempercepatkan proses pelarutan", "Kerana sudu bertukar warna", "Kerana air menjadi sejuk", "Kerana menggunakan cawan besar"], en: ["Because stirring speeds up the dissolving process", "Because the spoon changes color", "Because the water gets cold", "Because using a big cup"] }, correct: 0 },
+            { q: { ms: "Apakah yang perlu kita pakai untuk melindungi mata semasa melihat cahaya terlalu terang?", en: "What should we wear to protect our eyes when looking at light that is too bright?" }, options: { ms: ["Cermin mata gelap (sunglasses)", "Kanta pembesar", "Tudung saji", "Kaca mata rabun dekat"], en: ["Sunglasses", "Magnifying glass", "Food cover", "Reading glasses"] }, correct: 0 },
+            { q: { ms: "Mengapakah pokok memerlukan daun?", en: "Why do plants need leaves?" }, options: { ms: ["Untuk membuat makanan sendiri", "Untuk menyerap air dari tanah", "Untuk menakutkan haiwan perosak", "Untuk menyokong dahan pokok"], en: ["To make its own food", "To absorb water from the soil", "To scare away pests", "To support the tree branches"] }, correct: 0 },
+            { q: { ms: "Haiwan manakah yang mengalami perubahan rupa yang sangat berbeza dari peringkat anak ke dewasa?", en: "Which animal undergoes a very different physical change from young to adult?" }, options: { ms: ["Kucing", "Rama-rama", "Lembu", "Kuda"], en: ["Cat", "Butterfly", "Cow", "Horse"] }, correct: 1 },
+            { q: { ms: "Apakah yang membekalkan tenaga elektrik yang paling besar di rumah kita?", en: "What supplies the largest amount of electrical energy in our homes?" }, options: { ms: ["Bateri jam", "Punca elektrik dari pencawang / grid utama", "Powerbank telefon", "Bateri kereta"], en: ["Clock battery", "Main electrical source from the power grid", "Phone powerbank", "Car battery"] }, correct: 1 },
+            { q: { ms: "Antara bahan berikut, yang manakah boleh mengalirkan arus elektrik?", en: "Which of the following materials can conduct electricity?" }, options: { ms: ["Pembaris plastik", "Pemadam getah", "Klip kertas keluli", "Benang kapas"], en: ["Plastic ruler", "Rubber eraser", "Steel paper clip", "Cotton thread"] }, correct: 2 },
+            { q: { ms: "Lampu suluh mengeluarkan cahaya yang bersumberkan daripada?", en: "A flashlight emits light sourced from?" }, options: { ms: ["Tenaga elektrik sel kering", "Cahaya matahari", "Lilin bakar", "Pantulan bulan"], en: ["Electrical energy of a dry cell", "Sunlight", "Burning candle", "Moon reflection"] }, correct: 0 },
+            { q: { ms: "Apakah yang berlaku apabila suis dalam litar elektrik dibuka (OFF)?", en: "What happens when a switch in an electrical circuit is opened (OFF)?" }, options: { ms: ["Mentol menyala lebih terang", "Arus elektrik terputus dan mentol padam", "Sel kering menjadi panas", "Wayar mula mencair"], en: ["The bulb shines brighter", "Electric current is disconnected and bulb turns off", "Dry cell becomes hot", "Wires start melting"] }, correct: 1 },
+            { q: { ms: "Apakah kaedah mengapung sesuai digunakan?", en: "What is the floatation method suitable for?" }, options: { ms: ["Mengasingkan bahan yang boleh terapung daripada yang tenggelam", "Mengasingkan serpihan besi", "Melarutkan garam", "Mengasingkan pasir dari air"], en: ["Separating floating materials from sinking ones", "Separating iron fragments", "Dissolving salt", "Separating sand from water"] }, correct: 0 },
+            { q: { ms: "Garam halus lebih cepat larut berbanding garam kasar kerana?", en: "Fine salt dissolves faster than coarse salt because?" }, options: { ms: ["Saiz zarahnya yang lebih kecil", "Warnanya yang lebih putih", "Rasanya yang kurang masin", "Baunya yang wangi"], en: ["Its smaller particle size", "Its whiter color", "Its less salty taste", "Its fragrant smell"] }, correct: 0 },
+            { q: { ms: "Selepas selesai memasang set binaan, apakah langkah yang perlu dilakukan?", en: "After finishing building the construction set, what step should be taken?" }, options: { ms: ["Membiarkannya bersepah", "Membuka komponen dan menyimpannya semula ke dalam kotak", "Membuangnya ke dalam tong sampah", "Merendamnya di dalam air"], en: ["Leave it messy", "Disassemble components and store them back in the box", "Throw it in the trash can", "Soak it in water"] }, correct: 1 }
         ];
 
         function binaAvatar() {
@@ -453,7 +479,7 @@
         }
 
         function semakProfilSediaAda() {
-            // Migrasi jika ada data lama TAHUN 2 (sains_kuiz2) yg belum masuk list
+            // Migrasi dari data Tahun 2 versi awal jika ada
             let oldName = localStorage.getItem('namaMurid');
             if(oldName && localStorage.getItem('sains_kuiz2_high_score')) {
                 let p = {
@@ -527,7 +553,7 @@
                     localStorage.removeItem('sains_semasa_t2');
                 }
                 
-                renderSenaraiProfil(); // Update senarai tanpa reload page
+                renderSenaraiProfil(); 
             }
         }
 
@@ -630,10 +656,15 @@
             `;
             
             let container = document.getElementById("options-container");
+            
+            // Format A, B, C, D
+            const abcd = ["A", "B", "C", "D"];
+            
             data.options[lang].forEach((opt, index) => {
                 let btn = document.createElement("button");
                 btn.className = "option-btn";
-                btn.innerText = opt;
+                // Letak A. B. C. D. di hadapan teks
+                btn.innerHTML = `<span class="opt-letter">${abcd[index]}.</span> ${opt}`;
                 
                 if (jawapanDipilih !== null) {
                     if (index === data.correct) {
