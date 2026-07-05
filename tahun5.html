@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sains Cilik Tahun 5</title>
+    <style>
+        /* KOD ANTI-CURI: Halang Highlight Teks */
+        body {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #e8f5e9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* Kecualikan input supaya budak masih boleh taip nama */
+        input {
+            -webkit-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
+        .app-wrapper {
+            width: 100%; max-width: 100%; background: white;
+            min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; padding: 25px 20px;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+            body { padding: 40px 20px; }
+            .app-wrapper { max-width: 800px; min-height: auto; border-radius: 20px; padding: 40px; }
+            .option-btn { font-size: 1.15rem; padding: 18px; }
+            h1 { font-size: 2rem; }
+            .question-text { font-size: 1.3rem; }
+            #screen-login, #screen-menu { max-width: 500px; margin: 0 auto; width: 100%; }
+        }
+
+        .top-bar { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .lang-btn {
+            background: #ffb300; color: #3e2723; border: none; padding: 8px 16px;
+            border-radius: 20px; font-weight: bold; font-family: inherit; cursor: pointer;
+            box-shadow: 0 3px 0 #ff8f00; transition: 0.2s;
+        }
+        .lang-btn:active { box-shadow: 0 0 0 #ff8f00; transform: translateY(3px); }
+
+        /* Login & Menu Styles */
+        .logo-icon { font-size: 3.5rem; text-align: center; margin-bottom: 5px; }
+        h2 { color: #1b5e20; text-align: center; margin: 0 0 10px 0; font-size: 1.8rem; }
+        p.subtitle { text-align: center; color: #555; font-size: 0.95rem; margin-bottom: 25px; }
+        .login-box { background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .input-label { font-weight: bold; color: #2e7d32; display: block; margin-bottom: 8px; font-size: 1.1rem; }
+        
+        .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .avatar-btn { background: white; border: 2px solid #ccc; border-radius: 12px; font-size: 2rem; padding: 10px 0; cursor: pointer; transition: 0.2s; }
+        .avatar-btn.active { border-color: #4caf50; background: #c8e6c9; transform: scale(1.05); }
+
+        .name-input {
+            width: 100%; padding: 12px; font-size: 1rem; border: 2px solid #4caf50;
+            border-radius: 10px; box-sizing: border-box; font-family: inherit; margin-bottom: 20px;
+            text-align: center; font-weight: bold;
+        }
+
+        .action-btn {
+            width: 100%; background-color: #4caf50; color: white; border: none;
+            padding: 15px; font-size: 1.2rem; font-weight: bold; border-radius: 15px;
+            box-shadow: 0 5px 0 #1b5e20; cursor: pointer; margin-bottom: 10px;
+        }
+        .action-btn:active { box-shadow: 0 0 0 #1b5e20; transform: translateY(5px); }
+
+        .divider { text-align: center; font-weight: bold; color: #757575; font-size: 0.85rem; margin: 20px 0 10px 0; letter-spacing: 1px; }
+        
+        /* Senarai Profil Styles */
+        .profile-row { display: flex; gap: 8px; align-items: stretch; }
+        .existing-profile-btn {
+            flex-grow: 1; background: white; border: 2px dashed #4caf50; padding: 15px; border-radius: 15px; cursor: pointer;
+            text-align: left; display: flex; justify-content: space-between; align-items: center; font-family: inherit; font-size: 1.1rem; transition: 0.2s;
+        }
+        .existing-profile-btn:hover { background: #e8f5e9; border-style: solid; }
+        .ep-left { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #1b5e20; }
+        .ep-right { font-weight: bold; color: #ff8f00; background: #fff8e1; padding: 5px 10px; border-radius: 10px; }
+        
+        .delete-profile-btn {
+            background: #ffebee; border: 2px solid #ffcdd2; color: #c62828;
+            border-radius: 15px; padding: 0 15px; cursor: pointer;
+            font-size: 1.2rem; transition: 0.2s; box-shadow: 0 4px 0 #ef9a9a;
+        }
+        .delete-profile-btn:active { box-shadow: 0 0 0 #ef9a9a; transform: translateY(4px); }
+
+        .menu-card { background: #e8f5e9; border: 3px solid #4caf50; border-radius: 15px; padding: 25px 20px; text-align: center; margin-bottom: 25px; }
+        .menu-avatar { font-size: 4rem; margin-bottom: 10px; }
+        .menu-name { font-size: 1.5rem; color: #1b5e20; font-weight: bold; margin-bottom: 5px; }
+        .menu-stats { background: white; padding: 10px; border-radius: 10px; font-weight: bold; color: #ff8f00; margin-top: 15px; }
+        .btn-keluar { background-color: #f44336; box-shadow: 0 5px 0 #b71c1c; }
+        .btn-rekod { background-color: #0288d1; box-shadow: 0 5px 0 #01579b; }
+
+        /* Quiz Styles */
+        .quiz-header { display: flex; justify-content: space-between; background: #c8e6c9; padding: 10px 15px; border-radius: 12px; font-weight: bold; color: #1b5e20; margin-bottom: 20px; }
+        .hearts { color: #ff5252; font-size: 1.2rem; }
+        h1 { color: #2e7d32; text-align: center; font-size: 1.6rem; margin: 10px 0; }
+        
+        .kuiz-box { background-color: #f5f5f5; padding: 20px; border-radius: 20px; border: 2px solid #e0e0e0; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 15px; }
+        .question-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 20px; color: #333; line-height: 1.5; }
+        .option-btn { display: block; width: 100%; background-color: white; border: 3px solid #e0e0e0; padding: 14px; margin: 8px 0; border-radius: 15px; font-size: 1rem; cursor: pointer; text-align: left; font-weight: bold; box-shadow: 0 4px 0 #e0e0e0; }
+        
+        /* Highlight huruf A, B, C, D */
+        .opt-letter { display: inline-block; width: 28px; color: #1b5e20; font-weight: 900; }
+        
+        #result-message { text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 15px; margin-bottom: 15px; }
+        
+        .back-btn { text-align: center; display: block; background-color: #757575; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-family: inherit; font-size: 1.1rem; width: 100%; }
+        .instruction-screen { text-align: center; display: flex; flex-direction: column; height: 100%; justify-content: center; }
+        .stats-card { background: white; border-radius: 12px; padding: 15px; margin: 20px 0; border: 2px solid #b3e5fc; text-align: left; font-size: 0.95rem; }
+        .stats-line { display: flex; justify-content: space-between; margin: 8px 0; border-bottom: 1px dashed #e0e0e0; padding-bottom: 4px; }
+        .footer { text-align: center; font-size: 0.8rem; color: #9e9e9e; margin-top: auto; padding-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <div class="top-bar">
+            <button class="lang-btn" id="langToggleBtn" onclick="tukarBahasa()">🇬🇧 English</button>
+        </div>
+
+        <div id="screen-login">
+            <div class="logo-icon">🧑‍🔬</div>
+            <h2 id="ui-tajuk">Profil Sains Tahun 5</h2>
+            <p class="subtitle" id="ui-sub">Cipta watak anda sebelum meneroka kuiz mega!</p>
+
+            <div class="login-box">
+                <label class="input-label" id="ui-lbl-avatar">🎯 Pilih Avatar Anda:</label>
+                <div class="avatar-grid" id="avatar-container">
+                    </div>
+
+                <label class="input-label" id="ui-lbl-nama">✍️ Nama Anda:</label>
+                <input type="text" id="username" class="name-input" placeholder="TAIP NAMA DI SINI..." autocomplete="off">
+
+                <button class="action-btn" onclick="simpanProfil()" id="ui-btn-simpan">SIMPAN & MULA 🚀</button>
+            </div>
+
+            <div id="existing-section" style="display: none;">
+                <div class="divider" id="ui-divider">ATAU PILIH PROFIL SEDIA ADA:</div>
+                <div id="existing-list" style="display: flex; flex-direction: column; gap: 10px;">
+                    </div>
+            </div>
+            <div class="footer">SAINS CILIK TAHUN 5 • KSSR MALAYSIA</div>
+        </div>
+
+        <div id="screen-menu" style="display: none;">
+            <h2 id="ui-menu-tajuk">Menu Utama</h2>
+            
+            <div class="menu-card">
+                <div class="menu-avatar" id="mu-avatar">🧑‍🔬</div>
+                <div class="menu-name" id="ui-menu-selamat">Selamat Datang, <br><span id="mu-name" style="color:#2e7d32; font-size:1.8rem;">AMIR</span>!</div>
+                
+                <div class="menu-stats">
+                    <span id="ui-menu-markah">Markah Tertinggi:</span> <span id="mu-score">0</span>/100 🌟
+                </div>
+            </div>
+
+            <button class="action-btn" onclick="mulaKuiz()" id="ui-btn-mula">🚀 MULA LATIHAN</button>
+            <button class="action-btn btn-rekod" onclick="paparSistemPrestasi()" id="ui-btn-rekod">📊 REKOD PRESTASI</button>
+            <button class="action-btn btn-keluar" onclick="logKeluar()" id="ui-btn-padam">🚪 TUKAR PROFIL / LOG KELUAR</button>
+            <div class="footer">SAINS CILIK TAHUN 5 • KSSR MALAYSIA</div>
+        </div>
+
+        <div id="screen-quiz" style="display: none; flex-grow: 1; flex-direction: column;">
+            <div class="quiz-header" id="header-bar">
+                <span id="progress-text">Soalan: 1/20</span>
+                <span class="hearts" id="hearts-layer">❤️ ❤️ ❤️</span>
+                <span id="score-text">Markah: 0</span>
+            </div>
+
+            <h1 id="main-title">Latihan Sains TAHUN 5 🎯</h1>
+            <div id="paparNama" style="text-align:center; font-weight:bold; color:#1b5e20; margin-bottom:15px; font-size:1.1rem;"></div>
+            
+            <div class="kuiz-box" id="quiz-area">
+                </div>
+
+            <button class="back-btn" id="ui-btn-kembali" onclick="location.reload()">⬅️ Kembali ke Menu Utama</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ================= KOD ANTI-CURI =================
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12') { e.preventDefault(); }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a' || 
+                e.key === 'U' || e.key === 'C' || e.key === 'S' || e.key === 'A')) {
+                e.preventDefault();
+            }
+        });
+        // ==================================================
+
+        // TETAPAN ASAS
+        let lang = 'ms';
+        // Avatar khas Tahun 5 (Rangka, Darah, Haba, Buruj, etc)
+        const senaraiAvatar = ['🧑‍🔬', '🦴', '🩸', '🦅', '🌱', '⚡', '🌡️', '🌔'];
+        let avatarPilihan = '🧑‍🔬'; 
+        
+        let kuizSoalan = [];
+        let soalanSekarang = 0;
+        let markah = 0;
+        let nyawa = 3;
+        let jawapanDipilih = null;
+        const JUMLAH_SOALAN = 20;
+
+        // KAMUS BAHASA
+        const teksUI = {
+            ms: {
+                toggle: "🇬🇧 English",
+                tajuk: "Profil Sains Tahun 5",
+                sub: "Cipta watak anda sebelum meneroka kuiz mega!",
+                lblAvatar: "🎯 Pilih Avatar Anda:",
+                lblNama: "✍️ Nama Anda:",
+                placeholder: "TAIP NAMA DI SINI...",
+                btnSimpan: "SIMPAN & MULA 🚀",
+                divider: "ATAU PILIH PROFIL SEDIA ADA:",
+                
+                menuTajuk: "Menu Utama",
+                selamatDatang: "Selamat Datang,",
+                markahTertinggi: "Markah Tertinggi:",
+                btnMula: "🚀 MULA LATIHAN",
+                btnRekod: "📊 REKOD PRESTASI",
+                btnPadam: "🚪 TUKAR PROFIL / LOG KELUAR",
+                
+                titleQuiz: "Latihan Sains TAHUN 5 🎯",
+                saintisLabel: "Saintis",
+                soalan: "Soalan",
+                markah: "Markah",
+                betul: "🎉 BETUL! (+5 Markah) 🌟",
+                salah: "❌ SALAH! Jawapan betul warna hijau. 😉",
+                seterusnya: "SETERUSNYA ➡️",
+                gameOver: "GAME OVER!",
+                nyawaHabis: "Nyawa anda telah habis. Jangan putus asa, cuba lagi! 💪",
+                markahTerkumpul: "Markah Terkumpul",
+                cubaLagi: "CUBA LAGI",
+                tahniah: "TAHNIAH KUIZ TAMAT!",
+                mainLagi: "MAIN LAGI",
+                btnKembali: "⬅️ Kembali ke Menu Utama",
+                
+                dashTajuk: "Dashboard Ibu Bapa",
+                dashDesc: "Semak perkembangan rekod kuiz anak anda.",
+                lblAnak: "Nama Anak:",
+                lblTertinggi: "Markah Tertinggi:",
+                lblGred: "Status Pencapaian:",
+                lblLatihan: "Jumlah Latihan:",
+                lblUjian: "Ujian Terakhir:"
+            },
+            en: {
+                toggle: "🇲🇾 Bahasa Melayu",
+                tajuk: "Year 5 Science Profile",
+                sub: "Create your character before exploring the mega quiz!",
+                lblAvatar: "🎯 Choose Your Avatar:",
+                lblNama: "✍️ Your Name:",
+                placeholder: "TYPE NAME HERE...",
+                btnSimpan: "SAVE & START 🚀",
+                divider: "OR SELECT EXISTING PROFILE:",
+                
+                menuTajuk: "Main Menu",
+                selamatDatang: "Welcome,",
+                markahTertinggi: "Highest Score:",
+                btnMula: "🚀 START PRACTICE",
+                btnRekod: "📊 PERFORMANCE RECORD",
+                btnPadam: "🚪 SWITCH PROFILE / LOG OUT",
+
+                titleQuiz: "YEAR 5 Science Practice 🎯",
+                saintisLabel: "Scientist",
+                soalan: "Question",
+                markah: "Score",
+                betul: "🎉 CORRECT! (+5 Marks) 🌟",
+                salah: "❌ WRONG! The correct answer is green. 😉",
+                seterusnya: "NEXT ➡️",
+                gameOver: "GAME OVER!",
+                nyawaHabis: "You ran out of lives. Don't give up, try again! 💪",
+                markahTerkumpul: "Total Score",
+                cubaLagi: "TRY AGAIN",
+                tahniah: "CONGRATS, QUIZ FINISHED!",
+                mainLagi: "PLAY AGAIN",
+                btnKembali: "⬅️ Back to Main Menu",
+
+                dashTajuk: "Parents Dashboard",
+                dashDesc: "Check your child's quiz progress here.",
+                lblAnak: "Child's Name:",
+                lblTertinggi: "High Score:",
+                lblGred: "Achievement Status:",
+                lblLatihan: "Total Attempts:",
+                lblUjian: "Last Test:"
+            }
+        };
+
+        // BANK 50 SOALAN TAHUN 5 KSSR (4 PILIHAN JAWAPAN A, B, C, D)
+        const bankSoalan = [
+            { q: { ms: "Sistem rangka manusia terdiri daripada tulang-tulang. Tulang manakah yang melindungi otak kita?", en: "The human skeletal system consists of bones. Which bone protects our brain?" }, options: { ms: ["Tulang rusuk", "Tulang belakang", "Tengkorak", "Tulang tangan"], en: ["Ribs", "Backbone", "Skull", "Hand bones"] }, correct: 2 },
+            { q: { ms: "Apakah fungsi tulang rusuk di dalam badan manusia?", en: "What is the function of the rib cage in the human body?" }, options: { ms: ["Melindungi otak", "Melindungi peparu dan jantung", "Menyokong tubuh supaya tegak", "Membenarkan pergerakan kaki"], en: ["Protects the brain", "Protects the lungs and heart", "Supports the body to be upright", "Allows leg movement"] }, correct: 1 },
+            { q: { ms: "Sendi membolehkan pergerakan dan kebolehlenturan badan. Di manakah terletaknya sendi?", en: "Joints allow movement and flexibility of the body. Where are joints located?" }, options: { ms: ["Di dalam jantung", "Di hujung kuku", "Tempat pertemuan dua atau lebih tulang", "Di dalam sel darah merah"], en: ["Inside the heart", "At the tip of nails", "Where two or more bones meet", "Inside red blood cells"] }, correct: 2 },
+            { q: { ms: "Sistem peredaran darah manusia mengangkut empat bahan utama iaitu oksigen, nutrien, air dan...?", en: "The human blood circulatory system transports four main substances: oxygen, nutrients, water and...?" }, options: { ms: ["Tulang", "Bahan buangan (Karbon dioksida)", "Peluh", "Otot"], en: ["Bones", "Waste materials (Carbon dioxide)", "Sweat", "Muscles"] }, correct: 1 },
+            { q: { ms: "Organ manakah yang bertindak sebagai 'pam' untuk menolak darah ke seluruh badan?", en: "Which organ acts as a 'pump' to push blood throughout the body?" }, options: { ms: ["Jantung", "Peparu", "Perut", "Ginjal"], en: ["Heart", "Lungs", "Stomach", "Kidneys"] }, correct: 0 },
+            { q: { ms: "Apakah fungsi laluan salur darah (blood vessels) di dalam badan kita?", en: "What is the function of blood vessels in our body?" }, options: { ms: ["Mencerna makanan", "Menghasilkan udara", "Membawa darah ke seluruh badan", "Melindungi jantung"], en: ["Digests food", "Produces air", "Transports blood throughout the body", "Protects the heart"] }, correct: 2 },
+            { q: { ms: "Darah yang kaya dengan oksigen akan dipam dari peparu ke bahagian mana terlebih dahulu sebelum ke seluruh badan?", en: "Oxygen-rich blood will be pumped from the lungs to which part first before going to the whole body?" }, options: { ms: ["Jantung", "Otak", "Tangan", "Usus"], en: ["Heart", "Brain", "Hands", "Intestines"] }, correct: 0 },
+            { q: { ms: "Bagaimanakah cicak melindungi dirinya daripada ditangkap oleh musuh?", en: "How does a lizard protect itself from being caught by predators?" }, options: { ms: ["Mengeluarkan bau busuk", "Memancutkan dakwat hitam", "Memutuskan anggota badannya (ekor)", "Menggulungkan diri"], en: ["Emits a foul smell", "Squirts black ink", "Detaches its body part (tail)", "Rolls up its body"] }, correct: 2 },
+            { q: { ms: "Haiwan yang hidup berkumpulan seperti gajah dan zebra mempunyai kelebihan untuk?", en: "Animals that live in groups like elephants and zebras have the advantage to?" }, options: { ms: ["Lebih cepat lapar", "Mudah dikesan musuh", "Melindungi diri dan anak daripada musuh", "Tidur lebih lena"], en: ["Get hungry faster", "Easily detected by enemies", "Protect themselves and young from predators", "Sleep better"] }, correct: 2 },
+            { q: { ms: "Untuk mengelakkan diri dari cedera, tenggiling akan bertindak balas dengan cara?", en: "To avoid getting injured, a pangolin will react by?" }, options: { ms: ["Menggulungkan badannya yang bersisik keras", "Berlari sangat laju", "Terbang ke atas pokok", "Menyamar menyerupai daun"], en: ["Rolling up its hard scaly body", "Running very fast", "Flying to a tree", "Camouflaging as leaves"] }, correct: 0 },
+            { q: { ms: "Beruang kutub dan penguin dapat hidup di kawasan cuaca bersalji melampau kerana?", en: "Polar bears and penguins can live in extreme snowy weather areas because?" }, options: { ms: ["Mempunyai lapisan lemak yang tebal", "Suka minum air sejuk", "Mempunyai telinga yang besar", "Makan salji"], en: ["Have a thick layer of fat", "Like to drink cold water", "Have large ears", "Eat snow"] }, correct: 0 },
+            { q: { ms: "Burung bangau melakukan penghijrahan (pindah ke negara panas) pada waktu tertentu untuk?", en: "Cranes migrate (move to warmer countries) at certain times to?" }, options: { ms: ["Mencari pasangan baru", "Mengelakkan musim sejuk yang melampau di negara asalnya", "Bertemu kawan", "Mencari tempat tinggi"], en: ["Find a new mate", "Avoid extreme winter in its original country", "Meet friends", "Find a high place"] }, correct: 1 },
+            { q: { ms: "Hubungan makanan antara benda hidup di suatu habitat dipanggil sebagai?", en: "The food relationship among living things in a habitat is called?" }, options: { ms: ["Siratan makanan", "Rantai makanan", "Piramid makanan", "Pengeluar makanan"], en: ["Food web", "Food chain", "Food pyramid", "Food producer"] }, correct: 1 },
+            { q: { ms: "Dalam sesuatu rantai makanan, tumbuhan sentiasa menjadi?", en: "In a food chain, plants always act as the?" }, options: { ms: ["Pengguna Pertama", "Pengguna Kedua", "Pengeluar", "Pengurai"], en: ["Primary Consumer", "Secondary Consumer", "Producer", "Decomposer"] }, correct: 2 },
+            { q: { ms: "Gabungan beberapa rantai makanan yang saling bersilang di suatu habitat akan membentuk?", en: "A combination of several intersecting food chains in a habitat will form a?" }, options: { ms: ["Rantai makanan gergasi", "Kitaran makanan", "Habitat baru", "Siratan makanan"], en: ["Giant food chain", "Food cycle", "New habitat", "Food web"] }, correct: 3 },
+            { q: { ms: "Pokok kaktus mempunyai daun berbentuk jarum untuk tujuan apa?", en: "A cactus plant has needle-shaped leaves for what purpose?" }, options: { ms: ["Mencucuk serangga", "Mengurangkan kehilangan air dalam cuaca panas", "Menyerap lebih banyak cahaya matahari", "Tumbuh lebih tinggi"], en: ["To poke insects", "To reduce water loss in hot weather", "To absorb more sunlight", "To grow taller"] }, correct: 1 },
+            { q: { ms: "Pokok ru mempunyai daun berbentuk jarum halus dan akar tunjang yang panjang supaya ia dapat?", en: "Casuarina (Ru) trees have fine needle-shaped leaves and long taproots so that they can?" }, options: { ms: ["Menahan tiupan angin kencang di tepi pantai", "Menghalang monyet memanjat", "Menghasilkan buah yang besar", "Bertukar warna pada waktu malam"], en: ["Withstand strong winds at the beach", "Prevent monkeys from climbing", "Produce big fruits", "Change color at night"] }, correct: 0 },
+            { q: { ms: "Biji benih buah kelapa mempunyai sabut berongga supaya ia boleh dipencarkan melalui?", en: "Coconut seeds have a fibrous husk so they can be dispersed through?" }, options: { ms: ["Angin", "Air", "Haiwan", "Mekanisme letupan"], en: ["Wind", "Water", "Animals", "Explosive mechanism"] }, correct: 1 },
+            { q: { ms: "Biji benih lalang dan pokok angsana dipencarkan melalui ANGIN kerana ciri-cirinya yang?", en: "Seeds of cogon grass and angsana trees are dispersed by WIND because of their characteristics which are?" }, options: { ms: ["Besar, berat dan berbau", "Berwarna terang dan manis", "Kecil, ringan, berbulu halus atau bersayap", "Mempunyai cangkuk yang tajam"], en: ["Big, heavy and smelly", "Brightly colored and sweet", "Small, light, hairy or winged", "Have sharp hooks"] }, correct: 2 },
+            { q: { ms: "Buah betik dan rambutan sedap dimakan. Jadi biji benihnya akan dipencarkan oleh?", en: "Papayas and rambutans are delicious. So their seeds will be dispersed by?" }, options: { ms: ["Manusia dan haiwan", "Angin", "Air sungi", "Letupan buah"], en: ["Humans and animals", "Wind", "River water", "Fruit explosion"] }, correct: 0 },
+            { q: { ms: "Biji benih pokok keembung dan keladi mati dipencarkan melalui?", en: "Seeds of balsam and caladium plants are dispersed through?" }, options: { ms: ["Haiwan yang memakannya", "Mekanisme letupan (buah mengering dan merekah)", "Air hujan", "Tebangan pokok"], en: ["Animals that eat them", "Explosive mechanism (fruits dry up and burst)", "Rain water", "Chopping the tree"] }, correct: 1 },
+            { q: { ms: "Antara alat berikut, yang manakah merupakan SUMBER utama tenaga elektrik yang mesra alam?", en: "Among the following devices, which is a main eco-friendly SOURCE of electrical energy?" }, options: { ms: ["Bateri", "Mentol", "Sel suria (Solar cell)", "Suis"], en: ["Battery", "Bulb", "Solar cell", "Switch"] }, correct: 2 },
+            { q: { ms: "Susunan litar elektrik yang mempunyai HANYA SATU laluan untuk arus elektrik mengalir dipanggil?", en: "An electrical circuit arrangement that has ONLY ONE path for electric current to flow is called?" }, options: { ms: ["Litar selari", "Litar bersiri", "Litar pintas", "Litar terbuka"], en: ["Parallel circuit", "Series circuit", "Short circuit", "Open circuit"] }, correct: 1 },
+            { q: { ms: "Dalam litar SELARI, jika salah satu mentol terbakar (rosak), apakah yang akan berlaku kepada mentol yang lain?", en: "In a PARALLEL circuit, if one bulb burns out (breaks), what will happen to the other bulbs?" }, options: { ms: ["Semua mentol akan terpadam", "Mentol lain terus menyala kerana ada laluan arus yang lain", "Litar akan meletup", "Sel kering akan kehabisan tenaga serta merta"], en: ["All bulbs will turn off", "Other bulbs keep shining because there are other current paths", "The circuit will explode", "The dry cell will run out of energy immediately"] }, correct: 1 },
+            { q: { ms: "Jika kita menyambungkan lebih banyak sel kering (bateri) di dalam sesuatu litar, nyalaan mentol akan menjadi?", en: "If we connect more dry cells (batteries) in a circuit, the bulb's brightness will become?" }, options: { ms: ["Lebih malap", "Terus terpadam", "Sama sahaja", "Lebih terang"], en: ["Dimmer", "Turns off immediately", "Stays the same", "Brighter"] }, correct: 3 },
+            { q: { ms: "Mengendalikan suis elektrik dengan tangan yang basah adalah sangat berbahaya kerana ia boleh menyebabkan?", en: "Handling an electric switch with wet hands is very dangerous because it can cause?" }, options: { ms: ["Suis menjadi bersih", "Renjatan elektrik (Litar pintas)", "Mentol menyala lebih kuat", "Bil elektrik menjadi murah"], en: ["The switch becomes clean", "Electric shock (Short circuit)", "The bulb shines stronger", "Electricity bill becomes cheaper"] }, correct: 1 },
+            { q: { ms: "Suhu didefinisikan (bermaksud) sebagai?", en: "Temperature is defined (means) as?" }, options: { ms: ["Darjah kepanasan atau kesejukan sesuatu bahan", "Jumlah cecair di dalam bikar", "Berat sesuatu objek", "Warna nyalaan api"], en: ["The degree of hotness or coldness of a substance", "The amount of liquid in a beaker", "The weight of an object", "The color of a fire flame"] }, correct: 0 },
+            { q: { ms: "Apakah alat radas yang mesti digunakan untuk mengukur suhu air dengan tepat?", en: "What apparatus must be used to measure the temperature of water accurately?" }, options: { ms: ["Pembaris", "Bikar", "Termometer", "Silinder penyukat"], en: ["Ruler", "Beaker", "Thermometer", "Measuring cylinder"] }, correct: 2 },
+            { q: { ms: "Unit piawai yang digunakan untuk mengukur paras suhu di Malaysia ialah?", en: "The standard unit used to measure temperature levels in Malaysia is?" }, options: { ms: ["Kilogram (kg)", "Mililiter (ml)", "Darjah Celsius (°C)", "Sentimeter (cm)"], en: ["Kilogram (kg)", "Milliliter (ml)", "Degree Celsius (°C)", "Centimeter (cm)"] }, correct: 2 },
+            { q: { ms: "Prinsip haba menyatakan bahawa sesuatu bahan akan mengembang (membesar) apabila ia?", en: "The principle of heat states that a substance will expand (get bigger) when it?" }, options: { ms: ["Disejukkan", "Menerima haba (dipanaskan)", "Diletakkan dalam ais", "Dipotong dua"], en: ["Is cooled", "Gains heat (is heated)", "Is placed in ice", "Is cut in half"] }, correct: 1 },
+            { q: { ms: "Mengapakah kabel elektrik dipasang kendur sedikit pada tiang elektrik?", en: "Why are electrical cables installed slightly loose on electrical poles?" }, options: { ms: ["Supaya kabel tidak terputus apabila ia mengecut pada waktu malam yang sejuk", "Untuk mencantikkan pemandangan tiang", "Supaya burung mudah hinggap", "Untuk menjimatkan kos kabel"], en: ["So the cables do not snap when they contract during cold nights", "To beautify the pole's scenery", "For birds to easily perch", "To save cable costs"] }, correct: 0 },
+            { q: { ms: "Antara objek berikut, yang manakah berisiko untuk berkarat jika terdedah di luar rumah?", en: "Among the following objects, which has the risk of rusting if exposed outside the house?" }, options: { ms: ["Sudu plastik", "Pasu tanah liat", "Paku besi", "Kertas surat khabar"], en: ["Plastic spoon", "Clay pot", "Iron nail", "Newspaper"] }, correct: 2 },
+            { q: { ms: "Dua faktor penting yang mesti ada untuk membolehkan pengaratan besi berlaku ialah?", en: "Two important factors that must be present for iron rusting to occur are?" }, options: { ms: ["Cahaya dan udara", "Air dan udara", "Haba dan air", "Minyak dan cahaya"], en: ["Light and air", "Water and air", "Heat and water", "Oil and light"] }, correct: 1 },
+            { q: { ms: "Manakah antara tindakan berikut BUKAN cara untuk mencegah besi dari berkarat?", en: "Which of the following actions is NOT a way to prevent iron from rusting?" }, options: { ms: ["Menyapu cat", "Menyalut dengan plastik", "Merendam di dalam air paip", "Menyapu minyak atau gris"], en: ["Applying paint", "Coating with plastic", "Soaking in tap water", "Applying oil or grease"] }, correct: 2 },
+            { q: { ms: "Tindakan menyapu minyak (gris) pada rantai basikal bertujuan untuk?", en: "The action of applying oil (grease) on a bicycle chain aims to?" }, options: { ms: ["Menghalang air dan udara daripada terkena permukaan besi", "Menjadikan basikal lebih berat", "Menyejukkan rantai besi", "Mencantikkan warna rantai basikal"], en: ["Prevent water and air from touching the iron surface", "Make the bicycle heavier", "Cool down the iron chain", "Beautify the bicycle chain's color"] }, correct: 0 },
+            { q: { ms: "Jirim di dunia ini wujud dalam tiga bentuk (keadaan) utama iaitu?", en: "Matter in this world exists in three main forms (states) which are?" }, options: { ms: ["Kayu, plastik, logam", "Pepejal, cecair, gas", "Panas, sejuk, suam", "Asid, alkali, neutral"], en: ["Wood, plastic, metal", "Solid, liquid, gas", "Hot, cold, warm", "Acid, alkali, neutral"] }, correct: 1 },
+            { q: { ms: "Keadaan jirim yang manakah mempunyai bentuk yang TETAP dan isipadu yang TETAP?", en: "Which state of matter has a FIXED shape and a FIXED volume?" }, options: { ms: ["Gas", "Cecair", "Pepejal", "Asap"], en: ["Gas", "Liquid", "Solid", "Smoke"] }, correct: 2 },
+            { q: { ms: "Proses cecair (seperti air) berubah menjadi gas (wap air) apabila dipanaskan pada suhu 100°C dipanggil?", en: "The process of a liquid (like water) changing into gas (water vapor) when heated to 100°C is called?" }, options: { ms: ["Peleburan", "Pendidihan", "Kondensasi", "Pembekuan"], en: ["Melting", "Boiling", "Condensation", "Freezing"] }, correct: 1 },
+            { q: { ms: "Kondensasi adalah proses pembentukan awan di langit. Proses ini menukarkan?", en: "Condensation is the process of cloud formation in the sky. This process changes?" }, options: { ms: ["Gas kepada cecair", "Cecair kepada pepejal", "Pepejal kepada cecair", "Pepejal kepada gas"], en: ["Gas to liquid", "Liquid to solid", "Solid to liquid", "Solid to gas"] }, correct: 0 },
+            { q: { ms: "Apabila kita meletakkan air ke dalam peti ais beku (freezer), air kehilangan haba dan mengalami proses?", en: "When we put water into the freezer, the water loses heat and undergoes the process of?" }, options: { ms: ["Penyejatan", "Pembekuan (Cecair ke Pepejal)", "Peleburan (Pepejal ke Cecair)", "Pendidihan"], en: ["Evaporation", "Freezing (Liquid to Solid)", "Melting (Solid to Liquid)", "Boiling"] }, correct: 1 },
+            { q: { ms: "Apakah kepentingan kitaran air semula jadi di Bumi?", en: "What is the importance of the natural water cycle on Earth?" }, options: { ms: ["Untuk menjadikan air laut kering", "Untuk menyejukkan pusat bumi", "Membekalkan sumber air tawar yang berterusan untuk hidupan", "Untuk mengelakkan pembentukan awan"], en: ["To dry out sea water", "To cool the earth's core", "Supplies a continuous source of fresh water for living things", "To prevent cloud formation"] }, correct: 2 },
+            { q: { ms: "Bulan tidak menghasilkan cahayanya sendiri, tetapi ia kelihatan terang bercahaya pada waktu malam kerana?", en: "The Moon does not produce its own light, but it appears bright at night because?" }, options: { ms: ["Permukaannya dipenuhi lampu", "Bulan menyerap cahaya bintang", "Bulan memantulkan cahaya dari Matahari", "Bulan mengandungi gas bercahaya"], en: ["Its surface is filled with lights", "The Moon absorbs starlight", "The Moon reflects light from the Sun", "The Moon contains glowing gases"] }, correct: 2 },
+            { q: { ms: "Fasa bulan di mana kita langsung tidak nampak bentuk bulan (permukaan bulan keseluruhannya gelap) dipanggil?", en: "The moon phase where we cannot see the moon's shape at all (the entire moon's surface is dark) is called?" }, options: { ms: ["Bulan Purnama", "Bulan Separa", "Bulan Sabit", "Anak Bulan"], en: ["Full Moon", "Half Moon", "Crescent Moon", "New Moon"] }, correct: 3 },
+            { q: { ms: "Kejadian pelbagai bentuk fasa-fasa bulan yang berbeza berlaku disebabkan oleh?", en: "The occurrence of various different shapes of moon phases is caused by?" }, options: { ms: ["Bulan beredar mengelilingi Bumi", "Bumi beredar mengelilingi Bulan", "Matahari dihalang oleh awan", "Bulan semakin mengecil"], en: ["The Moon orbiting the Earth", "The Earth orbiting the Moon", "The Sun is blocked by clouds", "The Moon is shrinking"] }, correct: 0 },
+            { q: { ms: "Gugusan bintang yang kelihatan membentuk suatu corak tertentu di langit malam dikenali sebagai?", en: "A cluster of stars that appears to form a specific pattern in the night sky is known as?" }, options: { ms: ["Buruj (Constellation)", "Meteor", "Komet", "Planet"], en: ["Constellation", "Meteor", "Comet", "Planet"] }, correct: 0 },
+            { q: { ms: "Buruj Pari (Crux) adalah buruj terkecil berbentuk layang-layang. Ia sentiasa menunjuk ke arah mana?", en: "The Southern Cross (Crux) is the smallest kite-shaped constellation. It always points to which direction?" }, options: { ms: ["Utara (North)", "Selatan (South)", "Timur (East)", "Barat (West)"], en: ["North", "South", "East", "West"] }, correct: 1 },
+            { q: { ms: "Buruj Biduk (Ursa Major) sering digunakan oleh petani zaman dahulu untuk menandakan bermulanya musim menanam. Coraknya berbentuk seperti?", en: "The Big Dipper (Ursa Major) was often used by ancient farmers to mark the beginning of planting season. Its pattern is shaped like a?" }, options: { ms: ["Kala jengking", "Pemburu", "Gayung atau senduk air", "Burung helang"], en: ["Scorpion", "Hunter", "Ladle or water dipper", "Eagle"] }, correct: 2 },
+            { q: { ms: "Pada zaman dahulu sebelum kompas dicipta, apakah kegunaan utama buruj kepada para pelayar di lautan?", en: "In the past before the compass was invented, what was the main use of constellations for sailors in the ocean?" }, options: { ms: ["Menentukan arah kiblat atau arah perjalanan kapal", "Mengetahui kedalaman lautan", "Meramal cuaca esok hari", "Memastikan waktu siang telah tiba"], en: ["To determine the Qibla or the ship's travel direction", "To know the ocean's depth", "To predict tomorrow's weather", "To ensure daytime has arrived"] }, correct: 0 },
+            { q: { ms: "Dalam kemahiran proses sains, ramalan awal yang dibuat dan boleh diuji kesahihannya (kebenarannya) melalui eksperimen dipanggil?", en: "In science process skills, an early prediction made that can be tested for its validity (truth) through experiments is called?" }, options: { ms: ["Membuat pemerhatian", "Membuat hipotesis", "Berkomunikasi", "Mengeksperimen"], en: ["Making observations", "Making hypotheses", "Communicating", "Experimenting"] }, correct: 1 },
+            { q: { ms: "Semasa membuat eksperimen adil (fair test), perkara yang MESTI sentiasa sama dan tidak diubah dari awal hingga akhir eksperimen dinamakan?", en: "When conducting a fair test experiment, the thing that MUST remain the same and unchanged from start to finish is named?" }, options: { ms: ["Pemboleh ubah dimalarkan (Constant variable)", "Pemboleh ubah dimanipulasi (Manipulated variable)", "Pemboleh ubah bergerak balas (Responding variable)", "Kesimpulan (Conclusion)"], en: ["Constant variable", "Manipulated variable", "Responding variable", "Conclusion"] }, correct: 0 }
+        ];
+
+        function binaAvatar() {
+            let container = document.getElementById('avatar-container');
+            container.innerHTML = '';
+            senaraiAvatar.forEach(icon => {
+                let btn = document.createElement('button');
+                btn.className = `avatar-btn ${icon === avatarPilihan ? 'active' : ''}`;
+                btn.innerText = icon;
+                btn.onclick = () => {
+                    document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    avatarPilihan = icon;
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // ================= KEMASKINI BAHASA & UI =================
+        function kemasKiniUI() {
+            const ui = teksUI[lang];
+            document.getElementById('langToggleBtn').innerText = ui.toggle;
+            
+            // Screen 1: Login
+            if(document.getElementById('ui-tajuk')) document.getElementById('ui-tajuk').innerText = ui.tajuk;
+            if(document.getElementById('ui-sub')) document.getElementById('ui-sub').innerText = ui.sub;
+            if(document.getElementById('ui-lbl-avatar')) document.getElementById('ui-lbl-avatar').innerText = ui.lblAvatar;
+            if(document.getElementById('ui-lbl-nama')) document.getElementById('ui-lbl-nama').innerText = ui.lblNama;
+            if(document.getElementById('username')) document.getElementById('username').placeholder = ui.placeholder;
+            if(document.getElementById('ui-btn-simpan')) document.getElementById('ui-btn-simpan').innerText = ui.btnSimpan;
+            if(document.getElementById('ui-divider')) document.getElementById('ui-divider').innerText = ui.divider;
+
+            // Screen 2: Menu
+            let dataSemasa = getProfilSemasa();
+            let namaMu = dataSemasa ? dataSemasa.name : '';
+            if(document.getElementById('ui-menu-tajuk')) document.getElementById('ui-menu-tajuk').innerText = ui.menuTajuk;
+            if(document.getElementById('ui-menu-selamat')) document.getElementById('ui-menu-selamat').innerHTML = `${ui.selamatDatang} <br><span id="mu-name" style="color:#2e7d32; font-size:1.8rem;">${namaMu}</span>!`;
+            if(document.getElementById('ui-menu-markah')) document.getElementById('ui-menu-markah').innerText = ui.markahTertinggi;
+            if(document.getElementById('ui-btn-mula')) document.getElementById('ui-btn-mula').innerText = ui.btnMula;
+            if(document.getElementById('ui-btn-rekod')) document.getElementById('ui-btn-rekod').innerText = ui.btnRekod;
+            if(document.getElementById('ui-btn-padam')) document.getElementById('ui-btn-padam').innerText = ui.btnPadam;
+
+            // Screen 3: Quiz/Dashboard Elements
+            if(document.getElementById('main-title')) document.getElementById('main-title').innerText = ui.titleQuiz;
+            if(document.getElementById('ui-btn-kembali')) document.getElementById('ui-btn-kembali').innerText = ui.btnKembali;
+            
+            let elemenNama = document.getElementById('paparNama');
+            if (elemenNama && elemenNama.style.display !== "none" && dataSemasa) {
+                elemenNama.innerHTML = `${dataSemasa.avatar} ${ui.saintisLabel}: <span style="color:#1b5e20">${dataSemasa.name}</span>`;
+            }
+
+            if (document.getElementById("progress-text") && kuizSoalan.length > 0 && document.getElementById("header-bar").style.display !== "none") {
+                document.getElementById("progress-text").innerText = `${ui.soalan}: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+                document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
+            }
+
+            // Jika sedang dalam soalan
+            let pnlSoalan = document.querySelector(".question-text");
+            if(pnlSoalan && document.getElementById("header-bar").style.display !== "none") {
+                renderSoalanSemula();
+            }
+
+            // Jika dalam skrin Game Over / Tahniah
+            if(document.getElementById('end-title')) {
+                if (nyawa <= 0) {
+                    document.getElementById('end-title').innerText = ui.gameOver;
+                    document.getElementById('end-desc').innerText = ui.nyawaHabis;
+                    document.getElementById('end-score-label').innerText = ui.markahTerkumpul;
+                    document.getElementById('end-btn-text').innerText = ui.cubaLagi;
+                } else {
+                    document.getElementById('end-title').innerText = ui.tahniah;
+                    document.getElementById('end-score-label').innerText = ui.markah;
+                    document.getElementById('end-btn-text').innerText = ui.mainLagi;
+                }
+            }
+
+            // Jika dalam Dashboard Prestasi
+            if(document.getElementById('dash-title') && dataSemasa) {
+                document.getElementById('dash-title').innerText = ui.dashTajuk;
+                document.getElementById('dash-desc').innerText = ui.dashDesc;
+                document.getElementById('dash-lbl-anak').innerText = ui.lblAnak;
+                document.getElementById('dash-lbl-tertinggi').innerText = ui.lblTertinggi;
+                document.getElementById('dash-lbl-gred').innerText = ui.lblGred;
+                document.getElementById('dash-lbl-latihan').innerText = ui.lblLatihan;
+                document.getElementById('dash-lbl-ujian').innerText = ui.lblUjian;
+                
+                let hScore = dataSemasa.hScore;
+                let komenPrestasi = "";
+                if (lang === 'ms') {
+                    if(hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
+                    else if(hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
+                    else if(hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
+                    else komenPrestasi = "Jangan putus asa, teruskan usaha! 💪";
+                } else {
+                    if(hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
+                    else if(hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
+                    else if(hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
+                    else komenPrestasi = "Don't give up, keep trying! 💪";
+                }
+                document.getElementById('dash-komen').innerText = komenPrestasi;
+            }
+        }
+
+        function tukarBahasa() {
+            lang = lang === 'ms' ? 'en' : 'ms';
+            kemasKiniUI();
+        }
+
+        // ================= LOGIK MULTI-PROFIL TAHUN 5 =================
+        function getSenaraiProfil() {
+            return JSON.parse(localStorage.getItem('sains_profil_list_t5')) || [];
+        }
+
+        function getProfilSemasa() {
+            let namaSemasa = localStorage.getItem('sains_semasa_t5');
+            if(!namaSemasa) return null;
+            let senarai = getSenaraiProfil();
+            return senarai.find(p => p.name === namaSemasa);
+        }
+
+        function simpanDataSemasa(data) {
+            let senarai = getSenaraiProfil();
+            let index = senarai.findIndex(p => p.name === data.name);
+            if(index !== -1) {
+                senarai[index] = data;
+                localStorage.setItem('sains_profil_list_t5', JSON.stringify(senarai));
+            }
+        }
+
+        function semakProfilSediaAda() {
+            let profilSemasa = localStorage.getItem('sains_semasa_t5');
+            if (profilSemasa) {
+                document.getElementById('screen-login').style.display = 'none';
+                paparMenuUtama();
+            } else {
+                document.getElementById('screen-login').style.display = 'block';
+                document.getElementById('screen-menu').style.display = 'none';
+                document.getElementById('screen-quiz').style.display = 'none';
+                renderSenaraiProfil();
+            }
+        }
+
+        function renderSenaraiProfil() {
+            let container = document.getElementById('existing-section');
+            let listDiv = document.getElementById('existing-list');
+            let senarai = getSenaraiProfil();
+
+            if (senarai.length > 0) {
+                container.style.display = 'block';
+                listDiv.innerHTML = '';
+                senarai.forEach(p => {
+                    let row = document.createElement('div');
+                    row.className = 'profile-row';
+
+                    let btn = document.createElement('button');
+                    btn.className = 'existing-profile-btn';
+                    btn.innerHTML = `<div class="ep-left"><span>${p.avatar}</span> <span>${p.name}</span></div><div class="ep-right">⭐ ${p.hScore}</div>`;
+                    btn.onclick = () => {
+                        localStorage.setItem('sains_semasa_t5', p.name);
+                        location.reload(); 
+                    };
+
+                    let delBtn = document.createElement('button');
+                    delBtn.className = 'delete-profile-btn';
+                    delBtn.innerHTML = '🗑️';
+                    delBtn.onclick = () => padamProfil(p.name);
+
+                    row.appendChild(btn);
+                    row.appendChild(delBtn);
+                    listDiv.appendChild(row);
+                });
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function padamProfil(nama) {
+            let confirmMsg = lang === 'ms' ? `Adakah anda pasti mahu memadam profil ${nama}? Segala rekod markahnya akan hilang!` : `Are you sure you want to delete ${nama}'s profile? All their score records will be lost!`;
+            if (confirm(confirmMsg)) {
+                let senarai = getSenaraiProfil();
+                senarai = senarai.filter(p => p.name !== nama);
+                localStorage.setItem('sains_profil_list_t5', JSON.stringify(senarai));
+                
+                if (localStorage.getItem('sains_semasa_t5') === nama) {
+                    localStorage.removeItem('sains_semasa_t5');
+                }
+                
+                renderSenaraiProfil(); 
+            }
+        }
+
+        function simpanProfil() {
+            let inputNama = document.getElementById("username").value.trim().toUpperCase();
+            if (!inputNama) {
+                alert(lang === 'ms' ? "Sila masukkan nama anda!" : "Please enter your name!");
+                return;
+            }
+            
+            inputNama = inputNama.replace(/[\u{1F600}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu, '').trim(); 
+            
+            let senarai = getSenaraiProfil();
+            let index = senarai.findIndex(p => p.name === inputNama);
+
+            if (index !== -1) {
+                senarai[index].avatar = avatarPilihan;
+            } else {
+                senarai.push({
+                    name: inputNama,
+                    avatar: avatarPilihan,
+                    hScore: 0,
+                    tMain: 0,
+                    lDate: "-"
+                });
+            }
+
+            localStorage.setItem('sains_profil_list_t5', JSON.stringify(senarai));
+            localStorage.setItem('sains_semasa_t5', inputNama);
+
+            document.getElementById('screen-login').style.display = 'none';
+            paparMenuUtama();
+        }
+
+        function paparMenuUtama() {
+            let data = getProfilSemasa();
+            if(!data) {
+                logKeluar(); return; 
+            }
+
+            document.getElementById('screen-menu').style.display = 'block';
+            document.getElementById('screen-quiz').style.display = 'none';
+
+            document.getElementById('mu-name').innerText = data.name;
+            document.getElementById('mu-avatar').innerText = data.avatar;
+            document.getElementById('mu-score').innerText = data.hScore;
+            kemasKiniUI();
+        }
+
+        function logKeluar() {
+            localStorage.removeItem('sains_semasa_t5');
+            location.reload();
+        }
+
+        // ================= LOGIK KUIZ =================
+        function kemaskiniNyawa() {
+            let hStr = "";
+            for (let i = 0; i < nyawa; i++) hStr += "❤️ ";
+            if (nyawa === 0) hStr = "💔 " + teksUI[lang].gameOver;
+            document.getElementById("hearts-layer").innerText = hStr ? hStr.trim() : "💔";
+        }
+
+        function mulaKuiz() {
+            document.getElementById('screen-menu').style.display = 'none';
+            document.getElementById('screen-quiz').style.display = 'flex';
+            document.getElementById("header-bar").style.display = "flex";
+
+            let data = getProfilSemasa();
+            let elemenNama = document.getElementById('paparNama');
+            if(data) {
+                elemenNama.innerHTML = `${data.avatar} ${teksUI[lang].saintisLabel}: <span style="color:#1b5e20">${data.name}</span>`;
+                elemenNama.style.display = "block";
+            }
+
+            kuizSoalan = bankSoalan.sort(() => 0.5 - Math.random()).slice(0, JUMLAH_SOALAN);
+            soalanSekarang = 0;
+            markah = 0;
+            nyawa = 3;
+            kemaskiniNyawa();
+            paparSoalan();
+        }
+
+        function paparSoalan() {
+            jawapanDipilih = null;
+            renderSoalanSemula();
+        }
+
+        function renderSoalanSemula() {
+            let quizArea = document.getElementById("quiz-area");
+            let data = kuizSoalan[soalanSekarang];
+            let ui = teksUI[lang];
+            
+            document.getElementById("progress-text").innerText = `${ui.soalan}: ${soalanSekarang + 1}/${JUMLAH_SOALAN}`;
+            document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
+            
+            quizArea.innerHTML = `
+                <div class="question-text">${data.q[lang]}</div>
+                <div id="options-container"></div>
+                <div id="result-message"></div>
+                <button class="action-btn" id="next-btn" style="display:none; margin-top:10px;" onclick="keSoalanSeterusnya()">${ui.seterusnya}</button>
+            `;
+            
+            let container = document.getElementById("options-container");
+            const abcd = ["A", "B", "C", "D"];
+            
+            data.options[lang].forEach((opt, index) => {
+                let btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerHTML = `<span class="opt-letter">${abcd[index]}.</span> ${opt}`;
+                
+                if (jawapanDipilih !== null) {
+                    if (index === data.correct) {
+                        btn.style.backgroundColor = "#c8e6c9";
+                        btn.style.borderColor = "#4caf50";
+                    } else if (index === jawapanDipilih && jawapanDipilih !== data.correct) {
+                        btn.style.backgroundColor = "#ffcdd2";
+                        btn.style.borderColor = "#f44336";
+                    }
+                } else {
+                    btn.onclick = () => pilihJawapan(index, btn);
+                }
+                container.appendChild(btn);
+            });
+
+            if (jawapanDipilih !== null) {
+                let msg = document.getElementById("result-message");
+                if (jawapanDipilih === data.correct) {
+                    msg.innerText = ui.betul;
+                    msg.style.color = "#2e7d32";
+                } else {
+                    msg.innerText = ui.salah;
+                    msg.style.color = "#c62828";
+                }
+                document.getElementById("next-btn").style.display = "block";
+            }
+        }
+
+        function pilihJawapan(index, element) {
+            if (jawapanDipilih !== null) return;
+            
+            jawapanDipilih = index;
+            let data = kuizSoalan[soalanSekarang];
+            let msg = document.getElementById("result-message");
+            let buttons = document.querySelectorAll(".option-btn");
+            let ui = teksUI[lang];
+            
+            if (index === data.correct) {
+                element.style.backgroundColor = "#c8e6c9";
+                element.style.borderColor = "#4caf50";
+                msg.innerText = ui.betul;
+                msg.style.color = "#2e7d32";
+                markah += 5;
+                document.getElementById("score-text").innerText = `${ui.markah}: ${markah}`;
+            } else {
+                element.style.backgroundColor = "#ffcdd2";
+                element.style.borderColor = "#f44336";
+                buttons[data.correct].style.backgroundColor = "#c8e6c9";
+                buttons[data.correct].style.borderColor = "#4caf50";
+                msg.innerText = ui.salah;
+                msg.style.color = "#c62828";
+                nyawa--;
+                kemaskiniNyawa();
+            }
+            document.getElementById("next-btn").style.display = "block";
+        }
+
+        function keSoalanSeterusnya() {
+            if (nyawa <= 0) {
+                tamatKuiz(true);
+                return;
+            }
+            soalanSekarang++;
+            if (soalanSekarang < JUMLAH_SOALAN) {
+                paparSoalan();
+            } else {
+                tamatKuiz(false);
+            }
+        }
+
+        function tamatKuiz(isGameOver) {
+            document.getElementById("header-bar").style.display = "none";
+            let quizArea = document.getElementById("quiz-area");
+            let ui = teksUI[lang];
+            
+            let dataSemasa = getProfilSemasa();
+            if(dataSemasa) {
+                dataSemasa.tMain += 1;
+                if(markah > dataSemasa.hScore) dataSemasa.hScore = markah;
+                dataSemasa.lDate = new Date().toLocaleDateString('ms-MY');
+                simpanDataSemasa(dataSemasa); 
+            }
+
+            if (isGameOver) {
+                quizArea.innerHTML = `
+                    <div style="text-align:center; padding:15px 0;">
+                        <span style="font-size:4rem;">💥</span>
+                        <h3 id="end-title" style="color:#c62828; margin:10px 0;">${ui.gameOver}</h3>
+                        <p id="end-desc">${ui.nyawaHabis}</p>
+                        <p style="font-size:1.1rem; font-weight:bold;"><span id="end-score-label">${ui.markahTerkumpul}</span>: <span style="color:#c62828;">${markah}</span></p>
+                        <button onclick="mulaKuiz()" class="action-btn" style="margin-top:15px;">🔄 <span id="end-btn-text">${ui.cubaLagi}</span></button>
+                    </div>
+                `;
+            } else {
+                let piala = markah >= 80 ? "🏆" : "🥈";
+                quizArea.innerHTML = `
+                    <div style="text-align:center; padding:15px 0;">
+                        <span style="font-size:4rem;">${piala}</span>
+                        <h3 id="end-title" style="color:#4caf50; margin:10px 0;">${ui.tahniah}</h3>
+                        <p style="font-size:1.1rem; font-weight:bold;"><span id="end-score-label">${ui.markah}</span>:<br><span style="color:#4caf50; font-size:2.5rem;">💯 ${markah}/100</span></p>
+                        <button onclick="mulaKuiz()" class="action-btn" style="margin-top:15px;">🔄 <span id="end-btn-text">${ui.mainLagi}</span></button>
+                    </div>
+                `;
+            }
+        }
+
+        // ================= DASHBOARD PRESTASI =================
+        function paparSistemPrestasi() {
+            document.getElementById('screen-menu').style.display = 'none';
+            document.getElementById('screen-quiz').style.display = 'flex';
+            document.getElementById('header-bar').style.display = 'none';
+
+            let quizArea = document.getElementById("quiz-area");
+            let ui = teksUI[lang];
+            let dataSemasa = getProfilSemasa();
+            
+            if(!dataSemasa) return; 
+
+            let komenPrestasi = "";
+            if (lang === 'ms') {
+                if(dataSemasa.hScore >= 80) komenPrestasi = "Hebat! Teruskan kecemerlangan! 🌟";
+                else if(dataSemasa.hScore >= 60) komenPrestasi = "Bagus! Sikit lagi nak capai 100! 👍";
+                else if(dataSemasa.hScore >= 40) komenPrestasi = "Boleh tahan! Mari perbaiki lagi! 👌";
+                else komenPrestasi = "Jangan putus asa, teruskan usaha! 💪";
+            } else {
+                if(dataSemasa.hScore >= 80) komenPrestasi = "Awesome! Keep up the excellent work! 🌟";
+                else if(dataSemasa.hScore >= 60) komenPrestasi = "Good job! Almost at 100! 👍";
+                else if(dataSemasa.hScore >= 40) komenPrestasi = "Not bad! Let's improve more! 👌";
+                else komenPrestasi = "Don't give up, keep trying! 💪";
+            }
+
+            quizArea.innerHTML = `
+                <div class="instruction-screen">
+                    <div>
+                        <span style="font-size: 3rem;">📊</span>
+                        <h3 id="dash-title" style="color: #0288d1; margin: 5px 0;">${ui.dashTajuk}</h3>
+                        <p id="dash-desc" style="font-size:0.85rem; color:#666; margin-bottom:10px;">${ui.dashDesc}</p>
+                        
+                        <div class="stats-card">
+                            <div class="stats-line"><b id="dash-lbl-anak">${ui.lblAnak}</b> <span>${dataSemasa.name}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-tertinggi">${ui.lblTertinggi}</b> <span style="color:#4caf50; font-weight:bold;">${dataSemasa.hScore}/100</span></div>
+                            <div class="stats-line"><b id="dash-lbl-gred">${ui.lblGred}</b> <span id="dash-komen" style="color:#e65100; font-weight:bold; text-align:right; margin-left:10px;">${komenPrestasi}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-latihan">${ui.lblLatihan}</b> <span>${dataSemasa.tMain}</span></div>
+                            <div class="stats-line"><b id="dash-lbl-ujian">${ui.lblUjian}</b> <span>${dataSemasa.lDate}</span></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.onload = function() {
+            binaAvatar();
+            semakProfilSediaAda(); 
+            kemasKiniUI();
+        };
+    </script>
+</body>
+</html>
