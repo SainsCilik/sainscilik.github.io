@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peperiksaan Akhir Tahun - Sains Tahun 4</title>
+    <style>
+        /* KOD ANTI-CURI */
+        body {
+            -webkit-user-select: none; -ms-user-select: none; user-select: none;
+            font-family: 'Comic Sans MS', sans-serif; background-color: #e3f2fd;
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+        input { -webkit-user-select: text; -ms-user-select: text; user-select: text; }
+        
+        .app-wrapper {
+            width: 100%; max-width: 800px; background: white; min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+            padding: 25px 20px; box-sizing: border-box;
+        }
+        @media (min-width: 768px) { .app-wrapper { min-height: auto; border-radius: 20px; padding: 40px; } }
+        
+        .exam-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1565c0; color: white; padding: 15px 20px; border-radius: 12px;
+            font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;
+        }
+        .timer-box { background: #b71c1c; padding: 5px 15px; border-radius: 8px; letter-spacing: 2px; }
+        
+        .question-container { background: #f5f5f5; padding: 25px; border-radius: 15px; border: 2px solid #e0e0e0; flex-grow: 1; }
+        .q-number { color: #1565c0; font-size: 1.1rem; font-weight: bold; margin-bottom: 10px; }
+        .question-text { font-size: 1.2rem; font-weight: bold; margin-bottom: 25px; color: #333; line-height: 1.5; }
+        
+        /* Gambar Rajah CSS */
+        .q-image { max-width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #ccc; display: block; margin-left: auto; margin-right: auto; }
+        .q-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; text-align: center; font-size: 1.1rem; }
+        .q-table th, .q-table td { border: 2px solid #333; padding: 10px; }
+        .q-table th { background: #bbdefb; }
+
+        .option-btn {
+            display: block; width: 100%; background-color: white; border: 3px solid #e0e0e0;
+            padding: 15px; margin: 10px 0; border-radius: 12px; font-size: 1.1rem; cursor: pointer;
+            text-align: left; font-weight: bold; transition: 0.2s;
+        }
+        .option-btn.selected { background-color: #bbdefb; border-color: #1976d2; }
+        .opt-letter { display: inline-block; width: 35px; color: #1565c0; font-weight: 900; }
+        
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+        .btn { padding: 15px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; color: white; flex-grow: 1; transition: 0.2s; }
+        .btn-prev { background-color: #757575; }
+        .btn-next { background-color: #1976d2; }
+        .btn-submit { background-color: #2e7d32; }
+        
+        .result-screen, .review-screen { text-align: center; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: #4caf50; color: white; display: flex; justify-content: center; align-items: center; font-size: 3rem; font-weight: bold; margin: 20px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .review-box { text-align: left; background: #fafafa; padding: 20px; border-radius: 12px; border: 2px solid #ccc; margin-bottom: 15px; }
+        .ans-correct { color: #2e7d32; font-weight: bold; }
+        .ans-wrong { color: #c62828; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <div id="start-screen" style="text-align: center;">
+            <span style="font-size: 5rem;">📄</span>
+            <h1 style="color: #1565c0;">Peperiksaan Akhir Sains<br>Tahun 4</h1>
+            <p style="font-size: 1.1rem; color: #555;">
+                Bahagian A (Objektif)<br>
+                Masa Menjawab: <b>60 Minit</b><br>
+                Jumlah Soalan: <b>30 Soalan</b>
+            </p>
+            <button class="btn btn-next" style="width: 100%; margin-top: 20px; font-size: 1.3rem;" onclick="mulakanUjian()">MULA PEPERIKSAAN ⏳</button>
+            <button class="btn btn-prev" style="width: 100%; margin-top: 10px;" onclick="window.location.href='tahun4.html'">⬅️ KEMBALI</button>
+        </div>
+
+        <div id="exam-screen" style="display: none; flex-direction: column; flex-grow: 1;">
+            <div class="exam-header">
+                <span id="progress-text">Soalan 1 / 30</span>
+                <span class="timer-box" id="timer-display">60:00</span>
+            </div>
+            
+            <div class="question-container">
+                <div class="q-number" id="q-num">Soalan 1</div>
+                <div class="question-text" id="q-text">Teks soalan...</div>
+                <div id="options-area"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" id="btn-sebelum" onclick="soalanSebelum()" style="display: none;">⬅️ KEMBALI</button>
+                <button class="btn btn-next" id="btn-seterus" onclick="soalanSeterusnya()">SETERUSNYA ➡️</button>
+                <button class="btn btn-submit" id="btn-hantar" onclick="hantarUjian()" style="display: none;">HANTAR JAWAPAN 📤</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="result-screen" style="display: none;">
+            <h1 style="color: #1565c0;">Kertas Peperiksaan Dihantar!</h1>
+            <div class="score-circle" id="final-score">0/30</div>
+            <h2 id="gred-text">Tahniah!</h2>
+            <div class="nav-buttons" style="flex-direction: column;">
+                <button class="btn btn-next" onclick="bukaSemakan()">🔍 SEMAK JAWAPAN</button>
+                <button class="btn btn-prev" onclick="location.reload()">🔄 MULA SEMULA</button>
+            </div>
+        </div>
+
+        <div id="review-screen" class="review-screen" style="display: none;">
+            <h2 style="color: #1565c0;">Semakan Jawapan (Skema)</h2>
+            <div id="review-list" style="max-height: 60vh; overflow-y: auto; padding-right: 10px;"></div>
+            <button class="btn btn-prev" style="width: 100%; margin-top: 20px;" onclick="tutupSemakan()">⬅️ KEMBALI KE KEPUTUSAN</button>
+        </div>
+    </div>
+
+    <script>
+        // ================= KOD ANTI-CURI =================
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12') e.preventDefault();
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's' || e.key === 'a')) e.preventDefault();
+        });
+
+        // ================= BANK 30 SOALAN SEBENAR TAHUN 4 =================
+        const bankSoalan = [
+            { 
+                q: "Seekor rama-rama dimasukkan ke dalam bekas bertutup rapat. Keesokan harinya, didapati rama-rama itu telah mati. Hal ini mungkin disebabkan rama-rama tidak dapat bernafas.<br><br>Apakah kemahiran proses sains yang terdapat dalam petikan di atas?<br><br>I Memerhati<br>II Meramal<br>III Membuat inferens<br>IV Mengukur dan menggunakan nombor", 
+                options: ["I dan III", "I dan IV", "II dan III", "II dan IV"], 
+                correct: 0 // I dan III
+            },
+            { 
+                q: "Rajah 1 menunjukkan sepasu tumbuhan yang telah layu.<br><img src='soalan2.jpg' alt='Gambar Pokok Layu' class='q-image'><br>Antara yang berikut, yang manakah merupakan inferens tentang keadaan tumbuhan itu?", 
+                options: ["Tumbuhan itu memerlukan air untuk hidup.", "Tumbuhan itu akan mati selepas dua hari.", "Tumbuhan itu layu kerana tidak mendapat air.", "Tumbuhan itu adalah tumbuhan yang tidak berbunga."], 
+                correct: 2 // Layu kerana tidak mendapat air (Inferens)
+            },
+            { 
+                q: "Rajah 2 menunjukkan pengelasan benda kepada dua kumpulan berdasarkan ciri tertentu.<table class='q-table'><tr><th>Kumpulan R</th><th>Kumpulan S</th></tr><tr><td>Kertas<br>Klip kertas<br>Beg plastik</td><td>Tuala<br>Tisu<br>Sapu tangan</td></tr></table><br>Apakah ciri sepunya benda-benda dalam kumpulan R?", 
+                options: ["Kalis air", "Menyerap air", "Terapung dalam air", "Tidak tertarik kepada magnet"], 
+                correct: 0 // Kalis air (S adalah kumpulan menyerap air)
+            },
+            { 
+                q: "Antara lakaran berikut, manakah yang menunjukkan lakaran sebuah kelalang kon?<br><img src='soalan4.jpg' alt='Gambar Bikar/Kelalang' class='q-image'>", 
+                options: ["Rajah A", "Rajah B", "Rajah C", "Rajah D"], 
+                correct: 1 // Rajah B (Kelalang Kon)
+            },
+            { 
+                q: "Danial ingin memerhatikan bahagian-bahagian badan seekor siput. Antara peralatan berikut, manakah yang paling sesuai digunakan oleh Danial?<br><img src='soalan5.jpg' alt='Gambar Alat Sains' class='q-image'>", 
+                options: ["Peralatan A (Kanta Pembesar)", "Peralatan B (Binokular)", "Peralatan C (Gogal)", "Peralatan D (Mikroskop)"], 
+                correct: 0 // Kanta pembesar
+            },
+            { 
+                q: "Rajah 3 menunjukkan suatu simbol yang terdapat pada bekas sejenis bahan kimia.<br><img src='soalan6.jpg' alt='Simbol Api' class='q-image'><br>Kamu perlu berhati-hati mengendalikan bahan yang mempunyai simbol seperti di atas kerana...", 
+                options: ["ia mudah terbakar.", "ia mudah meletup.", "ia boleh mengakis kulit.", "ia menyebabkan kegatalan pada kulit."], 
+                correct: 0 // Mudah terbakar
+            },
+            { 
+                q: "Antara individu berikut, yang manakah mempunyai kadar pernafasan yang paling tinggi?<br><img src='soalan7.jpg' alt='Aktiviti Individu' class='q-image'>", 
+                options: ["Individu A (Tidur)", "Individu B (Membaca)", "Individu C (Berlari)", "Individu D (Menonton TV)"], 
+                correct: 2 // Berlari
+            },
+            { 
+                q: "Rajah 4 menunjukkan organ-organ pernafasan manusia.<br><img src='soalan8.jpg' alt='Sistem Pernafasan' class='q-image'><br>Manakah yang merupakan trakea?", 
+                options: ["K", "L", "M", "N"], 
+                correct: 2 // M (Trakea di bahagian tengah)
+            },
+            { 
+                q: "Bahan buangan yang dikumuhkan melalui kulit dalam bentuk...", 
+                options: ["urea.", "peluh.", "wap air.", "air kencing."], 
+                correct: 1 // Peluh
+            },
+            { 
+                q: "Penyataan berikut menerangkan gerak balas terhadap ransangan L dan M.<br><br><b>L</b> - Menutup hidung<br><b>M</b> - Menarik tangan<br><br>Antara yang berikut, manakah yang mewakili L dan M?", 
+                options: ["L: Cahaya | M: Duri", "L: Bunyi kuat | M: Bau busuk", "L: Bau busuk | M: Seterika panas", "L: Cerek panas | M: Cahaya"], 
+                correct: 2 // L=Bau busuk, M=Seterika panas
+            },
+            { 
+                q: "Nadia sedang berehat sambil membaca majalah di beranda rumahnya. Seekor katak tiba-tiba melompat ke arahnya. Apakah kemungkinan reaksi Nadia dengan kehadiran katak itu?", 
+                options: ["Memegang katak itu.", "Terkejut dan menjerit.", "Tersenyum melihat katak itu.", "Diam dan terus membaca majalah."], 
+                correct: 1 // Terkejut dan menjerit
+            },
+            { 
+                q: "Antara yang berikut, makanan yang manakah TIDAK boleh diambil secara berlebihan?<br><img src='soalan12.jpg' alt='Gambar Makanan' class='q-image'>", 
+                options: ["Makanan A (Sajian Seimbang)", "Makanan B (Buah-buahan)", "Makanan C (Burger dan Makanan Segera)", "Makanan D (Ikan)"], 
+                correct: 2 // Burger / Makanan ringan
+            },
+            { 
+                q: "Antara yang berikut yang manakah BUKAN amalan gaya hidup yang sihat?", 
+                options: ["Minum lapan gelas air sehari.", "Makan banyak buah-buahan dan sayuran.", "Belajar sehingga lewat malam setiap malam.", "Beriadhah bersama keluarga pada hujung minggu."], 
+                correct: 2 // Belajar sehingga lewat malam
+            },
+            { 
+                q: "Antara tindakan yang berikut yang manakah TIDAK akan menyebabkan lipas mati?<br><img src='soalan14.jpg' alt='Eksperimen Lipas' class='q-image'>", 
+                options: ["Tindakan A (Hanya kepalanya direndam dalam air)", "Tindakan B (Abdomen/badannya direndam dalam air)", "Tindakan C (Keseluruhan badan direndam)", "Tindakan D (Dimasukkan dalam botol tertutup)"], 
+                correct: 0 // A (Lipas bernafas guna spirakel di abdomen)
+            },
+            { 
+                q: "Organ pernafasan bagi ikan paus adalah peparu. Bagaimanakah caranya ikan paus bernafas?", 
+                options: ["Bernafas menggunakan mulut.", "Menarik nafas semasa di dalam air.", "Naik ke permukaan air untuk bernafas.", "Memasukkan air melalui insang untuk bernafas."], 
+                correct: 2 // Naik ke permukaan air
+            },
+            { 
+                q: "Rajah 5 menunjukkan satu penyiasatan yang dijalankan dalam makmal.<br><img src='soalan16.jpg' alt='Tumbuhan dalam kotak' class='q-image'><br>Penyiasatan tersebut menunjukkan bahawa...", 
+                options: ["akar bergerak balas terhadap air.", "akar bergerak balas terhadap graviti.", "pucuk bergerak balas terhadap graviti.", "pucuk bergerak balas terhadap cahaya matahari."], 
+                correct: 3 // Pucuk bergerak balas terhadap cahaya
+            },
+            { 
+                q: "Proses fotosintesis boleh diwakili oleh persamaan perkataan seperti di bawah:<br><br><b>K + Air --- (cahaya matahari & klorofil) ---> Kanji + L</b><br><br>Apakah gas K dan L yang terlibat dalam proses ini?", 
+                options: ["K: Oksigen | L: Karbon dioksida", "K: Karbon dioksida | L: Oksigen", "K: Karbon dioksida | L: Hidrogen", "K: Oksigen | L: Hidrogen"], 
+                correct: 1 // K=Karbon Dioksida, L=Oksigen
+            },
+            { 
+                q: "Daun tumbuhan X akan tertutup apabila disentuh.<br>Apakah tumbuhan X?", 
+                options: ["Pokok bunga raya.", "Pokok keladi.", "Pokok semalu.", "Pokok keembung."], 
+                correct: 2 // Pokok semalu
+            },
+            { 
+                q: "Rajah menunjukkan dua buah bikar A dan B.<br>Bikar A: Terdapat air di bahagian bawah<br>Bikar B: Terdapat agen pengering di bahagian bawah.<br><img src='soalan19.jpg' alt='Eksperimen Bikar Akar' class='q-image'><br>Ramalkan pergerakan akar anak benih di dalam kedua-dua bikar itu selepas seminggu.", 
+                options: ["Bikar A: Lurus ke bawah | Bikar B: Bengkok ke atas", "Bikar A: Bengkok ke atas | Bikar B: Lurus ke bawah", "Bikar A: Bengkok ke atas | Bikar B: Bengkok ke atas", "Bikar A: Lurus ke bawah | Bikar B: Tiada perubahan"], 
+                correct: 0 // A mencari air di bawah, B mencari air di atas kapas
+            },
+            { 
+                q: "Rajah 6 menunjukkan suatu tumbuhan.<br><img src='soalan20.jpg' alt='Bahagian Pokok' class='q-image'><br>Antara bahagian tumbuhan yang berlabel P, Q, R dan S, yang manakah menjalankan fotosintesis?", 
+                options: ["Bahagian P", "Bahagian Q", "Bahagian R", "Bahagian S"], 
+                correct: 0 // P (Daun)
+            },
+            { 
+                q: "Suatu eksperimen dijalankan oleh sekumpulan murid seperti ditunjukkan dalam rajah 7.<br><img src='soalan21.jpg' alt='Kotak Hitam' class='q-image'><br>Apakah tujuan eksperimen ini?", 
+                options: ["Untuk menyiasat bahawa tumbuhan memerlukan air untuk berfotosintesis.", "Untuk menyiasat bahawa tumbuhan memerlukan udara untuk berfotosintesis.", "Untuk menyiasat bahawa tumbuhan memerlukan cahaya matahari untuk berfotosintesis.", "Untuk menyiasat bahawa tumbuhan memerlukan makanan untuk hidup."], 
+                correct: 2 // Cahaya matahari
+            },
+            { 
+                q: "Rajah 8 menunjukkan sebuah pasu bunga.<br><img src='soalan22.jpg' alt='Pasu Bunga' class='q-image'><br>Antara alat-alat berikut manakah yang paling sesuai digunakan untuk mengukur ukur lilit pasu bunga di atas?", 
+                options: ["Pita ukur (Tali pita)", "Jangka tolok", "Pembaris kayu lurus", "Jengkal tangan"], 
+                correct: 0 // Pita ukur membulat
+            },
+            { 
+                q: "Senarai di bawah menunjukkan bahagian badan manusia yang digunakan untuk mengukur panjang pada zaman dahulu.<br><br><b>J</b> - Hasta<br><b>K</b> - Jengkal<br><b>L</b> - Depa<br><b>M</b> - Kaki<br><br>Antara yang berikut, manakah urutan yang betul daripada yang paling PENDEK kepada yang paling PANJANG?", 
+                options: ["M, K, L, J", "K, M, J, L", "L, J, M, K", "J, K, L, M"], 
+                correct: 1 // Jengkal, Kaki, Hasta, Depa
+            },
+            { 
+                q: "Antara padanan unit piawai dan objek berikut, yang manakah yang betul?", 
+                options: ["Milimeter - Panjang bilik", "Sentimeter - Panjang buku", "Meter - Panjang setem", "Kilometer - Panjang haiwan"], 
+                correct: 1 // Sentimeter untuk buku
+            },
+            { 
+                q: "Rajah 9 menunjukkan aktiviti mengukur panjang.<br><img src='soalan25.jpg' alt='Ukur Papan' class='q-image'><br>Berapakah panjang papan itu?", 
+                options: ["4 pensel", "5 pensel", "6 pensel", "7 pensel"], 
+                correct: 2 // Anggaran visual dari soalan standard 6 pensel
+            },
+            { 
+                q: "Puan Lim meletakkan sebatang pokok berpasu di tepi tingkap dapurnya. Selepas beberapa minggu didapati pokok itu tumbuh membengkok ke arah tingkap.<br><br>Apakah yang boleh dilakukan Puan Lim supaya tumbuhan itu tumbuh menegak?", 
+                options: ["Mencantas dahan-dahannya.", "Memusing pasu supaya sebanyak setengah pusingan.", "Meletakkan pasu di halaman rumah (kawasan lapang).", "Menyiramnya dengan lebih kerap."], 
+                correct: 1 // Memusingkan pasu
+            },
+            { 
+                q: "Antara padanan haiwan dan organ pernafasan berikut, yang manakah TIDAK BENAR?<br><img src='soalan27.jpg' alt='Padanan Organ' class='q-image'>", 
+                options: ["Lembu - Peparu", "Kucing - Spirakel", "Cacing - Kulit lembap", "Ikan - Insang"], 
+                correct: 1 // Kucing bernafas guna peparu, bukan spirakel
+            },
+            { 
+                q: "Apakah bahan yang dinyahtinjakan daripada badan manusia?", 
+                options: ["Peluh.", "Tinja.", "Air kencing.", "Karbon dioksida."], 
+                correct: 1 // Tinja (Najis)
+            },
+            { 
+                q: "Antara tumbuhan berikut yang manakah TIDAK menjalankan fotosintesis?<br><img src='soalan29.jpg' alt='Cendawan' class='q-image'>", 
+                options: ["Tumbuhan A (Keladi)", "Tumbuhan B (Pisang)", "Tumbuhan C (Bunga Matahari)", "Tumbuhan D (Cendawan)"], 
+                correct: 3 // Cendawan (Fungi bukan tumbuhan berfotosintesis)
+            },
+            { 
+                q: "Antara yang berikut, manakah merupakan kesan akibat minum minuman beralkohol secara berlebihan?<br><br>I Sukar berjalan dengan betul<br>II Penglihatan menjadi kabur<br>III Kanser peparu<br>IV Halusinasi", 
+                options: ["I dan II", "I dan III", "II dan III", "II dan IV"], 
+                correct: 0 // I dan II
+            }
+        ];
+
+        // ================= PEMBOLEH UBAH SISTEM =================
+        let soalanSekarang = 0;
+        let jawapanMurid = new Array(bankSoalan.length).fill(null);
+        let masaBaki = 3600; // 60 minit x 60 saat = 3600 saat
+        let timerInterval;
+
+        function formatMasa(saat) {
+            let m = Math.floor(saat / 60);
+            let s = saat % 60;
+            return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+        }
+
+        function mulakanUjian() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'flex';
+            
+            // Mula Timer
+            document.getElementById('timer-display').innerText = formatMasa(masaBaki);
+            timerInterval = setInterval(() => {
+                masaBaki--;
+                document.getElementById('timer-display').innerText = formatMasa(masaBaki);
+                
+                if(masaBaki <= 300) { // Kurang 5 minit warna merah
+                    document.getElementById('timer-display').style.background = "#d32f2f";
+                }
+                
+                if(masaBaki <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Masa telah tamat! Kertas peperiksaan anda dihantar secara automatik.");
+                    hantarUjian();
+                }
+            }, 1000);
+
+            paparSoalan();
+        }
+
+        function paparSoalan() {
+            let data = bankSoalan[soalanSekarang];
+            document.getElementById("progress-text").innerText = `Soalan ${soalanSekarang + 1} / ${bankSoalan.length}`;
+            document.getElementById("q-num").innerText = `Soalan ${soalanSekarang + 1}`;
+            document.getElementById("q-text").innerHTML = data.q; // Guna innerHTML sebab ada tag <img> dan <br>
+            
+            let opts = document.getElementById("options-area");
+            opts.innerHTML = "";
+            const abcd = ["A", "B", "C", "D"];
+
+            data.options.forEach((opt, index) => {
+                let btn = document.createElement("button");
+                btn.className = "option-btn";
+                // Tanda biru kalau dah pernah pilih
+                if (jawapanMurid[soalanSekarang] === index) {
+                    btn.classList.add("selected");
+                }
+                btn.innerHTML = `<span class="opt-letter">${abcd[index]}.</span> ${opt}`;
+                btn.onclick = () => pilihJawapan(index);
+                opts.appendChild(btn);
+            });
+
+            // Uruskan butang navigasi
+            document.getElementById("btn-sebelum").style.display = soalanSekarang > 0 ? "block" : "none";
+            
+            if (soalanSekarang === bankSoalan.length - 1) {
+                document.getElementById("btn-seterus").style.display = "none";
+                document.getElementById("btn-hantar").style.display = "block";
+            } else {
+                document.getElementById("btn-seterus").style.display = "block";
+                document.getElementById("btn-hantar").style.display = "none";
+            }
+        }
+
+        function pilihJawapan(index) {
+            jawapanMurid[soalanSekarang] = index;
+            paparSoalan(); // Refresh UI untuk tunjuk warna butang
+        }
+
+        function soalanSeterusnya() {
+            if (soalanSekarang < bankSoalan.length - 1) {
+                soalanSekarang++;
+                paparSoalan();
+            }
+        }
+
+        function soalanSebelum() {
+            if (soalanSekarang > 0) {
+                soalanSekarang--;
+                paparSoalan();
+            }
+        }
+
+        function hantarUjian() {
+            let belumJawab = jawapanMurid.filter(x => x === null).length;
+            if (masaBaki > 0 && belumJawab > 0) {
+                let sahkan = confirm(`Anda ada ${belumJawab} soalan yang BELUM dijawab. Pasti mahu hantar sekarang?`);
+                if (!sahkan) return;
+            }
+
+            clearInterval(timerInterval); // Hentikan masa
+            KiraMarkah();
+        }
+
+        function KiraMarkah() {
+            let markahPenuh = 0;
+            for (let i = 0; i < bankSoalan.length; i++) {
+                if (jawapanMurid[i] === bankSoalan[i].correct) {
+                    markahPenuh++;
+                }
+            }
+
+            document.getElementById('exam-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            
+            let skorPeratus = (markahPenuh / bankSoalan.length) * 100;
+            document.getElementById('final-score').innerText = `${markahPenuh}/${bankSoalan.length}`;
+            
+            let gredTeks = document.getElementById('gred-text');
+            if (skorPeratus >= 80) { gredTeks.innerText = "Tahniah! Pencapaian Sangat Cemerlang."; gredTeks.style.color = "#2e7d32"; }
+            else if (skorPeratus >= 50) { gredTeks.innerText = "Bagus! Anda Lulus Peperiksaan Ini."; gredTeks.style.color = "#1565c0"; }
+            else { gredTeks.innerText = "Jangan Putus Asa. Sila Ulang Kaji Semula."; gredTeks.style.color = "#c62828"; }
+        }
+
+        function bukaSemakan() {
+            document.getElementById('result-screen').style.display = 'none';
+            document.getElementById('review-screen').style.display = 'block';
+            
+            let list = document.getElementById('review-list');
+            list.innerHTML = "";
+            const abcd = ["A", "B", "C", "D"];
+
+            for (let i = 0; i < bankSoalan.length; i++) {
+                let qData = bankSoalan[i];
+                let jawapanDipilih = jawapanMurid[i];
+                let jawapanBetul = qData.correct;
+                
+                let kotak = document.createElement("div");
+                kotak.className = "review-box";
+                
+                let soalanTeks = `<b style="color:#1565c0;">Soalan ${i + 1}:</b> ${qData.q}<br><br>`;
+                
+                let statusTeks = "";
+                if (jawapanDipilih === null) {
+                    statusTeks = `<b>Jawapan Anda:</b> <span class="ans-wrong">- TIDAK DIJAWAB -</span><br>`;
+                } else {
+                    let teksPilihan = `${abcd[jawapanDipilih]}. ${qData.options[jawapanDipilih]}`;
+                    if (jawapanDipilih === jawapanBetul) {
+                        statusTeks = `<b>Jawapan Anda:</b> <span class="ans-correct">✅ ${teksPilihan}</span><br>`;
+                    } else {
+                        statusTeks = `<b>Jawapan Anda:</b> <span class="ans-wrong">❌ ${teksPilihan}</span><br>`;
+                    }
+                }
+
+                let teksBetul = `<b>Jawapan Skema:</b> <span class="ans-correct">${abcd[jawapanBetul]}. ${qData.options[jawapanBetul]}</span>`;
+                
+                kotak.innerHTML = soalanTeks + statusTeks + teksBetul;
+                list.appendChild(kotak);
+            }
+        }
+
+        function tutupSemakan() {
+            document.getElementById('review-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+        }
+
+    </script>
+</body>
+</html>
